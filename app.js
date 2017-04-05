@@ -1,10 +1,10 @@
 let express = require('express');
 let app = express();
 let serv = require('http').Server(app);
-let _dirname = '/Users/jeffr/Downloads/Test Network'
+let _dirname = './'
 
 app.get('/', function(req, res){
-    res.sendfile(_dirname + '/client/index.html');
+    res.sendFile('client/index.html', {root: __dirname });
 });
 app.use('/client', express.static(_dirname + '/client'));
 
