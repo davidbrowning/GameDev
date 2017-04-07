@@ -47,7 +47,7 @@ document.onkeydown = function(event){
         else if(substate == 'dash'){
             customControls.dash = event.key;
         }
-        alert("You've changed "+substate+" to "+ event.key);
+        alert("You've changed " + substate + " to " + event.key);
     }
     else if(gameState == 'credits'){
 
