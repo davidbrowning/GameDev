@@ -26,6 +26,9 @@ function changeState(state){
         let pack = 'exit';
         socket.emit('lobby', pack);
     }
+    else if(gameState == 'controls'){
+        localStorage['customControls'] = JSON.stringify(customControls);
+    }
     gameState = state;
     if(state == 'mainMenu'){
         mainMenu.style.display = 'block';
@@ -77,6 +80,9 @@ function initialize(){
     customControls.down = 's';
     customControls.left = 'a';
     customControls.right = 'd';
+    if(localStorage.hasOwnProperty('customControls')){
+        customControls = JSON.parse(localStorage.getItem('customControls'));
+    }
     substate = 'newGameButton';
     Graphics.initialize();
 }
