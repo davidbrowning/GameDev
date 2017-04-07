@@ -13,6 +13,7 @@ console.log('Server started.');
 
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
+let lobbyPlayers = 0;
 
 let Player = function(id){
     let self = {
@@ -68,6 +69,22 @@ io.sockets.on('connection', function(socket){
         }
         else if(data.inputId == 'right'){
             player.pressingRight = data.state;
+        }
+    });
+
+    socket.on('lobby', function(data){
+        if(data == 'enter'){
+            lobbyPlayers++;
+            if(lobbyPlayers == 2){
+                for(var i in SOCKET_LIST){
+                    let socket = SOCKET_LIST[i];
+                    let pack = {};
+                    socket.emit('startNewGame', pack);
+                }
+            }
+        }
+        else if(data == 'exit'){
+            lobbyPlayers--;
         }
     });
 

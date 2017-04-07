@@ -125,7 +125,7 @@ if (typeof KeyEvent === 'undefined') {
 
 document.onkeydown = function(event){
     if(gameState == 'mainMenu'){
-
+		
     }
     else if(gameState == 'newGame'){
         if(event.key == customControls.up){ 
