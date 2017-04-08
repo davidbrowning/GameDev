@@ -8,6 +8,17 @@ let controls;
 let credits;
 let customControls = {};
 let substate;
+let img = new Image();
+let count = 0;
+img.src = './client/assets/characters.png'
+
+let canDraw = false;
+drawable = function(){
+    canDraw = true;
+    console.log(canDraw)
+}
+
+img.onload = drawable();
 
 socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
@@ -18,10 +29,20 @@ socket.on('newPosition', function(data){
     Graphics.clearRect(0, 0, 500, 500);
     for(let i = 0; i < data.length; i++){
         let col = data[i].number * 103056;
-        colstr = '#'+col;
-        console.log(colstr)
+        let colstr = '#'+col;
         if(data[i].number === 0){colstr = '#000000'}
         Graphics.drawRectangle(data[i].x, data[i].y, 10, 10, colstr)
+        Graphics.drawTexture({
+            image : img,
+            center : {x : (count % 15) * 30, y : 35},
+            size : 100
+        });
+        if (count == 15){
+            count = 0;
+        }
+        else {
+            count++
+        }
     }
 });
 

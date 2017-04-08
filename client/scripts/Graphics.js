@@ -25,9 +25,10 @@ let Graphics = (function(){
             
             context.drawImage(
                 spec.image, 
-                spec.center.x - spec.size/2, 
-                spec.center.y - spec.size/2,
-                spec.size, spec.size);
+                spec.center.x ,//- spec.size/2, 
+                spec.center.y ,//- spec.size/2,
+                30, 35, 0, 0,
+                30, 35);
             
             context.restore();
         }
