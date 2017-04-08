@@ -1,4 +1,5 @@
 document.onkeydown = function(event){
+    console.log('You Pressed: ' + event.key);
     if(gameState == 'mainMenu'){
 		
     }
@@ -14,6 +15,9 @@ document.onkeydown = function(event){
         }
         else if(event.key == customControls.right){ 
             socket.emit('keyPress', {inputId: 'right', state: true});
+        }
+        else if(event.key == customControls.jump){
+            socket.emit('keyPress', {inputId: 'jump'});
         }
     }
     else if(gameState == 'gameLobby'){
