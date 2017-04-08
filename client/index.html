@@ -1,46 +1,61 @@
-<canvas id="ctx" width="500" height="500" style="border: 1px solid black;"></canvas>
-
-<script src='https://cdn.socket.io/socket.io-1.4.5.js'></script>
-<script>
-    let ctx = document.getElementById('ctx').getContext('2d');
-    ctx.font = '30px Arial';
-
-    let socket = io();
-
-    socket.on('newPosition', function(data){
-        ctx.clearRect(0, 0, 500, 500);
-        for(let i = 0; i < data.length; i++){
-            ctx.fillText(data[i].number, data[i].x, data[i].y);
-        }
-    });
-
-    document.onkeydown = function(event){
-        if(event.keyCode == 87){ //w
-            socket.emit('keyPress', {inputId: 'up', state: true});
-        }
-        else if(event.keyCode == 65){ //a
-            socket.emit('keyPress', {inputId: 'left', state: true});
-        }
-        else if(event.keyCode == 83){ //s
-            socket.emit('keyPress', {inputId: 'down', state: true});
-        }
-        else if(event.keyCode == 68){ //d
-            socket.emit('keyPress', {inputId: 'right', state: true});
-        }
-    }
-    document.onkeyup = function(event){
-        if(event.keyCode == 87){ //w
-            socket.emit('keyPress', {inputId: 'up', state: false});
-        }
-        else if(event.keyCode == 65){ //a
-            socket.emit('keyPress', {inputId: 'left', state: false});
-        }
-        else if(event.keyCode == 83){ //s
-            socket.emit('keyPress', {inputId: 'down', state: false});
-        }
-        else if(event.keyCode == 68){ //d
-            socket.emit('keyPress', {inputId: 'right', state: false});
-        }
-    }
-
-</script>
+<!DOCTYPE HTML>
+<html lang="us-EN">
+<head>
+    <meta charset = "UTF-8">
+    <title>Ori and the Blind Forest</title>
+    <script src='https://cdn.socket.io/socket.io-1.4.5.js'></script>
+    <script src='client/scripts/Graphics.js'></script>
+    <script src='client/scripts/test.js'></script>
+    <script src='client/scripts/input.js'></script>
+    <link rel = "stylesheet" type = "text/css" href = "client/styles/test.css">
+</head>
+<body onload ="initialize();">
+    <div id = "title">
+        <h1>Ori and the Blind Forest</h1>
+    </div>
+    <div id = "mainMenu">
+        <h2>Main Menu</h2>
+        <button id='newGameButton' onclick="changeState('gameLobby');">New Game</button>
+        <button id='highScoresButton' onclick="changeState('highScores');">High Scores</button>
+        <button id='controlsButton' onclick="changeState('controls');">Controls</button>
+        <button id='creditsButton' onclick="changeState('credits');">Credits</button>
+    </div>
+    <div id="gameLobby">
+        <h2>Game Lobby</h2>
+        <button id='singleGameButton' onclick="changeState('newGame');">Start Single Player Game</button>
+        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+    </div>
+    <div id = "newGame">
+        <canvas id="canvas" width="500" height="500" style="border: 1px solid black;"></canvas>
+        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+    </div>
+    <div id = "highScores">
+        <h2>High Scores</h2>
+        <ol>
+            <li>0</li>  
+            <li>0</li>
+            <li>0</li>
+            <li>0</li>
+            <li>0</li>
+        </ol>
+        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+    </div>
+    <div id = "controls">
+        <h2>Controls</h2>
+        <p>Click on the control you want to change, and then click the keyboard button you want to replace it with.</p>
+        <button onclick="changeSubstate('up');">Climb Up</button>
+        <button onclick="changeSubstate('down');">Climb Down</button>
+        <button onclick="changeSubstate('left');">Run Left</button>
+        <button onclick="changeSubstate('right');">Run Right</button>
+        <button onclick="changeSubstate('jump');">Jump</button>
+        <button onclick="changeSubstate('attack');">Attack</button>
+        <button onclick="changeSubstate('dash');">Dash</button>
+        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+    </div>
+    <div id = "credits">
+        <h2>Credits</h2>
+        <p>Developed by: David Browning and Jeffrey Heilbut</p>
+        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+    </div>
+</body>
+</html>
