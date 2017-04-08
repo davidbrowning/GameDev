@@ -87,18 +87,23 @@ function update(elapsedTime){ //Change this so it is according to what player yo
 
 function render(elapsedTime){
     Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(255, 255, 255, 1)');
-    for(let i = 0; i < MyLevels.first.boxes.length; i++){
-        let box = MyLevels.first.boxes[i];
+    for(let i = 0; i < MyLevels[0].boxes.length; i++){
+        let box = MyLevels[0].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
-        console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
-        + offset.x + ', offset.y: ' + offset.y);
+        // console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
+        // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
     }
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
-        Graphics.fillText(players[i].number, x, y);
+        if(players[i].myPlayer){
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
+        }
+        else {
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+        } 
     }
 }
 

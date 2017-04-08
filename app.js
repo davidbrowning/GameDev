@@ -14,25 +14,24 @@ console.log('Server started.');
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
-let GRAVITY = 0.3;
+let GRAVITY = 1;
 
 let MyLevels = (function(){
-    let that = {};
-    that.first = {};
-    that.first.boxes = [];
+    let that = [];
+    for(let i = 0; i < 5; i++){
+        that.push({boxes: []});
+    }
     function makeBox(x, y, w, h){
         return {x: x, y: y, w: w, h: h};
     }
-    that.initialize = function(){
-        that.first.boxes.push(makeBox(0, 450, 1000, 50));
-        that.first.boxes.push(makeBox(1050, 450, 500, 50));
-        that.first.boxes.push(makeBox(1550, 400, 500, 100));
-        that.first.boxes.push(makeBox(2150, 450, 1000, 50));
-        that.first.boxes.push(makeBox(3200, 450, 1000, 50));
-        that.first.boxes.push(makeBox(4250, 450, 500, 50));
-        that.first.w = 4750;
-        that.first.h = 500;
-    };
+    that[0].boxes.push(makeBox(0, 450, 1000, 50));
+    that[0].boxes.push(makeBox(1050, 450, 500, 50));
+    that[0].boxes.push(makeBox(1550, 400, 500, 100));
+    that[0].boxes.push(makeBox(2150, 450, 1000, 50));
+    that[0].boxes.push(makeBox(3200, 450, 1000, 50));
+    that[0].boxes.push(makeBox(4250, 450, 500, 50));
+    that[0].w = 4750;
+    that[0].h = 500;
     return that;
 }());
 
@@ -52,7 +51,51 @@ let Player = function(id){
         ySpeed: 0,
         state: 'ground'
     }
-    self.updatePostition = function(){
+
+    function colCheck(shapeA, shapeB) {
+        // get the vectors to check against
+        var vX = (shapeA.x + (shapeA.w / 2)) - (shapeB.x + (shapeB.w / 2)),
+            vY = (shapeA.y + (shapeA.h / 2)) - (shapeB.y + (shapeB.h / 2)),
+            // add the half widths and half heights of the objects
+            hWidths = (shapeA.w / 2) + (shapeB.w / 2),
+            hHeights = (shapeA.h / 2) + (shapeB.h / 2),
+            colDir = null;
+
+        // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+        if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+            // figures out on which side we are colliding (top, bottom, left, or right)
+            var oX = hWidths - Math.abs(vX),
+                oY = hHeights - Math.abs(vY);
+            if (oX >= oY) {
+                if (vY > 0) {
+                    colDir = "top";
+                    shapeA.y += oY;
+                } else {
+                    colDir = "bottom";
+                    shapeA.y -= oY;
+                    shapeA.state = 'ground';
+                }
+            } else {
+                if (vX > 0) {
+                    colDir = "left";
+                    shapeA.x += oX;
+                } else {
+                    colDir = "right";
+                    shapeA.x -= oX;
+                }
+            }
+        }
+        return colDir;
+    }
+
+    function updateCollision(){
+        for(let i = 0; i < MyLevels[0].boxes.length; i++){
+            let box = MyLevels[0].boxes[i];
+            let colDir = colCheck(self, box);
+        }
+    };
+
+    self.updatePosition = function(){
         if(self.state == 'jump'){
             self.ySpeed += GRAVITY;
         }
@@ -66,7 +109,8 @@ let Player = function(id){
             self.x -= self.xSpeed;
         }
         self.y += self.ySpeed;
-    }
+        updateCollision();
+    };
     return self;
 }
 
@@ -98,8 +142,8 @@ io.sockets.on('connection', function(socket){
         }
         else if(data.inputId == 'jump'){
             console.log('Jump on Server');
-            player.y = 439
-            player.ySpeed = 10;
+            player.ySpeed = -20;
+            player.state = 'jump';
         }
     });
 
@@ -125,7 +169,7 @@ function update(elapsedTime){
     let pack = [];
     for(var i in PLAYER_LIST){
         let player = PLAYER_LIST[i];
-        player.updatePostition();
+        player.updatePosition();
         pack.push({
             x: player.x,
             y: player.y,

@@ -1,5 +1,5 @@
 document.onkeydown = function(event){
-    console.log('You Pressed: ' + event.key);
+    //console.log('You Pressed: ' + event.key);
     if(gameState == 'mainMenu'){
 		
     }
