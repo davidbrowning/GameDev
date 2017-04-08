@@ -1,15 +1,55 @@
+
+var http = require('http'),
+	path = require('path'),
+	fs = require('fs');
+
+var mimeTypes = {
+	'.js' : 'text/javascript',
+	'.html' : 'text/html',
+	'.css' : 'text/css'
+};
+
 let express = require('express');
 let app = express();
-let serv = require('http').Server(app);
 let _dirname = './'
 
-app.get('/', function(req, res){
-    res.sendFile('/client/index.html', {root: _dirname});
-});
-app.use('/client', express.static(_dirname + '/client'));
+function handleRequest(request, response) {
+	var lookup = (request.url === '/') ? '/index.html' : decodeURI(request.url),
+		file = lookup.substring(1, lookup.length);
 
-serv.listen(2000);
-console.log('Server started.');
+	console.log('request: ' + request.url);
+	fs.exists(file, function(exists) {
+		if (exists) {
+			console.log('Trying to send: ' + lookup);
+			fs.readFile(file, function(err, data) {
+				var headers = { 'Content-type': mimeTypes[path.extname(lookup)] };
+
+				if (err) {
+					response.writeHead(500);
+					response.end('Server Error!');
+				} else {
+					response.writeHead(200, headers);
+					response.end(data);
+				}
+			});
+		} else {
+			console.log('Failed to find/send: ' + lookup);
+			response.writeHead(404);
+			response.end();
+		}
+	});
+}
+app.get('/', function(req, res){
+    res.sendFile('index.html', {root: _dirname});
+});
+app.use('./', express.static(_dirname + './'));
+
+let serv = http.createServer(handleRequest).listen(3000, function() {
+	console.log('Server is listening on port 3000');
+});
+
+//serv.listen(2000);
+//console.log('Server started.');
 
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
