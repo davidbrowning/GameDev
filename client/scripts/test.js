@@ -17,7 +17,11 @@ socket.on('startNewGame', function(data){
 socket.on('newPosition', function(data){
     Graphics.clearRect(0, 0, 500, 500);
     for(let i = 0; i < data.length; i++){
-        Graphics.fillText(data[i].number, data[i].x, data[i].y);
+        let col = data[i].number * 103056;
+        colstr = '#'+col;
+        console.log(colstr)
+        if(data[i].number === 0){colstr = '#000000'}
+        Graphics.drawRectangle(data[i].x, data[i].y, 10, 10, colstr)
     }
 });
 
