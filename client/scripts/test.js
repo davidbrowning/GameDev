@@ -9,6 +9,7 @@ let credits;
 let customControls = {};
 let substate;
 let img = new Image();
+let offset = 0;
 let count = 0;
 img.src = './client/assets/characters.png'
 
@@ -34,10 +35,10 @@ socket.on('newPosition', function(data){
         Graphics.drawRectangle(data[i].x, data[i].y, 10, 10, colstr)
         Graphics.drawTexture({
             image : img,
-            center : {x : (count % 15) * 30, y : 35},
+            center : {x : (count % 4) * 30, y : 35},
             size : 100
         });
-        if (count == 15){
+        if (count == 4){
             count = 0;
         }
         else {

@@ -1,6 +1,7 @@
 let Graphics = (function(){
         let that = {};
         let canvas;
+        let offset = 0;
         let context;
         that.initialize = function(){
             canvas = document.getElementById('canvas');
@@ -27,10 +28,15 @@ let Graphics = (function(){
                 spec.image, 
                 spec.center.x ,//- spec.size/2, 
                 spec.center.y ,//- spec.size/2,
-                30, 35, 0, 0,
+                30, 35, offset, 350,
                 30, 35);
             
             context.restore();
+            offset += 5;
+            if(offset > 500){
+                offset = 0;
+            }
+            //console.log(spec.center.x)
         }
 
         that.renderImage = function(image, x, y, width, height){
