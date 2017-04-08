@@ -14,7 +14,7 @@ console.log('Server started.');
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
-let GRAVITY = 1;
+let GRAVITY = 5;
 
 let MyLevels = (function(){
     let that = [];
@@ -25,9 +25,9 @@ let MyLevels = (function(){
         return {x: x, y: y, w: w, h: h};
     }
     that[0].boxes.push(makeBox(0, 450, 1000, 50));
-    that[0].boxes.push(makeBox(1050, 450, 500, 50));
-    that[0].boxes.push(makeBox(1550, 400, 500, 100));
-    that[0].boxes.push(makeBox(2150, 450, 1000, 50));
+    that[0].boxes.push(makeBox(1050, 450, 600, 50));
+    that[0].boxes.push(makeBox(1550, 420, 500, 100));
+    that[0].boxes.push(makeBox(2140, 450, 1000, 50));
     that[0].boxes.push(makeBox(3200, 450, 1000, 50));
     that[0].boxes.push(makeBox(4250, 450, 500, 50));
     that[0].w = 4750;
@@ -89,10 +89,17 @@ let Player = function(id){
     }
 
     function updateCollision(){
+        let grounded = false;
         for(let i = 0; i < MyLevels[0].boxes.length; i++){
             let box = MyLevels[0].boxes[i];
             let colDir = colCheck(self, box);
+            if(colDir == 'bottom'){
+                grounded = true;
+            }
         }
+        // if(!grounded){
+        //     self.state = 'jump';
+        // }
     };
 
     self.updatePosition = function(){
@@ -142,8 +149,10 @@ io.sockets.on('connection', function(socket){
         }
         else if(data.inputId == 'jump'){
             console.log('Jump on Server');
-            player.ySpeed = -20;
-            player.state = 'jump';
+            if(player.state != 'jump'){
+                player.ySpeed = -20;
+                player.state = 'jump';
+            }
         }
     });
 

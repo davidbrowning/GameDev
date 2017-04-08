@@ -8,9 +8,9 @@ let MyLevels = (function(){
     }
     that.initialize = function(){
         that[0].boxes.push(makeBox(0, 450, 1000, 50));
-        that[0].boxes.push(makeBox(1050, 450, 500, 50));
-        that[0].boxes.push(makeBox(1550, 400, 500, 100));
-        that[0].boxes.push(makeBox(2150, 450, 1000, 50));
+        that[0].boxes.push(makeBox(1050, 450, 600, 50));
+        that[0].boxes.push(makeBox(1550, 420, 500, 100));
+        that[0].boxes.push(makeBox(2140, 450, 1000, 50));
         that[0].boxes.push(makeBox(3200, 450, 1000, 50));
         that[0].boxes.push(makeBox(4250, 450, 500, 50));
         that[0].w = 4750;
