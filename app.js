@@ -2,7 +2,7 @@ let express = require('express');
 let app = express();
 let serv = require('http').Server(app);
 let _dirname = './'
-
+let count = 0;
 app.get('/', function(req, res){
     res.sendFile('/client/index.html', {root: _dirname});
 });
@@ -69,19 +69,19 @@ let Player = function(id){
             if (oX >= oY) {
                 if (vY > 0) {
                     colDir = "top";
-                    shapeA.y += oY;
+                    shapeA.y += oY + 0.1;
                 } else {
                     colDir = "bottom";
-                    shapeA.y -= oY;
+                    shapeA.y -= oY - 0.1;
                     shapeA.state = 'ground';
                 }
             } else {
                 if (vX > 0) {
                     colDir = "left";
-                    shapeA.x += oX;
+                    shapeA.x += oX + 0.1;
                 } else {
                     colDir = "right";
-                    shapeA.x -= oX;
+                    shapeA.x -= oX - 0.1;
                 }
             }
         }
@@ -97,9 +97,11 @@ let Player = function(id){
                 grounded = true;
             }
         }
-        // if(!grounded){
-        //     self.state = 'jump';
-        // }
+        if(!grounded){
+            self.state = 'jump';
+            count++;
+            console.log('Not Grounded Count: ' + count);
+        }
     };
 
     self.updatePosition = function(){
@@ -150,7 +152,7 @@ io.sockets.on('connection', function(socket){
         else if(data.inputId == 'jump'){
             console.log('Jump on Server');
             if(player.state != 'jump'){
-                player.ySpeed = -20;
+                player.ySpeed = -30;
                 player.state = 'jump';
             }
         }
