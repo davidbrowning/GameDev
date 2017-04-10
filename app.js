@@ -40,7 +40,7 @@ let MyLevels = (function(){
             endx: ex
         }
     }
-    that[0].boxes.push(makeBox(0, 450, 1000, 50));
+    that[0].boxes.push(makeBox(-10, 450, 1000, 50));
     that[0].boxes.push(makeBox(1050, 450, 600, 50));
     that[0].boxes.push(makeBox(1550, 420, 500, 100));
     that[0].boxes.push(makeBox(2140, 450, 1000, 50));
@@ -53,7 +53,7 @@ let MyLevels = (function(){
     that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
     that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
     that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
-    that[0].w = 4750;
+    that[0].w = 4740;
     that[0].h = 500;
     return that;
 }());
@@ -146,6 +146,12 @@ let Player = function(id){
         }
         if(self.pressingLeft){
             self.x -= self.xSpeed;
+        }
+        if(self.x < 0){
+            self.x = 0;
+        }
+        else if(self.x > MyLevels[0].w){
+            self.x = MyLevels[0].w - self.w;
         }
         self.y += self.ySpeed;
         updateCollision();
