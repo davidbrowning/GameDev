@@ -26,10 +26,10 @@ let Graphics = (function(){
             
             context.drawImage(
                 spec.image, 
-                spec.center.x ,//- spec.size/2, 
-                spec.center.y ,//- spec.size/2,
-                30, 35, offset, 350,
-                30, 35);
+                spec.clip.x ,//- spec.size/2, 
+                spec.clip.y ,//- spec.size/2,
+                spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
+                spec.im.width, spec.im.height);
             
             context.restore();
             offset += 5;

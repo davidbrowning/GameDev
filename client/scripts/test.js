@@ -26,6 +26,24 @@ socket.on('startNewGame', function(data){
     changeState('newGame');
 });
 
+socket.on('oldPosition', function(data){
+    Graphics.clearRect(0, 0, 500, 500);
+    for(let i = 0; i < data.length; i++){
+        let col = data[i].number * 103056;
+        let colstr = '#'+col;
+        if(data[i].number === 0){colstr = '#000000'}
+        Graphics.drawRectangle(data[i].x, data[i].y, 10, 10, colstr)
+
+        Graphics.drawTexture({
+            image : img,
+            center : {x : data[i].x, y : data[i].y},
+            clip: {x: 30,y:35,width:30,height:35},
+            im:{width:30, height:35},
+            size : 100
+        });
+    }
+});
+
 socket.on('newPosition', function(data){
     Graphics.clearRect(0, 0, 500, 500);
     for(let i = 0; i < data.length; i++){
@@ -33,13 +51,17 @@ socket.on('newPosition', function(data){
         let colstr = '#'+col;
         if(data[i].number === 0){colstr = '#000000'}
         Graphics.drawRectangle(data[i].x, data[i].y, 10, 10, colstr)
+
         Graphics.drawTexture({
             image : img,
-            center : {x : (count % 4) * 30, y : 35},
+            center : {x : data[i].x, y : data[i].y},
+            clip: {x: 3 % count * 32,y:35,width:32,height:35},
+            im:{width:35, height:35},
             size : 100
         });
+        
         if (count == 4){
-            count = 0;
+            count = 1;
         }
         else {
             count++

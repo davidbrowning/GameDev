@@ -17,27 +17,33 @@ let lobbyPlayers = 0;
 
 let Player = function(id){
     let self = {
-        x: 250,
-        y: 250,
+        x: 25,
+        y: 350,
         id: id,
         number: Math.floor(10 * Math.random()),
         pressingRight: false,
         pressingLeft: false,
         pressingUp: false,
         pressingDown: false,
-        maxSpd: 10
+        maxSpd: 3,
+        changedPosition: false
     }
     self.updatePostition = function(){
+        self.changedPosition = false;
         if(self.pressingRight){
+            self.changedPosition = true;
             self.x += self.maxSpd;
         }
         if(self.pressingLeft){
+            self.changedPosition = true;
             self.x -= self.maxSpd;
         }
         if(self.pressingUp){
+            self.changedPosition = true;
             self.y -= self.maxSpd;
         }
         if(self.pressingDown){
+            self.changedPosition = true;
             self.y += self.maxSpd;
         }
     }
@@ -123,7 +129,12 @@ setInterval(function(){
     }
     for(var i in SOCKET_LIST){
         let socket = SOCKET_LIST[i];
+        if(PLAYER_LIST[i].changedPosition){
         socket.emit('newPosition', pack);
+        }
+        else{
+        socket.emit('oldPosition', pack);
+        }
     }
 
 },1000/25);
