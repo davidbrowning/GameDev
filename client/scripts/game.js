@@ -95,6 +95,14 @@ function render(elapsedTime){
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
     }
+    for(let i = 0; i < MyLevels[0].enemies.length; i++){
+        let enemy = MyLevels[0].enemies[i];
+        let x = enemy.x - offset.x;
+        let y = enemy.y - offset.y;
+        // console.log('Drawing enemy: enemy.x: ' + enemy.x + ', enemy.y: ' + enemy.y + ', offset.x: ' 
+        // + offset.x + ', offset.y: ' + offset.y);
+        Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+    }
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
@@ -102,7 +110,7 @@ function render(elapsedTime){
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
         } 
     }
 }
@@ -133,7 +141,8 @@ function initialize(){
         customControls = JSON.parse(localStorage.getItem('customControls'));
     }
     socket.on('newPosition', function(data){
-        players = data;
+        players = data.players;
+        MyLevels[0].enemies = data.enemies;
     });
     substate = 'newGameButton';
     screenSize.w = 1000;
