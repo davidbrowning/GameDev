@@ -69,17 +69,23 @@ function changeSubstate(state){
 function update(elapsedTime){ //Change this so it is according to what player you are
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
-            if(players[i].x - offset.x > screenSize.w / 2){
-                offset.x += 10;
+            if(players[i].x + screenSize.w / 2 < MyLevels[0].w &&
+               players[i].x - 50 > 0){
+                if(players[i].x - offset.x > screenSize.w / 2){
+                    offset.x += 10;
+                }
+                else if(players[i].x - offset.x < 50){
+                    offset.x -= 10;
+                }
             }
-            else if(players[i].x - offset.x < 50){
-                offset.x -= 10;
-            }
-            if(players[i].y - offset.y > screenSize.h - 50){
-                offset.y += 10;
-            }
-            else if(players[i].y - offset.y < screenSize.h / 2){
-                offset.y -= 10;
+            if(players[i].y + screenSize.h / 2 < MyLevels[0].h &&
+               players[i].y - 50 > 0){
+                if(players[i].y - offset.y > screenSize.h - 50){
+                    offset.y += 10;
+                }
+                else if(players[i].y - offset.y < screenSize.h / 2){
+                    offset.y -= 10;
+                }
             }
         }
     }
