@@ -23,14 +23,25 @@ let Graphics = (function(){
             context.translate(spec.center.x, spec.center.y);
             context.rotate(spec.rotation);
             context.translate(-spec.center.x, -spec.center.y);
-            
-            context.drawImage(
-                spec.image, 
-                spec.clip.x ,//- spec.size/2, 
-                spec.clip.y ,//- spec.size/2,
-                spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
-                spec.im.width, spec.im.height);
-            
+            //context.scale(-1,1) use to flip.
+            if(spec.flip){
+                context.scale(-1,1)
+                context.drawImage(
+                    spec.image, 
+                    spec.clip.x ,//- spec.size/2, 
+                    spec.clip.y ,//- spec.size/2,
+                    spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
+                    spec.im.width, spec.im.height);
+                
+            }
+            else{
+                context.drawImage(
+                    spec.image, 
+                    spec.clip.x ,//- spec.size/2, 
+                    spec.clip.y ,//- spec.size/2,
+                    spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
+                    spec.im.width, spec.im.height);
+            }
             context.restore();
             offset += 5;
             if(offset > 500){

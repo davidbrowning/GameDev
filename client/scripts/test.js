@@ -11,6 +11,7 @@ let substate;
 let img = new Image();
 let offset = 0;
 let count = 0;
+let subcount = 0;
 img.src = './client/assets/characters.png'
 
 let canDraw = false;
@@ -27,7 +28,7 @@ socket.on('startNewGame', function(data){
 });
 
 socket.on('oldPosition', function(data){
-    Graphics.clearRect(0, 0, 500, 500);
+    Graphics.clearRect(0, 0, 1000, 500);
     for(let i = 0; i < data.length; i++){
         let col = data[i].number * 103056;
         let colstr = '#'+col;
@@ -45,7 +46,7 @@ socket.on('oldPosition', function(data){
 });
 
 socket.on('newPosition', function(data){
-    Graphics.clearRect(0, 0, 500, 500);
+    Graphics.clearRect(0, 0, 1000, 500);
     for(let i = 0; i < data.length; i++){
         let col = data[i].number * 103056;
         let colstr = '#'+col;
@@ -55,17 +56,19 @@ socket.on('newPosition', function(data){
         Graphics.drawTexture({
             image : img,
             center : {x : data[i].x, y : data[i].y},
-            clip: {x: 3 % count * 32,y:35,width:32,height:35},
+            clip: {x: 3 % count * 32,y:35,width:32,height:35}, // 05 for yellow dude, 35 for king, 65 for army dude, 95 for snake
             im:{width:35, height:35},
-            size : 100
+            flip: false
         });
         
-        if (count == 4){
+        if (count == 5){
             count = 1;
         }
-        else {
-            count++
+        else if(subcount % 2 == 0){
+            count++;
         }
+        if(subcount == 8){subcount = 0}
+        subcount++;
     }
 });
 
