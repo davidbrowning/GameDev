@@ -69,17 +69,23 @@ function changeSubstate(state){
 function update(elapsedTime){ //Change this so it is according to what player you are
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
-            if(players[i].x - offset.x > screenSize.w / 2){
-                offset.x += 10;
+            if(players[i].x + screenSize.w / 2 < MyLevels[0].w &&
+               players[i].x - 50 > 0){
+                if(players[i].x - offset.x > screenSize.w / 2){
+                    offset.x += 10;
+                }
+                else if(players[i].x - offset.x < 50){
+                    offset.x -= 10;
+                }
             }
-            else if(players[i].x - offset.x < 50){
-                offset.x -= 10;
-            }
-            if(players[i].y - offset.y > screenSize.h - 50){
-                offset.y += 10;
-            }
-            else if(players[i].y - offset.y < screenSize.h / 2){
-                offset.y -= 10;
+            if(players[i].y + screenSize.h / 2 < MyLevels[0].h &&
+               players[i].y - 50 > 0){
+                if(players[i].y - offset.y > screenSize.h - 50){
+                    offset.y += 10;
+                }
+                else if(players[i].y - offset.y < screenSize.h / 2){
+                    offset.y -= 10;
+                }
             }
         }
     }
@@ -95,6 +101,14 @@ function render(elapsedTime){
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
     }
+    for(let i = 0; i < MyLevels[0].enemies.length; i++){
+        let enemy = MyLevels[0].enemies[i];
+        let x = enemy.x - offset.x;
+        let y = enemy.y - offset.y;
+        // console.log('Drawing enemy: enemy.x: ' + enemy.x + ', enemy.y: ' + enemy.y + ', offset.x: ' 
+        // + offset.x + ', offset.y: ' + offset.y);
+        Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+    }
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
@@ -102,7 +116,7 @@ function render(elapsedTime){
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
         } 
     }
 }
@@ -133,7 +147,8 @@ function initialize(){
         customControls = JSON.parse(localStorage.getItem('customControls'));
     }
     socket.on('newPosition', function(data){
-        players = data;
+        players = data.players;
+        MyLevels[0].enemies = data.enemies;
     });
     substate = 'newGameButton';
     screenSize.w = 1000;
