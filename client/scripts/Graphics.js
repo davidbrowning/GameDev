@@ -1,7 +1,6 @@
 let Graphics = (function(){
         let that = {};
         let canvas;
-        let offset = 0;
         let context;
         that.initialize = function(){
             canvas = document.getElementById('canvas');
@@ -23,31 +22,14 @@ let Graphics = (function(){
             context.translate(spec.center.x, spec.center.y);
             context.rotate(spec.rotation);
             context.translate(-spec.center.x, -spec.center.y);
-            //context.scale(-1,1) use to flip.
-            if(spec.flip){
-                context.scale(-1,1)
-                context.drawImage(
-                    spec.image, 
-                    spec.clip.x ,//- spec.size/2, 
-                    spec.clip.y ,//- spec.size/2,
-                    spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
-                    spec.im.width, spec.im.height);
-                
-            }
-            else{
-                context.drawImage(
-                    spec.image, 
-                    spec.clip.x ,//- spec.size/2, 
-                    spec.clip.y ,//- spec.size/2,
-                    spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
-                    spec.im.width, spec.im.height);
-            }
+            
+            context.drawImage(
+                spec.image, 
+                spec.center.x - spec.size/2, 
+                spec.center.y - spec.size/2,
+                spec.size, spec.size);
+            
             context.restore();
-            offset += 5;
-            if(offset > 500){
-                offset = 0;
-            }
-            //console.log(spec.center.x)
         }
 
         that.renderImage = function(image, x, y, width, height){

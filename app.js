@@ -37,8 +37,8 @@ let MyLevels = (function(){
 
 let Player = function(id){
     let self = {
-        x: 25,
-        y: 350,
+        x: 250,
+        y: 440,
         w: 10,
         h: 10,
         id: id,
@@ -199,10 +199,6 @@ function update(elapsedTime){
             }
         }
         socket.emit('newPosition', pack);
-        }
-        else{
-        socket.emit('oldPosition', pack);
-        }
     }
 }
 
