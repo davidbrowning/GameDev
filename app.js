@@ -240,7 +240,10 @@ function update(elapsedTime){
             x: player.x,
             y: player.y,
             number: player.number,
-            id: player.id
+            id: player.id,
+            l: player.pressingLeft,
+            r: player.pressingRight,
+            j: (player.state === 'jump')
         });
     }
     for(var i in SOCKET_LIST){
@@ -260,5 +263,4 @@ function update(elapsedTime){
 setInterval(function(){
     let elapsedTime;
     update(elapsedTime);
-
 },1000/25);

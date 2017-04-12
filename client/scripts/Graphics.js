@@ -22,12 +22,17 @@ let Graphics = (function(){
             context.translate(spec.center.x, spec.center.y);
             context.rotate(spec.rotation);
             context.translate(-spec.center.x, -spec.center.y);
-            
+            //context.drawImage(
+            //    spec.image, 
+            //    spec.center.x, 
+            //    spec.center.y,
+            //    spec.size, spec.size);
             context.drawImage(
                 spec.image, 
-                spec.center.x - spec.size/2, 
-                spec.center.y - spec.size/2,
-                spec.size, spec.size);
+                spec.clip.x ,//- spec.size/2, 
+                spec.clip.y ,//- spec.size/2,
+                spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
+                spec.im.width, spec.im.height);
             
             context.restore();
         }
