@@ -33,15 +33,6 @@ let Graphics = (function(){
                 spec.clip.y ,//- spec.size/2,
                 spec.clip.width, spec.clip.height, spec.center.x, spec.center.y,
                 spec.im.width, spec.im.height);
-            if(spec.flip){
-                console.log('flip image')
-                context.drawImage(
-                    spec.image, 
-                    spec.clip.x,//- spec.size/2, 
-                    spec.clip.y,//- spec.size/2,
-                    spec.clip.width, spec.clip.height, spec.center.x - 300, spec.center.y,
-                    spec.im.width, spec.im.height);
-                }
             
             context.restore();
         }

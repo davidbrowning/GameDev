@@ -13,6 +13,8 @@ let players = [];
 let screenSize = {};
 let canDraw = false;
 let offset = {};
+let count = 0;
+let subcount = 0;
 let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
@@ -122,7 +124,7 @@ function render(elapsedTime){
         Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
     }
     for(let i = 0; i < players.length; i++){
-        let x = players[i].x - offset.x;
+        let x = players[i].x - offset.x - 10;
         let y = players[i].y - offset.y - 20;
         if(players[i].myPlayer){
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
@@ -131,23 +133,68 @@ function render(elapsedTime){
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){
-            if(players[i].r === true){
+            if(players[i].r === true && players[i].j === false){
+                Graphics.drawTexture({
+                     image : img,
+                     center : {x : x, y: y},
+                     clip : {x : 3 % count * 32, y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                });
+                if(count == 5){count = 1}
+                else if(subcount % 2 == 0){count++;}
+                if(subcount == 16){subcount = 0}
+                subcount++;
+            }   
+            else if(players[i].l === true && players[i].j === false){
+                Graphics.drawTexture({
+                     image : reverse_img,
+                     center : {x : x, y: y},
+                     clip : {x : 155 + (3%count * 32), y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                     flip : true,
+                });
+                if(count == 5){count = 1}
+                else if(subcount % 2 == 0){count++;}
+                if(subcount == 16){subcount = 0}
+                subcount++;
+            }
+            else if(players[i].l === true && players[i].j === true){
+                Graphics.drawTexture({
+                     image : reverse_img,
+                     center : {x : x, y: y},
+                     clip : {x : 32*14, y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                     flip : true,
+                });
+                if(count == 5){count = 1}
+                else if(subcount % 2 == 0){count++;}
+                if(subcount == 16){subcount = 0}
+                subcount++;
+            }
+            else if(players[i].j === true){
+                Graphics.drawTexture({
+                     image : img,
+                     center : {x : x, y: y},
+                     clip : {x : 4*32 , y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                     flip : true,
+                });
+                if(count == 5){count = 1}
+                else if(subcount % 2 == 0){count++;}
+                if(subcount == 16){subcount = 0}
+                subcount++;
+            }
+            else {
                 Graphics.drawTexture({
                      image : img,
                      center : {x : x, y: y},
                      clip : {x : 0, y : 35, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
-                });
-            }   
-            if(players[i].l === true){
-                Graphics.drawTexture({
-                     image : reverse_img,
-                     center : {x : x, y: y},
-                     clip : {x : 0, y : 35, width : 30, height : 35},
-                     im : {width : 30, height : 35},
-                     size : 100,
-                     flip : true,
                 });
                 
             }
