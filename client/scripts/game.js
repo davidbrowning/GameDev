@@ -11,7 +11,18 @@ let substate;
 let animation;
 let players = [];
 let screenSize = {};
+let canDraw = false;
 let offset = {};
+let img = new Image();
+img.src = 'client/assets/chr.png'
+let reverse_img = new Image();
+reverse_img.src = 'client/assets/chrrev.png'
+drawable = function(){
+    canDraw = true;
+}
+img.onload = drawable()
+reverse_img.onload = drawable()
+
 
 socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
@@ -92,7 +103,8 @@ function update(elapsedTime){ //Change this so it is according to what player yo
 }
 
 function render(elapsedTime){
-    Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(255, 255, 255, 1)');
+    Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(155, 155, 255, .75)');
+    Graphics.drawRectangle(9, 9, screenSize.w-400, screenSize.h-400, 'rgba(25, 55, 25, 1)');
     for(let i = 0; i < MyLevels[0].boxes.length; i++){
         let box = MyLevels[0].boxes[i];
         let x = box.x - offset.x;
@@ -111,13 +123,35 @@ function render(elapsedTime){
     }
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
-        let y = players[i].y - offset.y;
+        let y = players[i].y - offset.y - 20;
         if(players[i].myPlayer){
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
         }
         else {
             Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
-        } 
+        }
+        if(canDraw === true){
+            if(players[i].r === true){
+                Graphics.drawTexture({
+                     image : img,
+                     center : {x : x, y: y},
+                     clip : {x : 0, y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                });
+            }   
+            if(players[i].l === true){
+                Graphics.drawTexture({
+                     image : reverse_img,
+                     center : {x : x, y: y},
+                     clip : {x : 0, y : 35, width : 30, height : 35},
+                     im : {width : 30, height : 35},
+                     size : 100,
+                     flip : true,
+                });
+                
+            }
+        }
     }
 }
 

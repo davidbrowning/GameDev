@@ -1,7 +1,11 @@
-#canvas {
-    background:url(../assets/mountains_smaller.png);
+html{
+    background-image:url(../assets/mountains_smaller.png);
 }
 
+#canvas {
+    border: 2px red solid;
+    background:red;
+}
 
 #newGame {
     display: none;
