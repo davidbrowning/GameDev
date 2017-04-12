@@ -137,7 +137,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : img,
                      center : {x : x, y: y},
-                     clip : {x : 3 % count * 32, y : 35, width : 30, height : 35},
+                     clip : {x : 3 % count * 32, y : players[i].character, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
                 });
@@ -150,7 +150,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : reverse_img,
                      center : {x : x, y: y},
-                     clip : {x : 155 + (3%count * 32), y : 35, width : 30, height : 35},
+                     clip : {x : 155 + (3%count * 32), y : players[i].character, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
                      flip : true,
@@ -164,7 +164,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : reverse_img,
                      center : {x : x, y: y},
-                     clip : {x : 32*14, y : 35, width : 30, height : 35},
+                     clip : {x : 32*14, y : players[i].character, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
                      flip : true,
@@ -178,7 +178,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : img,
                      center : {x : x, y: y},
-                     clip : {x : 4*32 , y : 35, width : 30, height : 35},
+                     clip : {x : 4*32 , y : players[i].character, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
                      flip : true,
@@ -192,7 +192,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : img,
                      center : {x : x, y: y},
-                     clip : {x : 0, y : 35, width : 30, height : 35},
+                     clip : {x : 0, y : players[i].character, width : 30, height : 35},
                      im : {width : 30, height : 35},
                      size : 100,
                 });
