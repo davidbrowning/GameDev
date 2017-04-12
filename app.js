@@ -243,7 +243,8 @@ function update(elapsedTime){
             id: player.id,
             l: player.pressingLeft,
             r: player.pressingRight,
-            j: (player.state === 'jump')
+            j: (player.state === 'jump'),
+            character: 65
         });
     }
     for(var i in SOCKET_LIST){
