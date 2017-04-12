@@ -15,6 +15,8 @@ let canDraw = false;
 let offset = {};
 let count = 0;
 let subcount = 0;
+let enemycount = 0;
+let enemysubcount = 0;
 let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
@@ -105,7 +107,7 @@ function update(elapsedTime){ //Change this so it is according to what player yo
 }
 
 function render(elapsedTime){
-    Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(155, 155, 255, .75)');
+    Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(155, 155, 255, 1)');
     Graphics.drawRectangle(9, 9, screenSize.w-400, screenSize.h-400, 'rgba(25, 55, 25, 1)');
     for(let i = 0; i < MyLevels[0].boxes.length; i++){
         let box = MyLevels[0].boxes[i];
@@ -122,6 +124,24 @@ function render(elapsedTime){
         // console.log('Drawing enemy: enemy.x: ' + enemy.x + ', enemy.y: ' + enemy.y + ', offset.x: ' 
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
+        Graphics.drawTexture({
+             image : img,
+             center : {x : x-10, y: y-15},
+             clip : {x : enemycount % 4 * 32, y : 96, width : 30, height : 35},
+             im : {width : 30, height : 35},
+             size : 100,
+        });
+        if(enemycount > 3){
+            enemycount = 0;
+        }
+        else if (enemysubcount > 20){
+            enemycount++;
+            enemysubcount = 0;
+        }
+        else{
+            enemysubcount++;    
+        }
+        
     }
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x - 10;
@@ -142,7 +162,7 @@ function render(elapsedTime){
                      size : 100,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 2 == 0){count++;}
+                else if(subcount % 4 == 0){count++;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }   
@@ -156,7 +176,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 2 == 0){count++;}
+                else if(subcount % 4 == 0){count++;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -170,7 +190,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 2 == 0){count++;}
+                else if(subcount % 4 == 0){count++;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -196,7 +216,6 @@ function render(elapsedTime){
                      im : {width : 30, height : 35},
                      size : 100,
                 });
-                
             }
         }
     }
