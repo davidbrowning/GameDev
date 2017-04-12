@@ -2,7 +2,7 @@ let express = require('express');
 let app = express();
 let serv = require('http').Server(app);
 let _dirname = './'
-let count = 0;
+
 app.get('/', function(req, res){
     res.sendFile('/client/index.html', {root: _dirname});
 });
@@ -15,22 +15,45 @@ let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
 let GRAVITY = 5;
+let count = 0;
+let ENEMY_SPEED = 15;
 
 let MyLevels = (function(){
     let that = [];
     for(let i = 0; i < 5; i++){
-        that.push({boxes: []});
+        that.push({
+            boxes: [],
+            enemies: []
+        });
     }
-    function makeBox(x, y, w, h){
-        return {x: x, y: y, w: w, h: h};
+    function makeBox(x, y, w, h, s){
+        return {x: x, y: y, w: w, h: h, s: s};
     }
-    that[0].boxes.push(makeBox(0, 450, 1000, 50));
+    function makeEnemy(x, y, w, h, s, ix, ex){
+        return {
+            x: x,
+            y: y,
+            w: w,
+            h: h,
+            speed: s,
+            initialx: ix,
+            endx: ex
+        }
+    }
+    that[0].boxes.push(makeBox(-10, 450, 1000, 50));
     that[0].boxes.push(makeBox(1050, 450, 600, 50));
     that[0].boxes.push(makeBox(1550, 420, 500, 100));
     that[0].boxes.push(makeBox(2140, 450, 1000, 50));
     that[0].boxes.push(makeBox(3200, 450, 1000, 50));
     that[0].boxes.push(makeBox(4250, 450, 500, 50));
-    that[0].w = 4750;
+    that[0].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1540));
+    that[0].enemies.push(makeEnemy(1550, 410, 10, 10, ENEMY_SPEED, 1550, 2040));
+    that[0].enemies.push(makeEnemy(2140, 440, 10, 10, ENEMY_SPEED, 2140, 2600));
+    that[0].enemies.push(makeEnemy(2640, 440, 10, 10, ENEMY_SPEED, 2640, 3130));
+    that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
+    that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
+    that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
+    that[0].w = 4740;
     that[0].h = 500;
     return that;
 }());
@@ -100,7 +123,14 @@ let Player = function(id){
         if(!grounded){
             self.state = 'jump';
             count++;
-            console.log('Not Grounded Count: ' + count);
+            //console.log('Not Grounded Count: ' + count);
+        }
+        for(let i = 0; i < MyLevels[0].enemies.length; i++){
+            let enemy = MyLevels[0].enemies[i];
+            let colDir = colCheck(self, enemy);
+            if(colDir != null){
+                console.log('You are dead.');
+            }
         }
     };
 
@@ -116,6 +146,12 @@ let Player = function(id){
         }
         if(self.pressingLeft){
             self.x -= self.xSpeed;
+        }
+        if(self.x < 0){
+            self.x = 0;
+        }
+        else if(self.x > MyLevels[0].w){
+            self.x = MyLevels[0].w - self.w;
         }
         self.y += self.ySpeed;
         updateCollision();
@@ -150,7 +186,7 @@ io.sockets.on('connection', function(socket){
             player.pressingRight = data.state;
         }
         else if(data.inputId == 'jump'){
-            console.log('Jump on Server');
+            //console.log('Jump on Server');
             if(player.state != 'jump'){
                 player.ySpeed = -30;
                 player.state = 'jump';
@@ -177,25 +213,47 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
-    let pack = [];
+    let pack = {
+        players: [],
+        enemies: []
+    };
+    for(let i = 0; i < MyLevels[0].enemies.length; i++){
+        let enemy = MyLevels[0].enemies[i];
+        enemy.x += enemy.speed;
+        if(enemy.x < enemy.initialx){
+            enemy.speed = ENEMY_SPEED;
+            enemy.x = enemy.initialx;
+        }
+        else if(enemy.x > enemy.endx){
+            enemy.speed = -ENEMY_SPEED;
+            enemy.x = enemy.endx;
+        }
+        pack.enemies.push({
+            x: enemy.x,
+            y: enemy.y
+        })
+    }
     for(var i in PLAYER_LIST){
         let player = PLAYER_LIST[i];
         player.updatePosition();
-        pack.push({
+        pack.players.push({
             x: player.x,
             y: player.y,
             number: player.number,
-            id: player.id
+            id: player.id,
+            l: player.pressingLeft,
+            r: player.pressingRight,
+            j: (player.state === 'jump')
         });
     }
     for(var i in SOCKET_LIST){
         let socket = SOCKET_LIST[i];
-        for(let j = 0; j < pack.length; j++){
-            if(pack[j].id == i){
-                pack[j].myPlayer = true;
+        for(let j = 0; j < pack.players.length; j++){
+            if(pack.players[j].id == i){
+                pack.players[j].myPlayer = true;
             }
             else {
-                pack[j].myPlayer = false;
+                pack.players[j].myPlayer = false;
             }
         }
         socket.emit('newPosition', pack);
@@ -205,5 +263,4 @@ function update(elapsedTime){
 setInterval(function(){
     let elapsedTime;
     update(elapsedTime);
-
 },1000/25);
