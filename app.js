@@ -16,7 +16,7 @@ let PLAYER_LIST = {};
 let lobbyPlayers = 0;
 let GRAVITY = 5;
 let count = 0;
-let ENEMY_SPEED = 15;
+let ENEMY_SPEED = 5;
 
 let MyLevels = (function(){
     let that = [];
@@ -37,7 +37,8 @@ let MyLevels = (function(){
             h: h,
             speed: s,
             initialx: ix,
-            endx: ex
+            endx: ex,
+            character: 95
         }
     }
     that[0].boxes.push(makeBox(-10, 450, 1000, 50));
@@ -72,7 +73,7 @@ let Player = function(id){
         pressingDown: false,
         xSpeed: 10,
         ySpeed: 0,
-        state: 'ground'
+        state: 'ground',
     }
 
     function colCheck(shapeA, shapeB) {
@@ -245,6 +246,8 @@ function update(elapsedTime){
             l: player.pressingLeft,
             r: player.pressingRight,
             j: (player.state === 'jump'),
+            count: 0,
+            subcount: 0,
             character: 65
         });
     }
