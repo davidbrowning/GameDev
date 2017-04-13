@@ -130,6 +130,7 @@ let Player = function(id){
             let colDir = colCheck(self, enemy);
             if(colDir != null){
                 console.log('You are dead.');
+
             }
         }
     };
