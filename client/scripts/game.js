@@ -24,6 +24,7 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
+let currentLevel = 0;
 drawable = function(){
     canDraw = true;
 }
@@ -36,6 +37,11 @@ socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
     players = data;
     changeState('newGame');
+});
+
+socket.on('nextLevel', function(data){
+    currentLevel++;
+    console.log('Starting Level: ' + currentLevel);
 });
 
 function changeState(state){
@@ -56,6 +62,7 @@ function changeState(state){
         credits.style.display = 'none';
     }
     else if(state == 'newGame'){
+        socket.emit('lobby', 'single');
         newGame.style.display = 'block';
         gameLobby.style.display = 'none';
         gameLoop();
@@ -128,6 +135,8 @@ function render(elapsedTime){
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
     }
+    let end = MyLevels[0].endPoint;
+    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[0].enemies.length; i++){
         let enemy = MyLevels[0].enemies[i];
         let x = enemy.x - offset.x;
@@ -268,6 +277,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
+    currentLevel = 0;
     Graphics.initialize();
-    MyLevels.initialize();
 }
