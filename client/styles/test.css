@@ -1,3 +1,11 @@
+html{
+}
+
+#canvas {
+    border: 2px red solid;
+    background:red;
+}
+
 #newGame {
     display: none;
 }
