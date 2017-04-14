@@ -166,7 +166,7 @@ let Player = function(id){
             let enemy = MyLevels[currentLevel].enemies[i];
             let colDir = colCheck(self, enemy);
             if(colDir != null){
-                //dead();
+                dead();
             }
         }
         let colDir = colCheck(self, MyLevels[currentLevel].endPoint);
