@@ -24,6 +24,7 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
+let currentLevel = 0;
 drawable = function(){
     canDraw = true;
 }
@@ -36,6 +37,13 @@ socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
     players = data;
     changeState('newGame');
+});
+
+socket.on('nextLevel', function(data){
+    currentLevel = data;
+    offset.x = 0; 
+    offset.y = 0;
+    console.log('Starting Level: ' + currentLevel);
 });
 
 function changeState(state){
@@ -56,6 +64,7 @@ function changeState(state){
         credits.style.display = 'none';
     }
     else if(state == 'newGame'){
+        socket.emit('lobby', 'single');
         newGame.style.display = 'block';
         gameLobby.style.display = 'none';
         gameLoop();
@@ -88,7 +97,7 @@ function changeSubstate(state){
 function update(elapsedTime){ //Change this so it is according to what player you are
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
-            if(players[i].x + screenSize.w / 2 < MyLevels[0].w &&
+            if(players[i].x + screenSize.w / 2 < MyLevels[currentLevel].w &&
                players[i].x - 50 > 0){
                 if(players[i].x - offset.x > screenSize.w / 2){
                     offset.x += 10;
@@ -97,7 +106,7 @@ function update(elapsedTime){ //Change this so it is according to what player yo
                     offset.x -= 10;
                 }
             }
-            if(players[i].y + screenSize.h / 2 < MyLevels[0].h &&
+            if(players[i].y + screenSize.h / 2 < MyLevels[currentLevel].h &&
                players[i].y - 50 > 0){
                 if(players[i].y - offset.y > screenSize.h - 50){
                     offset.y += 10;
@@ -120,16 +129,18 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
-    for(let i = 0; i < MyLevels[0].boxes.length; i++){
-        let box = MyLevels[0].boxes[i];
+    for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
+        let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
         // console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
     }
-    for(let i = 0; i < MyLevels[0].enemies.length; i++){
-        let enemy = MyLevels[0].enemies[i];
+    let end = MyLevels[currentLevel].endPoint;
+    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
+    for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
+        let enemy = MyLevels[currentLevel].enemies[i];
         let x = enemy.x - offset.x;
         let y = enemy.y - offset.y;
         Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
@@ -261,13 +272,13 @@ function initialize(){
     }
     socket.on('newPosition', function(data){
         players = data.players;
-        MyLevels[0].enemies = data.enemies;
+        MyLevels[currentLevel].enemies = data.enemies;
     });
     substate = 'newGameButton';
     screenSize.w = 1000;
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
+    currentLevel = 0;
     Graphics.initialize();
-    MyLevels.initialize();
 }

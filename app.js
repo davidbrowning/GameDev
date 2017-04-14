@@ -17,6 +17,9 @@ let lobbyPlayers = 0;
 let GRAVITY = 5;
 let count = 0;
 let ENEMY_SPEED = 5;
+let currentLevel = 0;
+let finishedLevelCount = 0;
+let gameStarted = false;
 
 let MyLevels = (function(){
     let that = [];
@@ -41,9 +44,10 @@ let MyLevels = (function(){
             character: 95
         }
     }
+    //Level 0
     that[0].boxes.push(makeBox(-10, 450, 1000, 50));
-    that[0].boxes.push(makeBox(1050, 450, 600, 50));
-    that[0].boxes.push(makeBox(1550, 420, 500, 100));
+    that[0].boxes.push(makeBox(1050, 450, 1000, 50));
+    that[0].boxes.push(makeBox(1550, 420, 500, 40));
     that[0].boxes.push(makeBox(2140, 450, 1000, 50));
     that[0].boxes.push(makeBox(3200, 450, 1000, 50));
     that[0].boxes.push(makeBox(4250, 450, 500, 50));
@@ -54,8 +58,25 @@ let MyLevels = (function(){
     that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
     that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
     that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
+    that[0].endPoint = makeBox(4680, 430, 20, 20);
     that[0].w = 4740;
     that[0].h = 500;
+
+    //Level 1
+    that[1].boxes.push(makeBox(-10, 450, 1000, 50));
+    that[1].boxes.push(makeBox(1050, 450, 3500, 50));
+    that[1].boxes.push(makeBox(1550, 410, 3000, 50));
+    that[1].boxes.push(makeBox(2050, 370, 2500, 50));
+    that[1].boxes.push(makeBox(2550, 330, 500, 50));
+    that[1].boxes.push(makeBox(3550, 330, 1000, 50));
+    that[1].boxes.push(makeBox(4600, 330, 50, 170));
+    that[1].boxes.push(makeBox(4700, 370, 50, 130));
+    that[1].boxes.push(makeBox(4800, 410, 50, 90));
+    that[1].boxes.push(makeBox(4900, 450, 50, 50));
+    that[1].boxes.push(makeBox(5000, 450, 100, 50));
+    that[1].endPoint = makeBox(5040, 430, 20, 20);
+    that[1].w = 5100;
+    that[1].h = 500;
     return that;
 }());
 
@@ -63,7 +84,7 @@ let Player = function(id){
     let self = {
         x: 250,
         y: 440,
-        w: 10,
+        w: 20,
         h: 10,
         id: id,
         number: Math.floor(10 * Math.random()),
@@ -74,6 +95,8 @@ let Player = function(id){
         xSpeed: 10,
         ySpeed: 0,
         state: 'ground',
+        deadCount: 0,
+        finished: false
     }
 
     function colCheck(shapeA, shapeB) {
@@ -111,11 +134,24 @@ let Player = function(id){
         }
         return colDir;
     }
-
+    function dead(){
+        self.x = 250;
+        self.y = 440;
+        self.ySpeed = 0;
+        self.deadCount++;
+        console.log('Deaths: ' + self.deadCount);
+    }
+    function win(){
+        if(!self.finished){
+            console.log('You win!');
+            self.finished = true;
+            finishedLevelCount++;
+        }
+    }
     function updateCollision(){
         let grounded = false;
-        for(let i = 0; i < MyLevels[0].boxes.length; i++){
-            let box = MyLevels[0].boxes[i];
+        for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
+            let box = MyLevels[currentLevel].boxes[i];
             let colDir = colCheck(self, box);
             if(colDir == 'bottom'){
                 grounded = true;
@@ -126,12 +162,16 @@ let Player = function(id){
             count++;
             //console.log('Not Grounded Count: ' + count);
         }
-        for(let i = 0; i < MyLevels[0].enemies.length; i++){
-            let enemy = MyLevels[0].enemies[i];
+        for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
+            let enemy = MyLevels[currentLevel].enemies[i];
             let colDir = colCheck(self, enemy);
             if(colDir != null){
-                console.log('You are dead.');
+                dead();
             }
+        }
+        let colDir = colCheck(self, MyLevels[currentLevel].endPoint);
+        if(colDir != null){
+            win();
         }
     };
 
@@ -151,10 +191,14 @@ let Player = function(id){
         if(self.x < 0){
             self.x = 0;
         }
-        else if(self.x > MyLevels[0].w){
-            self.x = MyLevels[0].w - self.w;
+        else if(self.x > MyLevels[currentLevel].w){
+            self.x = MyLevels[currentLevel].w - self.w;
         }
         self.y += self.ySpeed;
+        if(self.y + self.h > MyLevels[currentLevel].h){
+            console.log('Player y: ' + self.y);
+            dead();
+        }
         updateCollision();
     };
     return self;
@@ -204,7 +248,11 @@ io.sockets.on('connection', function(socket){
                     let pack = {};
                     socket.emit('startNewGame', pack);
                 }
+                gameStarted = true;
             }
+        }
+        else if(data == 'single'){
+            gameStarted = true;
         }
         else if(data == 'exit'){
             lobbyPlayers--;
@@ -214,53 +262,77 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
-    let pack = {
-        players: [],
-        enemies: []
-    };
-    for(let i = 0; i < MyLevels[0].enemies.length; i++){
-        let enemy = MyLevels[0].enemies[i];
-        enemy.x += enemy.speed;
-        if(enemy.x < enemy.initialx){
-            enemy.speed = ENEMY_SPEED;
-            enemy.x = enemy.initialx;
-        }
-        else if(enemy.x > enemy.endx){
-            enemy.speed = -ENEMY_SPEED;
-            enemy.x = enemy.endx;
-        }
-        pack.enemies.push({
-            x: enemy.x,
-            y: enemy.y
-        })
-    }
-    for(var i in PLAYER_LIST){
-        let player = PLAYER_LIST[i];
-        player.updatePosition();
-        pack.players.push({
-            x: player.x,
-            y: player.y,
-            number: player.number,
-            id: player.id,
-            l: player.pressingLeft,
-            r: player.pressingRight,
-            j: (player.state === 'jump'),
-            count: 0,
-            subcount: 0,
-            character: 65
-        });
-    }
-    for(var i in SOCKET_LIST){
-        let socket = SOCKET_LIST[i];
-        for(let j = 0; j < pack.players.length; j++){
-            if(pack.players[j].id == i){
-                pack.players[j].myPlayer = true;
+    if(gameStarted){
+        let pack = {
+            players: [],
+            enemies: []
+        };
+        for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
+            let enemy = MyLevels[currentLevel].enemies[i];
+            enemy.x += enemy.speed;
+            if(enemy.x < enemy.initialx){
+                enemy.speed = ENEMY_SPEED;
+                enemy.x = enemy.initialx;
             }
-            else {
-                pack.players[j].myPlayer = false;
+            else if(enemy.x > enemy.endx){
+                enemy.speed = -ENEMY_SPEED;
+                enemy.x = enemy.endx;
+            }
+            pack.enemies.push({
+                x: enemy.x,
+                y: enemy.y
+            })
+        }
+        for(var i in PLAYER_LIST){
+            let player = PLAYER_LIST[i];
+            player.updatePosition();
+            pack.players.push({
+                x: player.x,
+                y: player.y,
+                number: player.number,
+                id: player.id,
+                l: player.pressingLeft,
+                r: player.pressingRight,
+                j: (player.state === 'jump'),
+                count: 0,
+                subcount: 0,
+                character: 65
+            });
+        }
+        let count = 0;
+        let newLevel = false;
+        for(var i in SOCKET_LIST){
+            count++;
+            let socket = SOCKET_LIST[i];
+            for(let j = 0; j < pack.players.length; j++){
+                if(pack.players[j].id == i){
+                    pack.players[j].myPlayer = true;
+                }
+                else {
+                    pack.players[j].myPlayer = false;
+                }
+            }
+            socket.emit('newPosition', pack);
+            if(finishedLevelCount >= pack.players.length){
+                newLevel = true;
+                if(count == 1){
+                    currentLevel++;
+                }
+                console.log('Starting Level: ' + currentLevel);
+                if(count == pack.players.length){
+                    finishedLevelCount = 0;
+                }
+                let level = currentLevel;
+                socket.emit('nextLevel', currentLevel);
             }
         }
-        socket.emit('newPosition', pack);
+        if(newLevel){
+            newLevel = false;
+            for(var i in PLAYER_LIST){
+                PLAYER_LIST[i].finished = false;
+            }
+        }
+         
     }
 }
 
