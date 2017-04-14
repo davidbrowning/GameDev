@@ -84,7 +84,7 @@ let Player = function(id){
     let self = {
         x: 250,
         y: 440,
-        w: 10,
+        w: 20,
         h: 10,
         id: id,
         number: Math.floor(10 * Math.random()),
@@ -300,6 +300,7 @@ function update(elapsedTime){
             });
         }
         let count = 0;
+        let newLevel = false;
         for(var i in SOCKET_LIST){
             count++;
             let socket = SOCKET_LIST[i];
@@ -313,6 +314,7 @@ function update(elapsedTime){
             }
             socket.emit('newPosition', pack);
             if(finishedLevelCount >= pack.players.length){
+                newLevel = true;
                 if(count == 1){
                     currentLevel++;
                 }
@@ -323,7 +325,14 @@ function update(elapsedTime){
                 let level = currentLevel;
                 socket.emit('nextLevel', currentLevel);
             }
-        }  
+        }
+        if(newLevel){
+            newLevel = false;
+            for(var i in PLAYER_LIST){
+                PLAYER_LIST[i].finished = false;
+            }
+        }
+         
     }
 }
 

@@ -41,6 +41,8 @@ socket.on('startNewGame', function(data){
 
 socket.on('nextLevel', function(data){
     currentLevel = data;
+    offset.x = 0; 
+    offset.y = 0;
     console.log('Starting Level: ' + currentLevel);
 });
 
