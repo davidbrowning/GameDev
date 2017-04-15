@@ -24,7 +24,8 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
-let currentLevel = 0;
+let currentLevel = 1;
+let attacks = [];
 drawable = function(){
     canDraw = true;
 }
@@ -243,6 +244,9 @@ function render(elapsedTime){
             if(backgroundcount > 3000){backgroundcount = 0} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
+    for(let i = 0; i < attacks.length; i++){
+        Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
+    }
 }
 
 function gameLoop(){
@@ -273,6 +277,7 @@ function initialize(){
     socket.on('newPosition', function(data){
         players = data.players;
         MyLevels[currentLevel].enemies = data.enemies;
+        attacks = data.attacks;
     });
     substate = 'newGameButton';
     screenSize.w = 1000;

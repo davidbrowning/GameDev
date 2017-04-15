@@ -19,6 +19,16 @@ document.onkeydown = function(event){
         else if(event.key == customControls.jump){
             socket.emit('keyPress', {inputId: 'jump'});
         }
+        else if(event.key == customControls.attack){
+            let playerNum;
+            for(let i = 0; i < players.length; i++){
+                if(players[i].myPlayer){
+                    playerNum = players[i].id;
+                }
+            }
+            console.log('Attack');
+            socket.emit('attack', playerNum);
+        }
     }
     else if(gameState == 'gameLobby'){
 

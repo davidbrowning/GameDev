@@ -17,9 +17,11 @@ let lobbyPlayers = 0;
 let GRAVITY = 5;
 let count = 0;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 1;
 let finishedLevelCount = 0;
 let gameStarted = false;
+let attacks = [];
+let deleteAttacks = [];
 
 let MyLevels = (function(){
     let that = [];
@@ -41,7 +43,8 @@ let MyLevels = (function(){
             speed: s,
             initialx: ix,
             endx: ex,
-            character: 95
+            character: 95,
+            dead: false
         }
     }
     //Level 0
@@ -74,12 +77,48 @@ let MyLevels = (function(){
     that[1].boxes.push(makeBox(4800, 410, 50, 90));
     that[1].boxes.push(makeBox(4900, 450, 50, 50));
     that[1].boxes.push(makeBox(5000, 450, 100, 50));
+    that[1].enemies.push(makeEnemy(750, 440, 10, 10, ENEMY_SPEED, 750, 750));
+    that[1].enemies.push(makeEnemy(750, 400, 10, 10, ENEMY_SPEED, 750, 750));
     that[1].endPoint = makeBox(5040, 430, 20, 20);
     that[1].w = 5100;
     that[1].h = 500;
     return that;
 }());
+function colCheck(shapeA, shapeB) {
+    // get the vectors to check against
+    var vX = (shapeA.x + (shapeA.w / 2)) - (shapeB.x + (shapeB.w / 2)),
+        vY = (shapeA.y + (shapeA.h / 2)) - (shapeB.y + (shapeB.h / 2)),
+        // add the half widths and half heights of the objects
+        hWidths = (shapeA.w / 2) + (shapeB.w / 2),
+        hHeights = (shapeA.h / 2) + (shapeB.h / 2),
+        colDir = null;
 
+    // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+    if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+        // figures out on which side we are colliding (top, bottom, left, or right)
+        var oX = hWidths - Math.abs(vX),
+            oY = hHeights - Math.abs(vY);
+        if (oX >= oY) {
+            if (vY > 0) {
+                colDir = "top";
+                shapeA.y += oY + 0.1;
+            } else {
+                colDir = "bottom";
+                shapeA.y -= oY - 0.1;
+                shapeA.state = 'ground';
+            }
+        } else {
+            if (vX > 0) {
+                colDir = "left";
+                shapeA.x += oX + 0.1;
+            } else {
+                colDir = "right";
+                shapeA.x -= oX - 0.1;
+            }
+        }
+    }
+    return colDir;
+}
 let Player = function(id){
     let self = {
         x: 250,
@@ -99,41 +138,6 @@ let Player = function(id){
         finished: false
     }
 
-    function colCheck(shapeA, shapeB) {
-        // get the vectors to check against
-        var vX = (shapeA.x + (shapeA.w / 2)) - (shapeB.x + (shapeB.w / 2)),
-            vY = (shapeA.y + (shapeA.h / 2)) - (shapeB.y + (shapeB.h / 2)),
-            // add the half widths and half heights of the objects
-            hWidths = (shapeA.w / 2) + (shapeB.w / 2),
-            hHeights = (shapeA.h / 2) + (shapeB.h / 2),
-            colDir = null;
-
-        // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
-        if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
-            // figures out on which side we are colliding (top, bottom, left, or right)
-            var oX = hWidths - Math.abs(vX),
-                oY = hHeights - Math.abs(vY);
-            if (oX >= oY) {
-                if (vY > 0) {
-                    colDir = "top";
-                    shapeA.y += oY + 0.1;
-                } else {
-                    colDir = "bottom";
-                    shapeA.y -= oY - 0.1;
-                    shapeA.state = 'ground';
-                }
-            } else {
-                if (vX > 0) {
-                    colDir = "left";
-                    shapeA.x += oX + 0.1;
-                } else {
-                    colDir = "right";
-                    shapeA.x -= oX - 0.1;
-                }
-            }
-        }
-        return colDir;
-    }
     function dead(){
         self.x = 250;
         self.y = 440;
@@ -147,6 +151,20 @@ let Player = function(id){
             self.finished = true;
             finishedLevelCount++;
         }
+    }
+    self.attack = function(){
+        let range = {};
+        range.x = self.x - 250;
+        range.y = self.y - 250;
+        range.w = 500;
+        range.h = 500;
+        for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
+            let colDir = colCheck(range, MyLevels[currentLevel].enemies[i]);
+            if(colDir != null){
+                return i;
+            }
+        }
+        return null;
     }
     function updateCollision(){
         let grounded = false;
@@ -259,6 +277,21 @@ io.sockets.on('connection', function(socket){
         }
     });
 
+    socket.on('attack', function(data){
+        console.log('Attack');
+        if(currentLevel >= 1){
+            let attack = PLAYER_LIST[data].attack();
+            if(attack != null){
+                attacks.push({
+                    x: PLAYER_LIST[data].x, 
+                    y: PLAYER_LIST[data].y,
+                    w: 10,
+                    h: 10, 
+                    enemy: attack
+                });
+            }
+        } 
+    });
 });
 
 function update(elapsedTime){
@@ -281,7 +314,7 @@ function update(elapsedTime){
             pack.enemies.push({
                 x: enemy.x,
                 y: enemy.y
-            })
+            });
         }
         for(var i in PLAYER_LIST){
             let player = PLAYER_LIST[i];
@@ -299,6 +332,33 @@ function update(elapsedTime){
                 character: 65
             });
         }
+        pack.attacks = [];
+        for(let i = 0; i < attacks.length; i++){
+            let xSpeed = (-attacks[i].x + MyLevels[currentLevel].enemies[attacks[i].enemy].x);
+            let ySpeed = (-attacks[i].y + MyLevels[currentLevel].enemies[attacks[i].enemy].y);
+            let xDir = 1;
+            let yDir = 1;
+            if(xSpeed < 0){
+                xDir = -1;
+                yDir = -1;                
+            }
+            let theta = Math.atan(ySpeed / xSpeed);
+            xSpeed = 12 * Math.cos(theta);
+            ySpeed = 12 * Math.sin(theta);
+            attacks[i].x += xDir * xSpeed;
+            attacks[i].y += yDir * ySpeed;
+            let colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
+            if(colDir != null){
+                console.log('Enemy Dead');
+                MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
+                deleteAttacks.push(i);
+            }
+            pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
+        }
+        for(let i = 0; i < deleteAttacks.length; i++){
+            attacks.splice(deleteAttacks[i], 1);
+        }
+        deleteAttacks = [];
         let count = 0;
         let newLevel = false;
         for(var i in SOCKET_LIST){
@@ -331,8 +391,7 @@ function update(elapsedTime){
             for(var i in PLAYER_LIST){
                 PLAYER_LIST[i].finished = false;
             }
-        }
-         
+        }  
     }
 }
 
