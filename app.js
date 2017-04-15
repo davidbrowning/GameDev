@@ -255,6 +255,21 @@ io.sockets.on('connection', function(socket){
                 player.state = 'jump';
             }
         }
+        else if(data.inputId == 'attack'){
+            console.log('Attack');
+            if(currentLevel >= 1){
+                let attack = PLAYER_LIST[data.player].attack();
+                if(attack != null){
+                    attacks.push({
+                        x: PLAYER_LIST[data.player].x, 
+                        y: PLAYER_LIST[data.player].y,
+                        w: 10,
+                        h: 10, 
+                        enemy: attack
+                    });
+                }
+            } 
+        }
     });
 
     socket.on('lobby', function(data){
@@ -275,22 +290,6 @@ io.sockets.on('connection', function(socket){
         else if(data == 'exit'){
             lobbyPlayers--;
         }
-    });
-
-    socket.on('attack', function(data){
-        console.log('Attack');
-        if(currentLevel >= 1){
-            let attack = PLAYER_LIST[data].attack();
-            if(attack != null){
-                attacks.push({
-                    x: PLAYER_LIST[data].x, 
-                    y: PLAYER_LIST[data].y,
-                    w: 10,
-                    h: 10, 
-                    enemy: attack
-                });
-            }
-        } 
     });
 });
 

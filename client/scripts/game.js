@@ -24,7 +24,7 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
-let currentLevel = 1;
+let currentLevel = 0;
 let attacks = [];
 drawable = function(){
     canDraw = true;
@@ -284,6 +284,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 1;
     Graphics.initialize();
 }

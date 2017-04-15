@@ -27,7 +27,7 @@ document.onkeydown = function(event){
                 }
             }
             console.log('Attack');
-            socket.emit('attack', playerNum);
+            socket.emit('keyPress', {player: playerNum, inputId: 'attack'});
         }
     }
     else if(gameState == 'gameLobby'){
