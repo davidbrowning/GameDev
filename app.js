@@ -135,7 +135,8 @@ let Player = function(id){
         ySpeed: 0,
         state: 'ground',
         deadCount: 0,
-        finished: false
+        finished: false,
+        attacking: false
     }
 
     function dead(){
@@ -257,15 +258,17 @@ io.sockets.on('connection', function(socket){
         }
         else if(data.inputId == 'attack'){
             console.log('Attack');
-            if(currentLevel >= 1){
+            if(currentLevel >= 1 && (!PLAYER_LIST[data.player].attacking)){
                 let attack = PLAYER_LIST[data.player].attack();
+                PLAYER_LIST[data.player].attacking = true;
                 if(attack != null){
                     attacks.push({
                         x: PLAYER_LIST[data.player].x, 
                         y: PLAYER_LIST[data.player].y,
                         w: 10,
                         h: 10, 
-                        enemy: attack
+                        enemy: attack,
+                        player: data.player
                     });
                 }
             } 
@@ -349,12 +352,14 @@ function update(elapsedTime){
             let colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
             if(colDir != null){
                 console.log('Enemy Dead');
-                MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
+               // MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
+                MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
                 deleteAttacks.push(i);
             }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
         for(let i = 0; i < deleteAttacks.length; i++){
+            PLAYER_LIST[attacks[deleteAttacks[i]].player].attacking = false;
             attacks.splice(deleteAttacks[i], 1);
         }
         deleteAttacks = [];
