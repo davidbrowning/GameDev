@@ -77,8 +77,27 @@ let MyLevels = (function(){
     that[1].boxes.push(makeBox(4800, 410, 50, 90));
     that[1].boxes.push(makeBox(4900, 450, 50, 50));
     that[1].boxes.push(makeBox(5000, 450, 100, 50));
-    that[1].enemies.push(makeEnemy(750, 440, 10, 10, ENEMY_SPEED, 750, 750));
-    that[1].enemies.push(makeEnemy(750, 400, 10, 10, ENEMY_SPEED, 750, 750));
+    that[1].enemies.push(makeEnemy(750, 440, 10, 10, ENEMY_SPEED, 750, 1000));
+    that[1].enemies.push(makeEnemy(725, 440, 10, 10, ENEMY_SPEED, 725, 975));
+    that[1].enemies.push(makeEnemy(700, 440, 10, 10, ENEMY_SPEED, 700, 950));
+    that[1].enemies.push(makeEnemy(675, 440, 10, 10, ENEMY_SPEED, 675, 925));
+    that[1].enemies.push(makeEnemy(650, 440, 10, 10, ENEMY_SPEED, 650, 900));
+    that[1].enemies.push(makeEnemy(625, 440, 10, 10, ENEMY_SPEED, 625, 875));
+    that[1].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1500));
+    that[1].enemies.push(makeEnemy(1275, 440, 10, 10, ENEMY_SPEED, 1080, 1540));
+    that[1].enemies.push(makeEnemy(1540, 440, 10, 10, ENEMY_SPEED, 1050, 1550));
+
+    that[1].enemies.push(makeEnemy(3050, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3100, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3150, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3200, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3250, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3300, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3350, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3400, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3450, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(3500, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    
     that[1].endPoint = makeBox(5040, 430, 20, 20);
     that[1].w = 5100;
     that[1].h = 500;
@@ -260,8 +279,8 @@ io.sockets.on('connection', function(socket){
             console.log('Attack');
             if(currentLevel >= 1 && (!PLAYER_LIST[data.player].attacking)){
                 let attack = PLAYER_LIST[data.player].attack();
-                PLAYER_LIST[data.player].attacking = true;
                 if(attack != null){
+                    PLAYER_LIST[data.player].attacking = true;
                     attacks.push({
                         x: PLAYER_LIST[data.player].x, 
                         y: PLAYER_LIST[data.player].y,
@@ -270,6 +289,9 @@ io.sockets.on('connection', function(socket){
                         enemy: attack,
                         player: data.player
                     });
+                }
+                else {
+                    PLAYER_LIST[data.player].attacking = false;
                 }
             } 
         }
