@@ -187,7 +187,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;backgroundcount--;}
+                else if(subcount % 4 == 0){count++;backgroundcount-=2;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -201,7 +201,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;}backgroundcount--;
+                else if(subcount % 4 == 0){count++;}backgroundcount-=2;
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -227,9 +227,9 @@ function render(elapsedTime){
                      im : {width : 60, height : 65},
                      size : 100,
                 });
-                backgroundcount++;
+                backgroundcount--;
             }
-            if(backgroundcount > 3000){backgroundcount = 0} // If we care about it, this is what happens if the user takes forever to complete the level. 
+            if(backgroundcount < 3){backgroundcount = 3000} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
 }
