@@ -10,11 +10,14 @@ let MyLevels = (function(){
         return {x: x, y: y, w: w, h: h, s: s};
     }
     //Level 0
-    that[0].boxes.push(makeBox(-10, 450, 1000, 50));
-    that[0].boxes.push(makeBox(1050, 450, 1000, 50));
+    that[0].boxes.push(makeBox(-10, 450, 500, 50));
+    that[0].boxes.push(makeBox(490, 450, 510, 50));
+    that[0].boxes.push(makeBox(1050, 450, 500, 50));
     that[0].boxes.push(makeBox(1550, 420, 500, 40));
-    that[0].boxes.push(makeBox(2140, 450, 1000, 50));
-    that[0].boxes.push(makeBox(3200, 450, 1000, 50));
+    that[0].boxes.push(makeBox(2140, 450, 500, 50));
+    that[0].boxes.push(makeBox(2640, 450, 500, 50));
+    that[0].boxes.push(makeBox(3200, 450, 500, 50));
+    that[0].boxes.push(makeBox(3700, 450, 500, 50));
     that[0].boxes.push(makeBox(4250, 450, 500, 50));
     that[0].enemies.push(makeBox(1050, 440, 10, 10));
     that[0].enemies.push(makeBox(1550, 410, 10, 10));
@@ -28,17 +31,20 @@ let MyLevels = (function(){
     that[0].h = 500;
 
     //Level 1
-    that[1].boxes.push(makeBox(-10, 450, 1000, 50));
+    that[1].boxes.push(makeBox(-10, 450, 500, 50));
+    that[1].boxes.push(makeBox(495, 450, 510, 50));
     that[1].boxes.push(makeBox(1050, 450, 500, 50));
     that[1].boxes.push(makeBox(1550, 410, 500, 50));
     that[1].boxes.push(makeBox(2050, 370, 500, 50));
-    that[1].boxes.push(makeBox(2550, 330, 380, 50));
-    that[1].boxes.push(makeBox(3550, 330, 1000, 50));
-    that[1].boxes.push(makeBox(4600, 330, 50, 170));
-    that[1].boxes.push(makeBox(4700, 370, 50, 130));
-    that[1].boxes.push(makeBox(4800, 410, 50, 90));
-    that[1].boxes.push(makeBox(4900, 450, 50, 50));
-    that[1].boxes.push(makeBox(5000, 450, 100, 50));
+    that[1].boxes.push(makeBox(2550, 330, 500, 50));
+    that[1].boxes.push(makeBox(3050, 370, 500, 50));
+    that[1].boxes.push(makeBox(3550, 330, 500, 50));
+    that[1].boxes.push(makeBox(4050, 330, 500, 50));
+    that[1].boxes.push(makeBox(4600, 330, 50, 10));
+    that[1].boxes.push(makeBox(4700, 370, 50, 10));
+    that[1].boxes.push(makeBox(4800, 410, 50, 10));
+    that[1].boxes.push(makeBox(4900, 450, 50, 10));
+    that[1].boxes.push(makeBox(5000, 450, 100, 10));
     that[1].enemies.push(makeBox(750, 440, 10, 10));
     that[1].endPoint = makeBox(5040, 430, 20, 20);
     that[1].w = 5100;

@@ -17,6 +17,8 @@ let count = 0;
 let backgroundcount = 0;
 let subcount = 0;
 let enemycount = 0;
+let off1 = Math.random() * 50
+let off2 = Math.random() * 50
 let enemysubcount = 0;
 let bckgrnd = new Image();
 bckgrnd.src = 'client/assets/background.png'
@@ -138,23 +140,36 @@ function render(elapsedTime){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
-        // console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
-        // + offset.x + ', offset.y: ' + offset.y);
-        Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
-        //for(let j = x; j < box.w-50; j += 50){
-        //    Graphics.drawTexture({
-        //         image: platform_img,
-        //         center: {x : j, y: y},
-        //         clip : {x : 115, y : 32, width : 30 , height : 15},
-        //         im : {width : 50, height : box.h},
-        //         size : 100,
-        //    })
-        //}
+        if(box.w < 100){
             Graphics.drawTexture({
                  image: platform_img,
                  center: {x : x, y: y},
-                 clip : {x : 115, y : 32, width : 40 , height : 15},
-                 im : {width : box.w, height : box.w/5},
+                 clip : {x : 112, y : 32, width : 15 , height : 10},
+                 im : {width : 50, height : 50},
+                 size : 100,
+            })
+        }
+        else{
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 112, y : 32, width : 45 , height : 10},
+                 im : {width : box.w, height : 50},
+                 size : 100,
+            })
+        }
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x+(box.w/2-off1), y: y-20},
+                 clip : {x : 240, y : 100, width : 40 , height : 20},
+                 im : {width : 100, height : 50},
+                 size : 100,
+            })
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x+(box.w/3-off2), y: y-20},
+                 clip : {x : 240, y : 82, width : 40 , height : 20},
+                 im : {width : 100, height : 50},
                  size : 100,
             })
     }
@@ -304,6 +319,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 1;
+    currentLevel = 0;
     Graphics.initialize();
 }
