@@ -24,14 +24,18 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
+let platform_img = new Image();
+platform_img.src = 'client/assets/sheet.png'
 let currentLevel = 0;
 let attacks = [];
+
 drawable = function(){
     canDraw = true;
 }
 img.onload = drawable()
 reverse_img.onload = drawable()
 bckgrnd.onload = drawable()
+platform_img.onload = drawable()
 
 
 socket.on('startNewGame', function(data){
@@ -137,6 +141,22 @@ function render(elapsedTime){
         // console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
         // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
+        //for(let j = x; j < box.w-50; j += 50){
+        //    Graphics.drawTexture({
+        //         image: platform_img,
+        //         center: {x : j, y: y},
+        //         clip : {x : 115, y : 32, width : 30 , height : 15},
+        //         im : {width : 50, height : box.h},
+        //         size : 100,
+        //    })
+        //}
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 115, y : 32, width : 40 , height : 15},
+                 im : {width : box.w, height : box.w/5},
+                 size : 100,
+            })
     }
     let end = MyLevels[currentLevel].endPoint;
     Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
@@ -148,7 +168,7 @@ function render(elapsedTime){
         Graphics.drawTexture({
              image : img,
              center : {x : x-30, y: y-45},
-             clip : {x : enemycount % 4 * 32, y : 96, width : 30, height : 35},
+             clip : {x : enemycount % 4 * 32, y : 97, width : 30, height : 35},
              im : {width : 60, height : 65},
              size : 100,
         });

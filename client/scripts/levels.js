@@ -29,10 +29,10 @@ let MyLevels = (function(){
 
     //Level 1
     that[1].boxes.push(makeBox(-10, 450, 1000, 50));
-    that[1].boxes.push(makeBox(1050, 450, 3500, 50));
-    that[1].boxes.push(makeBox(1550, 410, 3000, 50));
-    that[1].boxes.push(makeBox(2050, 370, 2500, 50));
-    that[1].boxes.push(makeBox(2550, 330, 500, 50));
+    that[1].boxes.push(makeBox(1050, 450, 500, 50));
+    that[1].boxes.push(makeBox(1550, 410, 500, 50));
+    that[1].boxes.push(makeBox(2050, 370, 500, 50));
+    that[1].boxes.push(makeBox(2550, 330, 380, 50));
     that[1].boxes.push(makeBox(3550, 330, 1000, 50));
     that[1].boxes.push(makeBox(4600, 330, 50, 170));
     that[1].boxes.push(makeBox(4700, 370, 50, 130));
