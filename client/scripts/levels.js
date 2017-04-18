@@ -45,7 +45,6 @@ let MyLevels = (function(){
     that[1].boxes.push(makeBox(4800, 410, 50, 10));
     that[1].boxes.push(makeBox(4900, 450, 50, 10));
     that[1].boxes.push(makeBox(5000, 450, 100, 10));
-    that[1].enemies.push(makeBox(750, 440, 10, 10));
     that[1].endPoint = makeBox(5040, 430, 20, 20);
     that[1].w = 5100;
     that[1].h = 500;

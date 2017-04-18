@@ -61,7 +61,7 @@ let MyLevels = (function(){
     that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
     that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
     that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
-    that[0].endPoint = makeBox(4680, 430, 20, 20);
+    that[0].endPoint = makeBox(4680, 430, 20, 25);
     that[0].w = 4740;
     that[0].h = 500;
 
@@ -83,22 +83,58 @@ let MyLevels = (function(){
     that[1].enemies.push(makeEnemy(675, 440, 10, 10, ENEMY_SPEED, 675, 925));
     that[1].enemies.push(makeEnemy(650, 440, 10, 10, ENEMY_SPEED, 650, 900));
     that[1].enemies.push(makeEnemy(625, 440, 10, 10, ENEMY_SPEED, 625, 875));
+
     that[1].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1500));
     that[1].enemies.push(makeEnemy(1275, 440, 10, 10, ENEMY_SPEED, 1080, 1540));
     that[1].enemies.push(makeEnemy(1540, 440, 10, 10, ENEMY_SPEED, 1050, 1550));
 
-    that[1].enemies.push(makeEnemy(3050, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3100, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3150, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3200, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3250, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3300, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3350, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3400, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3450, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
-    that[1].enemies.push(makeEnemy(3500, 320, 10, 10, ENEMY_SPEED, 3050, 3540));
+    that[1].enemies.push(makeEnemy(1550, 400, 10, 10, ENEMY_SPEED, 1550, 2000));
+    that[1].enemies.push(makeEnemy(1775, 400, 10, 10, ENEMY_SPEED, 1580, 2040));
+    that[1].enemies.push(makeEnemy(2040, 400, 10, 10, ENEMY_SPEED, 1550, 2050));
+
+    that[1].enemies.push(makeEnemy(2050, 360, 10, 10, ENEMY_SPEED, 2050, 2500));
+    that[1].enemies.push(makeEnemy(2275, 360, 10, 10, ENEMY_SPEED, 2080, 2540));
+    that[1].enemies.push(makeEnemy(2540, 360, 10, 10, ENEMY_SPEED, 2050, 2550));
+
+    that[1].enemies.push(makeEnemy(2550, 320, 10, 10, ENEMY_SPEED, 2550, 3000));
+    that[1].enemies.push(makeEnemy(2775, 320, 10, 10, ENEMY_SPEED, 2580, 3040));
+    that[1].enemies.push(makeEnemy(3040, 320, 10, 10, ENEMY_SPEED, 2550, 3050));
+
+    that[1].enemies.push(makeEnemy(3050, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3100, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3150, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3200, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3250, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+    that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+
+    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4500));
+    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*.5, 3580, 4540));
+    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4550));
+    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED, 3550, 4500));
+    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED, 3580, 4540));
+    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED, 3550, 4550));
+    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4500));
+    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*1.5, 3580, 4540));
+    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4550));
+    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*2, 3550, 4500));
+    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*2, 3580, 4540));
+    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*2, 3550, 4550));
     
-    that[1].endPoint = makeBox(5040, 430, 20, 20);
+    that[1].enemies.push(makeEnemy(4600, 320, 10, 10, ENEMY_SPEED, 4600, 4640));
+    that[1].enemies.push(makeEnemy(4700, 360, 10, 10, ENEMY_SPEED, 4700, 4740));
+    that[1].enemies.push(makeEnemy(4800, 400, 10, 10, ENEMY_SPEED, 4800, 4840));
+    that[1].enemies.push(makeEnemy(4900, 440, 10, 10, ENEMY_SPEED, 4900, 4940));
+
+    that[1].endPoint = makeBox(5040, 430, 20, 25);
     that[1].w = 5100;
     that[1].h = 500;
     return that;
@@ -178,13 +214,19 @@ let Player = function(id){
         range.y = self.y - 250;
         range.w = 500;
         range.h = 500;
+        let distance = 500;
+        let index = null;
         for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
             let colDir = colCheck(range, MyLevels[currentLevel].enemies[i]);
             if(colDir != null){
-                return i;
+                let temp = Math.abs(self.x - MyLevels[currentLevel].enemies[i].x);
+                if(temp < distance){
+                    distance = temp;
+                    index = i;
+                }
             }
         }
-        return null;
+        return index;
     }
     function updateCollision(){
         let grounded = false;
