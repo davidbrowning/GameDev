@@ -17,7 +17,7 @@ let lobbyPlayers = 0;
 let GRAVITY = 5;
 let count = 0;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 1;
 let finishedLevelCount = 0;
 let gameStarted = false;
 let attacks = [];
@@ -178,13 +178,19 @@ let Player = function(id){
         range.y = self.y - 250;
         range.w = 500;
         range.h = 500;
+        let distance = 500;
+        let index = null;
         for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
             let colDir = colCheck(range, MyLevels[currentLevel].enemies[i]);
             if(colDir != null){
-                return i;
+                let temp = Math.abs(self.x - MyLevels[currentLevel].enemies[i].x);
+                if(temp < distance){
+                    distance = temp;
+                    index = i;
+                }
             }
         }
-        return null;
+        return index;
     }
     function updateCollision(){
         let grounded = false;
