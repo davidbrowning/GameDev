@@ -104,21 +104,30 @@ function changeSubstate(state){
 function update(elapsedTime){ //Change this so it is according to what player you are
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
-            if(players[i].x + screenSize.w / 2 < MyLevels[currentLevel].w &&
-               players[i].x - 50 > 0){
-                if(players[i].x - offset.x > screenSize.w / 2){
+            if(players[i].x + 250 < MyLevels[currentLevel].w &&
+               players[i].x - 250 > 0){
+                if(players[i].x - offset.x > screenSize.w - 250){
                     offset.x += 10;
                 }
-                else if(players[i].x - offset.x < 50){
+                else if(players[i].x - offset.x < 250){
                     offset.x -= 10;
                 }
             }
-            if(players[i].y + screenSize.h / 2 < MyLevels[currentLevel].h &&
-               players[i].y - 50 > 0){
-                if(players[i].y - offset.y > screenSize.h - 50){
+            if(offset.x > players[i].x){
+                offset.x -= 10;
+            }
+            if(offset.y > players[i].y){
+                offset.y -= 10;
+            }
+            else if(offset.y + screenSize.h < players[i].y){
+                offset.y += 10;
+            }
+            if(players[i].y + 125 < MyLevels[currentLevel].h &&
+               players[i].y - 125 > 0){
+                if(players[i].y - offset.y > screenSize.h - 125){
                     offset.y += 10;
                 }
-                else if(players[i].y - offset.y < screenSize.h / 2){
+                else if(players[i].y - offset.y < 125){
                     offset.y -= 10;
                 }
             }
@@ -140,24 +149,25 @@ function render(elapsedTime){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
-        if(box.w < 100){
-            Graphics.drawTexture({
-                 image: platform_img,
-                 center: {x : x, y: y},
-                 clip : {x : 112, y : 32, width : 15 , height : 10},
-                 im : {width : 50, height : 50},
-                 size : 100,
-            })
-        }
-        else{
-            Graphics.drawTexture({
-                 image: platform_img,
-                 center: {x : x, y: y},
-                 clip : {x : 112, y : 32, width : 45 , height : 10},
-                 im : {width : box.w, height : 50},
-                 size : 100,
-            })
-        }
+        Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
+        // if(box.w < 100){
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 15 , height : 10},
+        //          im : {width : 50, height : 50},
+        //          size : 100,
+        //     })
+        // }
+        // else{
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 45 , height : 10},
+        //          im : {width : box.w, height : 50},
+        //          size : 100,
+        //     })
+        // }
             Graphics.drawTexture({
                  image: platform_img,
                  center: {x : x+(box.w/2-off1), y: y-20},
@@ -319,6 +329,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 2;
     Graphics.initialize();
 }

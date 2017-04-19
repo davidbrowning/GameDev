@@ -48,5 +48,30 @@ let MyLevels = (function(){
     that[1].endPoint = makeBox(5040, 430, 20, 20);
     that[1].w = 5100;
     that[1].h = 500;
+
+    //Level 2
+    that[2].boxes.push(makeBox(-10, 1000, 730, 50));
+    that[2].boxes.push(makeBox(220, 700, 500, 300));
+    that[2].boxes.push(makeBox(150, 700, 200, 50));
+    that[2].boxes.push(makeBox(0, 0, 100, 850));
+
+    that[2].boxes.push(makeBox(820, 400, 500, 650));
+    that[2].boxes.push(makeBox(1420, 1000, 560, 50));
+    that[2].boxes.push(makeBox(1420, 250, 100, 600));
+    that[2].boxes.push(makeBox(1640, 400, 340, 620));
+    that[2].boxes.push(makeBox(1880, 0, 100, 420));
+
+    that[2].boxes.push(makeBox(1580, 700, 80, 50));
+    that[2].boxes.push(makeBox(1580, 400, 80, 50));
+    that[2].boxes.push(makeBox(1500, 550, 80, 50));
+    that[2].boxes.push(makeBox(1500, 250, 80, 50));
+    that[2].boxes.push(makeBox(1820, 0, 80, 50));
+    that[2].boxes.push(makeBox(1700, 175, 50, 50));
+
+    that[2].boxes.push(makeBox(80, 300, 1340, 50));
+
+    that[2].endPoint = makeBox(5040, 430, 20, 25);
+    that[2].w = 1980;
+    that[2].h = 1050;
     return that;
 }());
