@@ -122,7 +122,7 @@ function update(elapsedTime){ //Change this so it is according to what player yo
             if(offset.y > players[i].y){
                 offset.y -= 10;
             }
-            else if(offset.y + screenSize.h < players[i].y){
+            else if(offset.y + screenSize.h < players[i].y + 50){
                 offset.y += 10;
             }
             if(players[i].y + 125 < MyLevels[currentLevel].h &&
