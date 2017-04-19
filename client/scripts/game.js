@@ -213,13 +213,13 @@ function render(elapsedTime){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
         // x, y is hitbox, spritex, spritey is for drawing.
-        let spritex = x - 25;
-        let spritey = y - 45;
+        let spritex = x - 15;
+        let spritey = y - 25;
         if(players[i].myPlayer){
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
+            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
+            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){ if(players[i].r === true && players[i].j === false){
                 Graphics.drawTexture({
@@ -238,7 +238,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : reverse_img,
                      center : {x : spritex, y: spritey},
-                     clip : {x : 155 + (3%count * 32), y : players[i].character, width : 30, height : 35},
+                     clip : {x : 160 + (3%count * 32), y : players[i].character, width : 30, height : 35},
                      im : {width : 60, height : 65},
                      size : 100,
                      flip : true,

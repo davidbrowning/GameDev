@@ -203,7 +203,7 @@ let Player = function(id){
     let self = {
         x: 50,
         y: 990,
-        w: 20,
+        w: 30,
         h: 30,
         id: id,
         number: Math.floor(10 * Math.random()),
