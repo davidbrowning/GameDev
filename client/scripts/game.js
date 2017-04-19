@@ -17,6 +17,8 @@ let count = 0;
 let backgroundcount = 0;
 let subcount = 0;
 let enemycount = 0;
+let off1 = Math.random() * 50
+let off2 = Math.random() * 50
 let enemysubcount = 0;
 let bckgrnd = new Image();
 bckgrnd.src = 'client/assets/background.png'
@@ -24,14 +26,18 @@ let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
 reverse_img.src = 'client/assets/chrrev.png'
+let platform_img = new Image();
+platform_img.src = 'client/assets/sheet.png'
 let currentLevel = 0;
 let attacks = [];
+
 drawable = function(){
     canDraw = true;
 }
 img.onload = drawable()
 reverse_img.onload = drawable()
 bckgrnd.onload = drawable()
+platform_img.onload = drawable()
 
 
 socket.on('startNewGame', function(data){
@@ -98,21 +104,30 @@ function changeSubstate(state){
 function update(elapsedTime){ //Change this so it is according to what player you are
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
-            if(players[i].x + screenSize.w / 2 < MyLevels[currentLevel].w &&
-               players[i].x - 50 > 0){
-                if(players[i].x - offset.x > screenSize.w / 2){
+            if(players[i].x + 250 < MyLevels[currentLevel].w &&
+               players[i].x - 250 > 0){
+                if(players[i].x - offset.x > screenSize.w - 250){
                     offset.x += 10;
                 }
-                else if(players[i].x - offset.x < 50){
+                else if(players[i].x - offset.x < 250){
                     offset.x -= 10;
                 }
             }
-            if(players[i].y + screenSize.h / 2 < MyLevels[currentLevel].h &&
-               players[i].y - 50 > 0){
-                if(players[i].y - offset.y > screenSize.h - 50){
+            if(offset.x > players[i].x){
+                offset.x -= 10;
+            }
+            if(offset.y > players[i].y){
+                offset.y -= 10;
+            }
+            else if(offset.y + screenSize.h < players[i].y){
+                offset.y += 10;
+            }
+            if(players[i].y + 125 < MyLevels[currentLevel].h &&
+               players[i].y - 125 > 0){
+                if(players[i].y - offset.y > screenSize.h - 125){
                     offset.y += 10;
                 }
-                else if(players[i].y - offset.y < screenSize.h / 2){
+                else if(players[i].y - offset.y < 125){
                     offset.y -= 10;
                 }
             }
@@ -134,9 +149,39 @@ function render(elapsedTime){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
-        // console.log('Drawing Box: box.x: ' + box.x + ', box.y: ' + box.y + ', offset.x: ' 
-        // + offset.x + ', offset.y: ' + offset.y);
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
+        // if(box.w < 100){
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 15 , height : 10},
+        //          im : {width : 50, height : 50},
+        //          size : 100,
+        //     })
+        // }
+        // else{
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 45 , height : 10},
+        //          im : {width : box.w, height : 50},
+        //          size : 100,
+        //     })
+        // }
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x+(box.w/2-off1), y: y-20},
+                 clip : {x : 240, y : 100, width : 40 , height : 20},
+                 im : {width : 100, height : 50},
+                 size : 100,
+            })
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x+(box.w/3-off2), y: y-20},
+                 clip : {x : 240, y : 82, width : 40 , height : 20},
+                 im : {width : 100, height : 50},
+                 size : 100,
+            })
     }
     let end = MyLevels[currentLevel].endPoint;
     Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
@@ -148,7 +193,7 @@ function render(elapsedTime){
         Graphics.drawTexture({
              image : img,
              center : {x : x-30, y: y-45},
-             clip : {x : enemycount % 4 * 32, y : 96, width : 30, height : 35},
+             clip : {x : enemycount % 4 * 32, y : 97, width : 30, height : 35},
              im : {width : 60, height : 65},
              size : 100,
         });
@@ -199,7 +244,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;backgroundcount--;}
+                else if(subcount % 4 == 0){count++;backgroundcount-=2;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -213,7 +258,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;}backgroundcount--;
+                else if(subcount % 4 == 0){count++;}backgroundcount-=2;
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -239,9 +284,9 @@ function render(elapsedTime){
                      im : {width : 60, height : 65},
                      size : 100,
                 });
-                backgroundcount++;
+                backgroundcount--;
             }
-            if(backgroundcount > 3000){backgroundcount = 0} // If we care about it, this is what happens if the user takes forever to complete the level. 
+            if(backgroundcount < 3){backgroundcount = 3000} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
     for(let i = 0; i < attacks.length; i++){
@@ -284,6 +329,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 1;
+    currentLevel = 2;
     Graphics.initialize();
 }
