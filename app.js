@@ -551,6 +551,7 @@ function update(elapsedTime){
 }
 
 setInterval(function(){
-    let elapsedTime;
+    let elapsedTime;// = Performance.now();
+    //console.log(elapsedTime);
     update(elapsedTime);
 },1000/25);

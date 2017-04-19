@@ -155,24 +155,24 @@ function render(elapsedTime){
         let x = box.x - offset.x;
         let y = box.y - offset.y;
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
-        // if(box.w < 100){
-        //     Graphics.drawTexture({
-        //          image: platform_img,
-        //          center: {x : x, y: y},
-        //          clip : {x : 112, y : 32, width : 15 , height : 10},
-        //          im : {width : 50, height : 50},
-        //          size : 100,
-        //     })
-        // }
-        // else{
-        //     Graphics.drawTexture({
-        //          image: platform_img,
-        //          center: {x : x, y: y},
-        //          clip : {x : 112, y : 32, width : 45 , height : 10},
-        //          im : {width : box.w, height : 50},
-        //          size : 100,
-        //     })
-        // }
+        if(box.w < 100){
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 112, y : 32, width : 15 , height : 10},
+                 im : {width : 50, height : 50},
+                 size : 100,
+            })
+        }
+        else{
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 112, y : 32, width : 45 , height : 10},
+                 im : {width : box.w, height : 50},
+                 size : 100,
+            })
+        }
             Graphics.drawTexture({
                  image: platform_img,
                  center: {x : x+(box.w/2-off1), y: y-20},
