@@ -50,7 +50,7 @@ let MyLevels = (function(){
     that[1].h = 500;
 
     //Level 2
-    that[2].boxes.push(makeBox(-10, 1000, 730, 50));
+   that[2].boxes.push(makeBox(-10, 1000, 730, 50));
     that[2].boxes.push(makeBox(220, 700, 500, 300));
     that[2].boxes.push(makeBox(150, 700, 200, 50));
     that[2].boxes.push(makeBox(0, 0, 100, 850));
@@ -68,9 +68,25 @@ let MyLevels = (function(){
     that[2].boxes.push(makeBox(1820, 0, 80, 50));
     that[2].boxes.push(makeBox(1700, 175, 50, 50));
 
-    that[2].boxes.push(makeBox(80, 300, 1340, 50));
+     that[2].boxes.push(makeBox(80, 300, 1340, 50));
+    that[2].boxes.push(makeBox(150, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
+    that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
+    that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
+    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+    that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
+    that[2].boxes.push(makeBox(0, 50, 380, 50));
+    that[2].boxes.push(makeBox(432, 50, 200, 50));
+    
 
-    that[2].endPoint = makeBox(5040, 430, 20, 25);
+    that[2].boxes.push(makeBox(150, -50, 1830, 50));
+
+    that[2].endPoint = makeBox(20, -20, 20, 25);
     that[2].w = 1980;
     that[2].h = 1050;
     return that;

@@ -17,7 +17,7 @@ let lobbyPlayers = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 2;
+let currentLevel = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
 let attacks = [];
@@ -158,8 +158,23 @@ let MyLevels = (function(){
     that[2].boxes.push(makeBox(1700, 175, 50, 50));
 
     that[2].boxes.push(makeBox(80, 300, 1340, 50));
+    that[2].boxes.push(makeBox(150, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
+    that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
+    that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
+    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+    that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
+    that[2].boxes.push(makeBox(0, 50, 380, 50));
+    that[2].boxes.push(makeBox(432, 50, 200, 50));
 
-    that[2].endPoint = makeBox(5040, 430, 20, 25);
+    that[2].boxes.push(makeBox(150, -50, 1830, 50));
+
+    that[2].endPoint = makeBox(20, -20, 20, 25);
     that[2].w = 1980;
     that[2].h = 1050;
     return that;
@@ -203,7 +218,7 @@ let Player = function(id){
     let self = {
         x: 50,
         y: 990,
-        w: 20,
+        w: 30,
         h: 30,
         id: id,
         number: Math.floor(10 * Math.random()),
@@ -491,6 +506,12 @@ function update(elapsedTime){
                 newLevel = true;
                 if(count == 1){
                     currentLevel++;
+                    if(currentLevel == 2){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 970;
+                        }
+                    }
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){

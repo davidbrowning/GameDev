@@ -50,6 +50,9 @@ socket.on('nextLevel', function(data){
     currentLevel = data;
     offset.x = 0; 
     offset.y = 0;
+    if(currentLevel == 2){
+        offset.y = 600;
+    }
     console.log('Starting Level: ' + currentLevel);
 });
 
@@ -145,6 +148,8 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+    let end = MyLevels[currentLevel].endPoint;
+    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
@@ -183,8 +188,6 @@ function render(elapsedTime){
                  size : 100,
             })
     }
-    let end = MyLevels[currentLevel].endPoint;
-    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
         let enemy = MyLevels[currentLevel].enemies[i];
         let x = enemy.x - offset.x;
@@ -213,13 +216,13 @@ function render(elapsedTime){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
         // x, y is hitbox, spritex, spritey is for drawing.
-        let spritex = x - 25;
-        let spritey = y - 45;
+        let spritex = x - 15;
+        let spritey = y - 25;
         if(players[i].myPlayer){
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
+            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
+            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){ if(players[i].r === true && players[i].j === false){
                 Graphics.drawTexture({
@@ -238,7 +241,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : reverse_img,
                      center : {x : spritex, y: spritey},
-                     clip : {x : 155 + (3%count * 32), y : players[i].character, width : 30, height : 35},
+                     clip : {x : 160 + (3%count * 32), y : players[i].character, width : 30, height : 35},
                      im : {width : 60, height : 65},
                      size : 100,
                      flip : true,
@@ -329,6 +332,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 2;
+    currentLevel = 0;
     Graphics.initialize();
 }
