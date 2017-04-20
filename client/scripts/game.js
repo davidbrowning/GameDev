@@ -21,7 +21,7 @@ let off1 = Math.random() * 50
 let off2 = Math.random() * 50
 let enemysubcount = 0;
 let bckgrnd = new Image();
-bckgrnd.src = 'client/assets/background.png'
+bckgrnd.src = 'client/assets/backgroundOriginal.png'
 let img = new Image();
 img.src = 'client/assets/chr.png'
 let reverse_img = new Image();
@@ -141,13 +141,33 @@ function update(elapsedTime){ //Change this so it is according to what player yo
 function render(elapsedTime){
     //Graphics.drawRectangle(0, 0, screenSize.w, screenSize.h, 'rgba(155, 155, 255, 1)');
     Graphics.drawRectangle(9, 9, screenSize.w-400, screenSize.h-400, 'rgba(25, 55, 25, 1)');
+        if(currentLevel == 0){
         Graphics.drawTexture({
              image : bckgrnd,
              center : {x : 0, y: 0},
-             clip : {x : 0+backgroundcount, y : 0, width : 500, height : 300},
+             clip : {x : 0+backgroundcount, y : 750, width : 500, height : 300},
              im : {width : 1000, height : 500},
              size : 100,
         });
+        }
+        else if(currentLevel == 1){
+        Graphics.drawTexture({
+             image : bckgrnd,
+             center : {x : 0, y: 0},
+             clip : {x : 0+backgroundcount, y : 600, width : 500, height : 300},
+             im : {width : 1000, height : 500},
+             size : 100,
+        });
+        }
+        else if(currentLevel == 2){
+        Graphics.drawTexture({
+             image : bckgrnd,
+             center : {x : 0, y: 0},
+             clip : {x : 0+backgroundcount, y : 550, width : 500, height : 300},
+             im : {width : 1000, height : 500},
+             size : 100,
+        });
+        }
     let end = MyLevels[currentLevel].endPoint;
     Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
@@ -300,9 +320,9 @@ function render(elapsedTime){
                      im : {width : 60, height : 65},
                      size : 100,
                 });
-                backgroundcount--;
+                backgroundcount;
             }
-            if(backgroundcount < 3){backgroundcount = 3000} // If we care about it, this is what happens if the user takes forever to complete the level. 
+            if(backgroundcount < 0){backgroundcount = 1080} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
     for(let i = 0; i < attacks.length; i++){
