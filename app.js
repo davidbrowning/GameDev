@@ -14,14 +14,18 @@ console.log('Server started.');
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
+let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 2;
+let currentLevel = 0;
+let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
 let attacks = [];
 let deleteAttacks = [];
+let startTime;
+let elapsedTime;
 
 let MyLevels = (function(){
     let that = [];
@@ -158,8 +162,39 @@ let MyLevels = (function(){
     that[2].boxes.push(makeBox(1700, 175, 50, 50));
 
     that[2].boxes.push(makeBox(80, 300, 1340, 50));
+    that[2].boxes.push(makeBox(150, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
+    that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
+    that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
+    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+    that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
+    that[2].boxes.push(makeBox(0, 50, 380, 50));
+    that[2].boxes.push(makeBox(432, 50, 200, 50));
 
-    that[2].endPoint = makeBox(5040, 430, 20, 25);
+    that[2].boxes.push(makeBox(150, -50, 1830, 50));
+
+    that[2].enemies.push(makeEnemy(220, 690, 10, 10, ENEMY_SPEED, 150, 700));
+    that[2].enemies.push(makeEnemy(820, 390, 10, 10, ENEMY_SPEED, 820, 1310));
+    that[2].enemies.push(makeEnemy(1420, 990, 10, 10, ENEMY_SPEED, 1420, 1630));
+    that[2].enemies.push(makeEnemy(1580, 690, 10, 10, ENEMY_SPEED, 1580, 1630));
+    that[2].enemies.push(makeEnemy(1580, 390, 10, 10, ENEMY_SPEED, 1580, 1870));
+    that[2].enemies.push(makeEnemy(1500, 540, 10, 10, ENEMY_SPEED, 1510, 1560));
+    that[2].enemies.push(makeEnemy(1500, 240, 10, 10, ENEMY_SPEED, 1410, 1560));
+    that[2].enemies.push(makeEnemy(1700, 165, 10, 10, ENEMY_SPEED, 1700, 1740));
+
+    that[2].enemies.push(makeEnemy(1278.88, 40, 10, 10, ENEMY_SPEED, 1278.88, 1359.98));
+    that[2].enemies.push(makeEnemy(1137.77, 165, 10, 10, ENEMY_SPEED, 1137.77, 1218.88));
+    that[2].enemies.push(makeEnemy(996.66, 40, 10, 10, ENEMY_SPEED, 996.66, 1077.77));
+    that[2].enemies.push(makeEnemy(855.55, 40, 10, 10, ENEMY_SPEED, 855.55, 936.66));
+    that[2].enemies.push(makeEnemy(714.44, 40, 10, 10, ENEMY_SPEED, 714.44, 795.55));
+    that[2].enemies.push(makeEnemy(432.22, 40, 10, 10, ENEMY_SPEED, 432.22, 644.44));
+
+    that[2].endPoint = makeBox(20, -20, 20, 25);
     that[2].w = 1980;
     that[2].h = 1050;
     return that;
@@ -202,7 +237,7 @@ function colCheck(shapeA, shapeB) {
 let Player = function(id){
     let self = {
         x: 50,
-        y: 990,
+        y: 420,
         w: 30,
         h: 30,
         id: id,
@@ -216,12 +251,16 @@ let Player = function(id){
         state: 'ground',
         deadCount: 0,
         finished: false,
-        attacking: false
+        attacking: false,
+        time: 0
     }
 
     function dead(){
         self.x = 50;
-        self.y = 440;
+        self.y = 420;
+        if(currentLevel == 2){
+            self.y = 970;
+        }
         self.ySpeed = 0;
         self.deadCount++;
         console.log('Deaths: ' + self.deadCount);
@@ -229,6 +268,8 @@ let Player = function(id){
     function win(){
         if(!self.finished){
             console.log('You win!');
+            self.time += elapsedTime;
+            console.log('Final Time: ' + self.time);
             self.finished = true;
             finishedLevelCount++;
         }
@@ -244,7 +285,8 @@ let Player = function(id){
         for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
             let colDir = colCheck(range, MyLevels[currentLevel].enemies[i]);
             if(colDir != null){
-                let temp = Math.abs(self.x - MyLevels[currentLevel].enemies[i].x);
+                let temp = Math.sqrt(Math.pow(self.x - MyLevels[currentLevel].enemies[i].x, 2) + 
+                                     Math.pow(self.y - MyLevels[currentLevel].enemies[i].y, 2));
                 if(temp < distance){
                     distance = temp;
                     index = i;
@@ -323,6 +365,7 @@ let Player = function(id){
         self.y += self.ySpeed;
         if(self.y + self.h > MyLevels[currentLevel].h){
             console.log('Player y: ' + self.y);
+            console.log('Player x: ' + self.x);
             dead();
         }
         updateCollision();
@@ -338,9 +381,12 @@ io.sockets.on('connection', function(socket){
     let player = Player(socket.id);
     PLAYER_LIST[socket.id] = player;
 
+    currentPlayerCount++;
+
     socket.on('disconnect', function(){
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
+        currentPlayerCount--;
     });
 
     socket.on('keyPress', function(data){
@@ -395,10 +441,12 @@ io.sockets.on('connection', function(socket){
                     socket.emit('startNewGame', pack);
                 }
                 gameStarted = true;
+                startTime = process.hrtime();
             }
         }
         else if(data == 'single'){
             gameStarted = true;
+            startTime = process.hrtime();
         }
         else if(data == 'exit'){
             lobbyPlayers--;
@@ -407,6 +455,10 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
+    // if(currentPlayerCount == 0){
+    //     console.log('Starting Back at Level 1');
+    //     currentLevel = 0;
+    // }
     if(gameStarted){
         let pack = {
             players: [],
@@ -466,6 +518,15 @@ function update(elapsedTime){
                 MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
                 deleteAttacks.push(i);
             }
+            else{
+                for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
+                    colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
+                    if(colDir != null){
+                        deleteAttacks.push(i);
+                        break;
+                    }
+                }
+            }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
         for(let i = 0; i < deleteAttacks.length; i++){
@@ -491,6 +552,19 @@ function update(elapsedTime){
                 newLevel = true;
                 if(count == 1){
                     currentLevel++;
+                    if(currentLevel == 1){ //do this for levels 3 and 4
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 420;
+                        }
+                    }
+                    else if(currentLevel == 2){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 970;
+                        }
+                    }
+                    
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){
@@ -498,6 +572,7 @@ function update(elapsedTime){
                 }
                 let level = currentLevel;
                 socket.emit('nextLevel', currentLevel);
+                startTime = process.hrtime();
             }
         }
         if(newLevel){
@@ -510,6 +585,8 @@ function update(elapsedTime){
 }
 
 setInterval(function(){
-    let elapsedTime;
+    elapsedTime = process.hrtime(startTime);
+    elapsedTime = Math.floor(elapsedTime[0] + elapsedTime[1] / 1e9);
+    //console.log('Elapsed Time: ' + elapsedTime);
     update(elapsedTime);
 },1000/25);

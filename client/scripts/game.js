@@ -50,6 +50,9 @@ socket.on('nextLevel', function(data){
     currentLevel = data;
     offset.x = 0; 
     offset.y = 0;
+    if(currentLevel == 2){
+        offset.y = 600;
+    }
     console.log('Starting Level: ' + currentLevel);
 });
 
@@ -119,7 +122,7 @@ function update(elapsedTime){ //Change this so it is according to what player yo
             if(offset.y > players[i].y){
                 offset.y -= 10;
             }
-            else if(offset.y + screenSize.h < players[i].y){
+            else if(offset.y + screenSize.h < players[i].y + 50){
                 offset.y += 10;
             }
             if(players[i].y + 125 < MyLevels[currentLevel].h &&
@@ -145,29 +148,31 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+    let end = MyLevels[currentLevel].endPoint;
+    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
         Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
-        // if(box.w < 100){
-        //     Graphics.drawTexture({
-        //          image: platform_img,
-        //          center: {x : x, y: y},
-        //          clip : {x : 112, y : 32, width : 15 , height : 10},
-        //          im : {width : 50, height : 50},
-        //          size : 100,
-        //     })
-        // }
-        // else{
-        //     Graphics.drawTexture({
-        //          image: platform_img,
-        //          center: {x : x, y: y},
-        //          clip : {x : 112, y : 32, width : 45 , height : 10},
-        //          im : {width : box.w, height : 50},
-        //          size : 100,
-        //     })
-        // }
+        if(box.w < 100){
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 112, y : 32, width : 15 , height : 10},
+                 im : {width : 50, height : 50},
+                 size : 100,
+            })
+        }
+        else{
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x, y: y},
+                 clip : {x : 112, y : 32, width : 45 , height : 10},
+                 im : {width : box.w, height : 50},
+                 size : 100,
+            })
+        }
             Graphics.drawTexture({
                  image: platform_img,
                  center: {x : x+(box.w/2-off1), y: y-20},
@@ -183,8 +188,6 @@ function render(elapsedTime){
                  size : 100,
             })
     }
-    let end = MyLevels[currentLevel].endPoint;
-    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
         let enemy = MyLevels[currentLevel].enemies[i];
         let x = enemy.x - offset.x;
@@ -329,6 +332,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 2;
+    currentLevel = 0;
     Graphics.initialize();
 }
