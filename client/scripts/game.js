@@ -335,6 +335,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 3;
+    currentLevel = 0;
     Graphics.initialize();
 }
