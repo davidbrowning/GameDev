@@ -306,6 +306,9 @@ let Player = function(id){
         if(currentLevel == 2){
             self.y = 970;
         }
+        else if(currentLevel == 3){
+            self.y = 2920;
+        }
         self.ySpeed = 0;
         self.deadCount++;
         console.log('Deaths: ' + self.deadCount);
@@ -617,10 +620,9 @@ function update(elapsedTime){
                     else if(currentLevel == 3){
                         for(let j in PLAYER_LIST){
                             PLAYER_LIST[j].x = 0;
-                            PLAYER_LIST[j].y = 970;
+                            PLAYER_LIST[j].y = 2920;
                         }
                     }
-                    
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){
