@@ -19,10 +19,13 @@ let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
 let currentLevel = 0;
+let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
 let attacks = [];
 let deleteAttacks = [];
+let startTime;
+let elapsedTime;
 
 let MyLevels = (function(){
     let that = [];
@@ -234,7 +237,7 @@ function colCheck(shapeA, shapeB) {
 let Player = function(id){
     let self = {
         x: 50,
-        y: 440,
+        y: 420,
         w: 30,
         h: 30,
         id: id,
@@ -248,12 +251,13 @@ let Player = function(id){
         state: 'ground',
         deadCount: 0,
         finished: false,
-        attacking: false
+        attacking: false,
+        time: 0
     }
 
     function dead(){
         self.x = 50;
-        self.y = 440;
+        self.y = 420;
         if(currentLevel == 2){
             self.y = 970;
         }
@@ -264,6 +268,8 @@ let Player = function(id){
     function win(){
         if(!self.finished){
             console.log('You win!');
+            self.time += elapsedTime;
+            console.log('Final Time: ' + self.time);
             self.finished = true;
             finishedLevelCount++;
         }
@@ -359,6 +365,7 @@ let Player = function(id){
         self.y += self.ySpeed;
         if(self.y + self.h > MyLevels[currentLevel].h){
             console.log('Player y: ' + self.y);
+            console.log('Player x: ' + self.x);
             dead();
         }
         updateCollision();
@@ -434,10 +441,12 @@ io.sockets.on('connection', function(socket){
                     socket.emit('startNewGame', pack);
                 }
                 gameStarted = true;
+                startTime = process.hrtime();
             }
         }
         else if(data == 'single'){
             gameStarted = true;
+            startTime = process.hrtime();
         }
         else if(data == 'exit'){
             lobbyPlayers--;
@@ -543,12 +552,19 @@ function update(elapsedTime){
                 newLevel = true;
                 if(count == 1){
                     currentLevel++;
-                    if(currentLevel == 2){
+                    if(currentLevel == 1){ //do this for levels 3 and 4
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 420;
+                        }
+                    }
+                    else if(currentLevel == 2){
                         for(let j in PLAYER_LIST){
                             PLAYER_LIST[j].x = 50;
                             PLAYER_LIST[j].y = 970;
                         }
                     }
+                    
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){
@@ -556,6 +572,7 @@ function update(elapsedTime){
                 }
                 let level = currentLevel;
                 socket.emit('nextLevel', currentLevel);
+                startTime = process.hrtime();
             }
         }
         if(newLevel){
@@ -568,7 +585,8 @@ function update(elapsedTime){
 }
 
 setInterval(function(){
-    let elapsedTime;// = Performance.now();
-    //console.log(elapsedTime);
+    elapsedTime = process.hrtime(startTime);
+    elapsedTime = Math.floor(elapsedTime[0] + elapsedTime[1] / 1e9);
+    //console.log('Elapsed Time: ' + elapsedTime);
     update(elapsedTime);
 },1000/25);
