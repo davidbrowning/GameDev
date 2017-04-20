@@ -89,5 +89,49 @@ let MyLevels = (function(){
     that[2].endPoint = makeBox(20, -20, 20, 25);
     that[2].w = 1980;
     that[2].h = 1050;
+
+    //Level 3
+    that[3].boxes.push(makeBox(0, 2950, 100, 50));
+    that[3].boxes.push(makeBox(325, 2950, 50, 50));
+    that[3].boxes.push(makeBox(475, 2800, 50, 50));
+    that[3].boxes.push(makeBox(625, 2650, 50, 50));
+    that[3].boxes.push(makeBox(775, 2500, 50, 50));
+    that[3].boxes.push(makeBox(900, 2350, 50, 50));
+    that[3].boxes.push(makeBox(950, 2000, 50, 200));
+    that[3].boxes.push(makeBox(675, 2000, 50, 50));
+    that[3].boxes.push(makeBox(400, 2000, 50, 50));
+    that[3].boxes.push(makeBox(125, 2000, 50, 50));
+    that[3].boxes.push(makeBox(0, 1625, 50, 250));
+    that[3].boxes.push(makeBox(0, 1625, 150, 50));
+    that[3].boxes.push(makeBox(250, 1475, 50, 250));
+    that[3].boxes.push(makeBox(150, 1475, 150, 50));
+    that[3].boxes.push(makeBox(0, 1200, 5, 200));
+    that[3].boxes.push(makeBox(200, 1000, 5, 200));
+    that[3].boxes.push(makeBox(0, 800, 5, 200));
+    that[3].boxes.push(makeBox(200, 600, 5, 200));
+    that[3].boxes.push(makeBox(400, 400, 5, 200));
+    that[3].boxes.push(makeBox(600, 200, 5, 200));
+    that[3].boxes.push(makeBox(500, 50, 50, 50));
+    that[3].boxes.push(makeBox(725, 50, 50, 50));
+    
+    that[3].boxes.push(makeBox(475, 2500, 50, 50));
+    that[3].boxes.push(makeBox(625, 2200, 50, 200));
+    that[3].boxes.push(makeBox(475, 2050, 50, 50));
+
+    that[3].boxes.push(makeBox(550, 1850, 50, 50));
+    that[3].boxes.push(makeBox(700, 1700, 100, 50));
+    that[3].boxes.push(makeBox(500, 1550, 100, 50));
+    that[3].boxes.push(makeBox(700, 1400, 100, 50));
+    that[3].boxes.push(makeBox(500, 1250, 100, 50));
+    that[3].boxes.push(makeBox(700, 950, 50, 200));
+    that[3].boxes.push(makeBox(900, 1000, 50, 50));
+    that[3].boxes.push(makeBox(950, 550, 50, 300));
+    that[3].boxes.push(makeBox(900, 250, 100, 310));
+    that[3].boxes.push(makeBox(750, 710, 50, 50));
+    that[3].boxes.push(makeBox(800, 250, 50, 50));
+    
+    that[3].endPoint = makeBox(960, 30, 20, 20);
+    that[3].w = 1000;
+    that[3].h = 3000;
     return that;
 }());

@@ -53,6 +53,9 @@ socket.on('nextLevel', function(data){
     if(currentLevel == 2){
         offset.y = 600;
     }
+    else if(currentLevel == 3){
+        offset.y = 520;
+    }
     console.log('Starting Level: ' + currentLevel);
 });
 
@@ -332,6 +335,6 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 3;
     Graphics.initialize();
 }
