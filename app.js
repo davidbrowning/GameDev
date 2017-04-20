@@ -171,7 +171,7 @@ let MyLevels = (function(){
     that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
     that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
     that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
-    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+    that[2].boxes.push(makeBox(1137.77, 0, 50, 125));
     that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
     that[2].boxes.push(makeBox(0, 50, 380, 50));
     that[2].boxes.push(makeBox(432, 50, 200, 50));
