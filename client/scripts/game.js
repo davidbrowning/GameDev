@@ -192,6 +192,13 @@ function render(elapsedTime){
                  im : {width : box.w, height : 50},
                  size : 100,
             })
+            Graphics.drawTexture({
+                 image: platform_img,
+                 center: {x : x+(box.w/2-off1), y: y-20},
+                 clip : {x : 240, y : 100, width : 40 , height : 20},
+                 im : {width : 100, height : 50},
+                 size : 100,
+            })
         }
     }
     for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
