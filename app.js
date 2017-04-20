@@ -14,6 +14,7 @@ console.log('Server started.');
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
+let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
@@ -373,9 +374,12 @@ io.sockets.on('connection', function(socket){
     let player = Player(socket.id);
     PLAYER_LIST[socket.id] = player;
 
+    currentPlayerCount++;
+
     socket.on('disconnect', function(){
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
+        currentPlayerCount--;
     });
 
     socket.on('keyPress', function(data){
@@ -442,6 +446,10 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
+    // if(currentPlayerCount == 0){
+    //     console.log('Starting Back at Level 1');
+    //     currentLevel = 0;
+    // }
     if(gameStarted){
         let pack = {
             players: [],
@@ -500,6 +508,15 @@ function update(elapsedTime){
                // MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
                 MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
                 deleteAttacks.push(i);
+            }
+            else{
+                for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
+                    colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
+                    if(colDir != null){
+                        deleteAttacks.push(i);
+                        break;
+                    }
+                }
             }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
