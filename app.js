@@ -14,14 +14,18 @@ console.log('Server started.');
 let SOCKET_LIST = {};
 let PLAYER_LIST = {};
 let lobbyPlayers = 0;
+let currentPlayerCount = 0;
 let GRAVITY = 5;
-let count = 0;
+let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
 let currentLevel = 0;
+let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
 let attacks = [];
 let deleteAttacks = [];
+let startTime;
+let elapsedTime;
 
 let MyLevels = (function(){
     let that = [];
@@ -137,6 +141,172 @@ let MyLevels = (function(){
     that[1].endPoint = makeBox(5040, 430, 20, 25);
     that[1].w = 5100;
     that[1].h = 500;
+
+    //Level 2
+    that[2].boxes.push(makeBox(-10, 1000, 730, 50));
+    that[2].boxes.push(makeBox(220, 700, 500, 300));
+    that[2].boxes.push(makeBox(150, 700, 200, 50));
+    that[2].boxes.push(makeBox(0, 0, 100, 850));
+
+    that[2].boxes.push(makeBox(820, 400, 500, 650));
+    that[2].boxes.push(makeBox(1420, 1000, 560, 50));
+    that[2].boxes.push(makeBox(1420, 250, 100, 600));
+    that[2].boxes.push(makeBox(1640, 400, 340, 620));
+    that[2].boxes.push(makeBox(1880, 0, 100, 420));
+
+    that[2].boxes.push(makeBox(1580, 700, 80, 50));
+    that[2].boxes.push(makeBox(1580, 400, 80, 50));
+    that[2].boxes.push(makeBox(1500, 550, 80, 50));
+    that[2].boxes.push(makeBox(1500, 250, 80, 50));
+    that[2].boxes.push(makeBox(1820, 0, 80, 50));
+    that[2].boxes.push(makeBox(1700, 175, 50, 50));
+
+    that[2].boxes.push(makeBox(80, 300, 1340, 50));
+    that[2].boxes.push(makeBox(150, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
+    that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
+    that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
+    that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
+    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+    that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
+    that[2].boxes.push(makeBox(0, 50, 380, 50));
+    that[2].boxes.push(makeBox(432, 50, 200, 50));
+
+    that[2].boxes.push(makeBox(150, -50, 1830, 50));
+
+    that[2].enemies.push(makeEnemy(220, 690, 10, 10, ENEMY_SPEED, 150, 700));
+    that[2].enemies.push(makeEnemy(820, 390, 10, 10, ENEMY_SPEED, 820, 1310));
+    that[2].enemies.push(makeEnemy(1420, 990, 10, 10, ENEMY_SPEED, 1420, 1630));
+    that[2].enemies.push(makeEnemy(1580, 690, 10, 10, ENEMY_SPEED, 1580, 1630));
+    that[2].enemies.push(makeEnemy(1580, 390, 10, 10, ENEMY_SPEED, 1580, 1870));
+    that[2].enemies.push(makeEnemy(1500, 540, 10, 10, ENEMY_SPEED, 1510, 1560));
+    that[2].enemies.push(makeEnemy(1500, 240, 10, 10, ENEMY_SPEED, 1410, 1560));
+    that[2].enemies.push(makeEnemy(1700, 165, 10, 10, ENEMY_SPEED, 1700, 1740));
+
+    that[2].enemies.push(makeEnemy(1278.88, 40, 10, 10, ENEMY_SPEED, 1278.88, 1359.98));
+    that[2].enemies.push(makeEnemy(1137.77, 165, 10, 10, ENEMY_SPEED, 1137.77, 1218.88));
+    that[2].enemies.push(makeEnemy(996.66, 40, 10, 10, ENEMY_SPEED, 996.66, 1077.77));
+    that[2].enemies.push(makeEnemy(855.55, 40, 10, 10, ENEMY_SPEED, 855.55, 936.66));
+    that[2].enemies.push(makeEnemy(714.44, 40, 10, 10, ENEMY_SPEED, 714.44, 795.55));
+    that[2].enemies.push(makeEnemy(432.22, 40, 10, 10, ENEMY_SPEED, 432.22, 644.44));
+
+    that[2].endPoint = makeBox(20, -20, 20, 25);
+    that[2].w = 1980;
+    that[2].h = 1050;
+
+    //Level 3
+    that[3].boxes.push(makeBox(0, 2950, 100, 50));
+    that[3].boxes.push(makeBox(325, 2950, 50, 50));
+    that[3].boxes.push(makeBox(475, 2800, 50, 50));
+    that[3].boxes.push(makeBox(625, 2650, 50, 50));
+    that[3].boxes.push(makeBox(775, 2500, 50, 50));
+    that[3].boxes.push(makeBox(900, 2350, 50, 50));
+    that[3].boxes.push(makeBox(950, 2000, 50, 200));
+    that[3].boxes.push(makeBox(675, 2000, 50, 50));
+    that[3].boxes.push(makeBox(400, 2000, 50, 50));
+    that[3].boxes.push(makeBox(125, 2000, 50, 50));
+    that[3].boxes.push(makeBox(0, 1625, 50, 250));
+    that[3].boxes.push(makeBox(0, 1625, 150, 50));
+    that[3].boxes.push(makeBox(250, 1475, 50, 250));
+    that[3].boxes.push(makeBox(150, 1475, 150, 50));
+    that[3].boxes.push(makeBox(0, 1200, 5, 200));
+    that[3].boxes.push(makeBox(200, 1000, 5, 200));
+    that[3].boxes.push(makeBox(0, 800, 5, 200));
+    that[3].boxes.push(makeBox(200, 600, 5, 200));
+    that[3].boxes.push(makeBox(400, 400, 5, 200));
+    that[3].boxes.push(makeBox(600, 200, 5, 200));
+    that[3].boxes.push(makeBox(500, 50, 50, 50));
+    that[3].boxes.push(makeBox(725, 50, 50, 50));
+    
+    that[3].boxes.push(makeBox(475, 2500, 50, 50));
+    that[3].boxes.push(makeBox(625, 2200, 50, 200));
+    that[3].boxes.push(makeBox(475, 2050, 50, 50));
+
+    that[3].boxes.push(makeBox(550, 1850, 50, 50));
+    that[3].boxes.push(makeBox(700, 1700, 100, 50));
+    that[3].boxes.push(makeBox(500, 1550, 100, 50));
+    that[3].boxes.push(makeBox(700, 1400, 100, 50));
+    that[3].boxes.push(makeBox(500, 1250, 100, 50));
+    that[3].boxes.push(makeBox(700, 950, 50, 200));
+    that[3].boxes.push(makeBox(900, 1000, 50, 50));
+    that[3].boxes.push(makeBox(950, 550, 50, 300));
+    that[3].boxes.push(makeBox(900, 250, 100, 310));
+    that[3].boxes.push(makeBox(750, 710, 50, 50));
+    that[3].boxes.push(makeBox(800, 250, 50, 50));
+
+    that[3].endPoint = makeBox(960, 30, 20, 20);
+    that[3].w = 1000;
+    that[3].h = 3000;
+
+    //Level 4
+    that[4].boxes.push(makeBox(0, 1950, 500, 50));
+    that[4].boxes.push(makeBox(450, 1500, 50, 500));
+    that[4].boxes.push(makeBox(0, 1500, 500, 50));
+    that[4].boxes.push(makeBox(700, 1950, 100, 50));
+    that[4].boxes.push(makeBox(1100, 1950, 100, 50));
+    that[4].boxes.push(makeBox(1400, 1750, 50, 200));
+    that[4].boxes.push(makeBox(1400, 1950, 150, 50));
+    that[4].boxes.push(makeBox(1700, 1550, 50, 200));
+    that[4].boxes.push(makeBox(1950, 1350, 50, 200));
+    that[4].boxes.push(makeBox(1650, 1050, 50, 200));
+    that[4].boxes.push(makeBox(1650, 1050, 150, 50));
+    that[4].boxes.push(makeBox(1275, 1100, 425, 50));
+    that[4].boxes.push(makeBox(1225, 1050, 100, 50));
+    that[4].boxes.push(makeBox(1225, 800, 50, 250));
+    that[4].boxes.push(makeBox(1525, 700, 200, 50));
+    that[4].boxes.push(makeBox(1825, 600, 200, 50));
+
+    that[4].boxes.push(makeBox(0, 500, 1525, 50));
+    that[4].boxes.push(makeBox(0, 0, 50, 510));
+    that[4].boxes.push(makeBox(300, 450, 50, 60));
+    that[4].boxes.push(makeBox(600, 450, 50, 60));
+    that[4].boxes.push(makeBox(900, 450, 50, 60));
+    that[4].boxes.push(makeBox(1200, 450, 50, 60));
+    that[4].boxes.push(makeBox(40, 250, 60, 50));
+    that[4].boxes.push(makeBox(40, 50, 60, 50));
+    that[4].boxes.push(makeBox(375, 50, 225, 50));
+
+    that[4].boxes.push(makeBox(825, 300, 150, 50));
+    that[4].boxes.push(makeBox(1075, 300, 150, 50));
+
+    that[4].boxes.push(makeBox(935, 0, 180, 50));
+    that[4].boxes.push(makeBox(935, 100, 180, 50));
+    that[4].boxes.push(makeBox(925, 0, 50, 150));
+    that[4].boxes.push(makeBox(1075, 0, 50, 150));
+
+    that[4].enemies.push(makeEnemy(1325, 1090, 10, 10, ENEMY_SPEED, 1325, 1350));
+    that[4].enemies.push(makeEnemy(1350, 1090, 10, 10, ENEMY_SPEED, 1350, 1375));
+    that[4].enemies.push(makeEnemy(1375, 1090, 10, 10, ENEMY_SPEED, 1375, 1400));
+    that[4].enemies.push(makeEnemy(1400, 1090, 10, 10, ENEMY_SPEED, 1400, 1425));
+    that[4].enemies.push(makeEnemy(1425, 1090, 10, 10, ENEMY_SPEED, 1425, 1450));
+    that[4].enemies.push(makeEnemy(1450, 1090, 10, 10, ENEMY_SPEED, 1450, 1475));
+    that[4].enemies.push(makeEnemy(1475, 1090, 10, 10, ENEMY_SPEED, 1475, 1500));
+    that[4].enemies.push(makeEnemy(1500, 1090, 10, 10, ENEMY_SPEED, 1500, 1525));
+    that[4].enemies.push(makeEnemy(1525, 1090, 10, 10, ENEMY_SPEED, 1525, 1550));
+    that[4].enemies.push(makeEnemy(1550, 1090, 10, 10, ENEMY_SPEED, 1550, 1575));
+    that[4].enemies.push(makeEnemy(1575, 1090, 10, 10, ENEMY_SPEED, 1575, 1600));
+    that[4].enemies.push(makeEnemy(1600, 1090, 10, 10, ENEMY_SPEED, 1600, 1625));
+    that[4].enemies.push(makeEnemy(1625, 1090, 10, 10, ENEMY_SPEED, 1625, 1650));
+
+    that[4].enemies.push(makeEnemy(300, 440, 10, 10, ENEMY_SPEED, 300, 340));
+    that[4].enemies.push(makeEnemy(600, 440, 10, 10, ENEMY_SPEED, 600, 640));
+    that[4].enemies.push(makeEnemy(900, 440, 10, 10, ENEMY_SPEED, 900, 940));
+    that[4].enemies.push(makeEnemy(1200, 440, 10, 10, ENEMY_SPEED, 1200, 1240));
+
+    that[4].enemies.push(makeEnemy(825, 290, 10, 10, ENEMY_SPEED, 825, 865));
+    that[4].enemies.push(makeEnemy(875, 290, 10, 10, ENEMY_SPEED, 875, 915));
+    that[4].enemies.push(makeEnemy(925, 290, 10, 10, ENEMY_SPEED, 925, 965));
+    that[4].enemies.push(makeEnemy(1075, 290, 10, 10, ENEMY_SPEED, 1075, 1115));
+    that[4].enemies.push(makeEnemy(1125, 290, 10, 10, ENEMY_SPEED, 1125, 1165));
+    that[4].enemies.push(makeEnemy(1175, 290, 10, 10, ENEMY_SPEED, 1175, 1215));
+
+    that[4].endPoint = makeBox(1040, 65, 20, 20);
+    that[4].w = 2000;
+    that[4].h = 2000;
     return that;
 }());
 function colCheck(shapeA, shapeB) {
@@ -165,7 +335,7 @@ function colCheck(shapeA, shapeB) {
         } else {
             if (vX > 0) {
                 colDir = "left";
-                shapeA.x += oX + 0.1;
+                shapeA.x += oX - 0.1;
             } else {
                 colDir = "right";
                 shapeA.x -= oX - 0.1;
@@ -176,10 +346,10 @@ function colCheck(shapeA, shapeB) {
 }
 let Player = function(id){
     let self = {
-        x: 250,
-        y: 440,
-        w: 20,
-        h: 10,
+        x: 50,
+        y: 420,
+        w: 30,
+        h: 30,
         id: id,
         number: Math.floor(10 * Math.random()),
         pressingRight: false,
@@ -191,12 +361,25 @@ let Player = function(id){
         state: 'ground',
         deadCount: 0,
         finished: false,
-        attacking: false
+        attacking: false,
+        time: 0,
+        doubleJump: false,
+        dashing: false,
+        dashCoolDown: 0
     }
 
     function dead(){
-        self.x = 250;
-        self.y = 440;
+        self.x = 50;
+        self.y = 420;
+        if(currentLevel == 2){
+            self.y = 970;
+        }
+        else if(currentLevel == 3){
+            self.y = 2920;
+        }
+        else if(currentLevel == 4){
+            self.y = 1920;
+        }
         self.ySpeed = 0;
         self.deadCount++;
         console.log('Deaths: ' + self.deadCount);
@@ -204,6 +387,8 @@ let Player = function(id){
     function win(){
         if(!self.finished){
             console.log('You win!');
+            self.time += elapsedTime;
+            console.log('Final Time: ' + self.time);
             self.finished = true;
             finishedLevelCount++;
         }
@@ -219,7 +404,8 @@ let Player = function(id){
         for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
             let colDir = colCheck(range, MyLevels[currentLevel].enemies[i]);
             if(colDir != null){
-                let temp = Math.abs(self.x - MyLevels[currentLevel].enemies[i].x);
+                let temp = Math.sqrt(Math.pow(self.x - MyLevels[currentLevel].enemies[i].x, 2) + 
+                                     Math.pow(self.y - MyLevels[currentLevel].enemies[i].y, 2));
                 if(temp < distance){
                     distance = temp;
                     index = i;
@@ -230,17 +416,25 @@ let Player = function(id){
     }
     function updateCollision(){
         let grounded = false;
+        let climbing = false;
         for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
             let box = MyLevels[currentLevel].boxes[i];
             let colDir = colCheck(self, box);
             if(colDir == 'bottom'){
                 grounded = true;
             }
+            if(colDir == 'left' || colDir == 'right'){
+                if(self.state == 'jump' && currentLevel >= 2){
+                    self.state = 'climb';
+                }
+                climbing = true;
+            }
         }
-        if(!grounded){
+        if(!grounded && self.state != 'climb'){
             self.state = 'jump';
-            count++;
-            //console.log('Not Grounded Count: ' + count);
+        }
+        if(!climbing && !grounded && self.state == 'climb'){
+            self.state = 'jump';
         }
         for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
             let enemy = MyLevels[currentLevel].enemies[i];
@@ -258,16 +452,43 @@ let Player = function(id){
     self.updatePosition = function(){
         if(self.state == 'jump'){
             self.ySpeed += GRAVITY;
+            if(self.ySpeed > TERMINAL_VELOCITY){
+                self.ySpeed = TERMINAL_VELOCITY;
+            }
         }
         else {
             self.ySpeed = 0;
+            self.doubleJump = false;
         }
-        if(self.pressingRight){
-            self.x += self.xSpeed;
+        if(self.state == 'climb'){
+            if(self.pressingUp){
+                self.y -= self.xSpeed;
+                if(self.dashing){
+                    self.y -= 100;
+                }
+            }
+            if(self.pressingDown){
+                self.y += self.xSpeed;
+                if(self.dashing){
+                    self.y += 100;
+                }
+            }
         }
-        if(self.pressingLeft){
-            self.x -= self.xSpeed;
+        else {
+            if(self.pressingRight){
+                self.x += self.xSpeed;
+                if(self.dashing){
+                    self.x += 100;
+                }
+            }
+            if(self.pressingLeft){
+                self.x -= self.xSpeed;
+                if(self.dashing){
+                    self.x -= 100;
+                }
+            }
         }
+        self.dashing = false;
         if(self.x < 0){
             self.x = 0;
         }
@@ -277,6 +498,7 @@ let Player = function(id){
         self.y += self.ySpeed;
         if(self.y + self.h > MyLevels[currentLevel].h){
             console.log('Player y: ' + self.y);
+            console.log('Player x: ' + self.x);
             dead();
         }
         updateCollision();
@@ -292,9 +514,12 @@ io.sockets.on('connection', function(socket){
     let player = Player(socket.id);
     PLAYER_LIST[socket.id] = player;
 
+    currentPlayerCount++;
+
     socket.on('disconnect', function(){
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
+        currentPlayerCount--;
     });
 
     socket.on('keyPress', function(data){
@@ -315,6 +540,10 @@ io.sockets.on('connection', function(socket){
             if(player.state != 'jump'){
                 player.ySpeed = -30;
                 player.state = 'jump';
+            }
+            else if(!player.doubleJump && currentLevel >= 3){
+                player.doubleJump = true;
+                player.ySpeed = -30;
             }
         }
         else if(data.inputId == 'attack'){
@@ -337,6 +566,15 @@ io.sockets.on('connection', function(socket){
                 }
             } 
         }
+        else if(data.inputId == 'dash'){
+            console.log('Dash');
+            if(currentLevel >= 4 && (!PLAYER_LIST[data.player].dashing)){
+                if(elapsedTime - PLAYER_LIST[data.player].dashCoolDown > 0.5){
+                    PLAYER_LIST[data.player].dashing = true;
+                    PLAYER_LIST[data.player].dashCoolDown = elapsedTime;
+                }
+            } 
+        }
     });
 
     socket.on('lobby', function(data){
@@ -349,10 +587,12 @@ io.sockets.on('connection', function(socket){
                     socket.emit('startNewGame', pack);
                 }
                 gameStarted = true;
+                startTime = process.hrtime();
             }
         }
         else if(data == 'single'){
             gameStarted = true;
+            startTime = process.hrtime();
         }
         else if(data == 'exit'){
             lobbyPlayers--;
@@ -361,6 +601,10 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
+    // if(currentPlayerCount == 0){
+    //     console.log('Starting Back at Level 1');
+    //     currentLevel = 0;
+    // }
     if(gameStarted){
         let pack = {
             players: [],
@@ -420,6 +664,15 @@ function update(elapsedTime){
                 MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
                 deleteAttacks.push(i);
             }
+            else{
+                for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
+                    colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
+                    if(colDir != null){
+                        deleteAttacks.push(i);
+                        break;
+                    }
+                }
+            }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
         for(let i = 0; i < deleteAttacks.length; i++){
@@ -445,13 +698,43 @@ function update(elapsedTime){
                 newLevel = true;
                 if(count == 1){
                     currentLevel++;
+                    if(currentLevel == 1){ //do this for levels 3 and 4
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 420;
+                        }
+                    }
+                    else if(currentLevel == 2){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 970;
+                        }
+                    }
+                    else if(currentLevel == 3){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 0;
+                            PLAYER_LIST[j].y = 2920;
+                        }
+                    }
+                    else if(currentLevel == 4){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 50;
+                            PLAYER_LIST[j].y = 1920;
+                        }
+                    }
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){
                     finishedLevelCount = 0;
                 }
                 let level = currentLevel;
-                socket.emit('nextLevel', currentLevel);
+                if(currentLevel <= 4){
+                    socket.emit('nextLevel', currentLevel);
+                    startTime = process.hrtime();
+                }
+                else {
+                    currentLevel = 0;
+                }
             }
         }
         if(newLevel){
@@ -464,6 +747,8 @@ function update(elapsedTime){
 }
 
 setInterval(function(){
-    let elapsedTime;
+    elapsedTime = process.hrtime(startTime);
+    elapsedTime = Math.floor(elapsedTime[0] + elapsedTime[1] / 1e9);
+    //console.log('Elapsed Time: ' + elapsedTime);
     update(elapsedTime);
 },1000/25);
