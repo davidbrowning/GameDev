@@ -18,7 +18,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 4;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -241,6 +241,14 @@ let MyLevels = (function(){
     that[3].endPoint = makeBox(960, 30, 20, 20);
     that[3].w = 1000;
     that[3].h = 3000;
+
+    //Level 4
+    that[4].boxes.push(makeBox(0, 450, 500, 50));
+    that[4].boxes.push(makeBox(450, 0, 50, 500));
+
+    that[4].endPoint = makeBox(520, 430, 20, 20);
+    that[4].w = 1000;
+    that[4].h = 500;
     return that;
 }());
 function colCheck(shapeA, shapeB) {
@@ -297,7 +305,9 @@ let Player = function(id){
         finished: false,
         attacking: false,
         time: 0,
-        doubleJump: false
+        doubleJump: false,
+        dashing: false,
+        dashCoolDown: 0
     }
 
     function dead(){
@@ -308,6 +318,9 @@ let Player = function(id){
         }
         else if(currentLevel == 3){
             self.y = 2920;
+        }
+        else if(currentLevel == 4){
+            self.y = 420;
         }
         self.ySpeed = 0;
         self.deadCount++;
@@ -392,19 +405,32 @@ let Player = function(id){
         if(self.state == 'climb'){
             if(self.pressingUp){
                 self.y -= self.xSpeed;
+                if(self.dashing){
+                    self.y -= 100;
+                }
             }
             if(self.pressingDown){
                 self.y += self.xSpeed;
+                if(self.dashing){
+                    self.y += 100;
+                }
             }
         }
         else {
             if(self.pressingRight){
                 self.x += self.xSpeed;
+                if(self.dashing){
+                    self.x += 100;
+                }
             }
             if(self.pressingLeft){
                 self.x -= self.xSpeed;
+                if(self.dashing){
+                    self.x -= 100;
+                }
             }
         }
+        self.dashing = false;
         if(self.x < 0){
             self.x = 0;
         }
@@ -479,6 +505,15 @@ io.sockets.on('connection', function(socket){
                 }
                 else {
                     PLAYER_LIST[data.player].attacking = false;
+                }
+            } 
+        }
+        else if(data.inputId == 'dash'){
+            console.log('Dash');
+            if(currentLevel >= 4 && (!PLAYER_LIST[data.player].dashing)){
+                if(elapsedTime - PLAYER_LIST[data.player].dashCoolDown > 1){
+                    PLAYER_LIST[data.player].dashing = true;
+                    PLAYER_LIST[data.player].dashCoolDown = elapsedTime;
                 }
             } 
         }
@@ -623,14 +658,25 @@ function update(elapsedTime){
                             PLAYER_LIST[j].y = 2920;
                         }
                     }
+                    else if(currentLevel == 4){
+                        for(let j in PLAYER_LIST){
+                            PLAYER_LIST[j].x = 0;
+                            PLAYER_LIST[j].y = 470;
+                        }
+                    }
                 }
                 console.log('Starting Level: ' + currentLevel);
                 if(count == pack.players.length){
                     finishedLevelCount = 0;
                 }
                 let level = currentLevel;
-                socket.emit('nextLevel', currentLevel);
-                startTime = process.hrtime();
+                if(currentLevel < 4){
+                    socket.emit('nextLevel', currentLevel);
+                    startTime = process.hrtime();
+                }
+                else {
+                    currentLevel = 4;
+                }
             }
         }
         if(newLevel){

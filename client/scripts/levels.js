@@ -133,5 +133,13 @@ let MyLevels = (function(){
     that[3].endPoint = makeBox(960, 30, 20, 20);
     that[3].w = 1000;
     that[3].h = 3000;
+
+    //Level 4
+    that[4].boxes.push(makeBox(0, 450, 500, 50));
+    that[4].boxes.push(makeBox(450, 0, 50, 500));
+
+    that[4].endPoint = makeBox(520, 430, 20, 20);
+    that[4].w = 1000;
+    that[4].h = 500;
     return that;
 }());
