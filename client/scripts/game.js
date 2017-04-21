@@ -174,6 +174,24 @@ function render(elapsedTime){
              size : 100,
         });
         }
+        else if(currentLevel == 3){
+        Graphics.drawTexture({
+             image : bckgrnd,
+             center : {x : 0, y: 0},
+             clip : {x : 0+backgroundcount, y : 450, width : 500, height : 300},
+             im : {width : 1000, height : 500},
+             size : 100,
+        });
+        }
+        else if(currentLevel == 4){
+        Graphics.drawTexture({
+             image : bckgrnd,
+             center : {x : 0, y: 0},
+             clip : {x : 0+backgroundcount, y : 150, width : 500, height : 300},
+             im : {width : 1000, height : 500},
+             size : 100,
+        });
+        }
     let end = MyLevels[currentLevel].endPoint;
     Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
@@ -286,7 +304,7 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;backgroundcount-=2;}
+                else if(subcount % 4 == 0){count++;backgroundcount--;}
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
@@ -300,15 +318,14 @@ function render(elapsedTime){
                      flip : true,
                 });
                 if(count == 5){count = 1}
-                else if(subcount % 4 == 0){count++;}backgroundcount-=2;
+                else if(subcount % 4 == 0){count++;}backgroundcount--;
                 if(subcount == 16){subcount = 0}
                 subcount++;
             }
             else if(players[i].j === true){
                 Graphics.drawTexture({
                      image : img,
-                     center : {x : spritex, y: spritey},
-                     clip : {x : 4*32 , y : players[i].character, width : 30, height : 35},
+                     center : {x : spritex, y: spritey}, clip : {x : 4*32 , y : players[i].character, width : 30, height : 35},
                      im : {width : 60, height : 65},
                      size : 100,
                      flip : true,
@@ -328,7 +345,7 @@ function render(elapsedTime){
                 });
                 backgroundcount;
             }
-            if(backgroundcount < 0){backgroundcount = 1080} // If we care about it, this is what happens if the user takes forever to complete the level. 
+            if(backgroundcount < 0){backgroundcount = 1000} else if( backgroundcount > 1200){backgroundcount = 50} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
     for(let i = 0; i < attacks.length; i++){
