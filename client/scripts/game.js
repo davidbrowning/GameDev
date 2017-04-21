@@ -53,6 +53,12 @@ socket.on('nextLevel', function(data){
     if(currentLevel == 2){
         offset.y = 600;
     }
+    else if(currentLevel == 3){
+        offset.y = 2550;
+    }
+    else if(currentLevel == 4){
+        offset.y = 1550;
+    }
     console.log('Starting Level: ' + currentLevel);
 });
 
