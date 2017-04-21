@@ -4,6 +4,7 @@ let mainMenu;
 let newGame;
 let gameLobby;
 let highScores;
+let scoreList = {};
 let controls;
 let credits;
 let customControls = {};
@@ -47,19 +48,31 @@ socket.on('startNewGame', function(data){
 });
 
 socket.on('nextLevel', function(data){
-    currentLevel = data;
-    offset.x = 0; 
-    offset.y = 0;
-    if(currentLevel == 2){
-        offset.y = 600;
+    if(data == 'credits'){
+        changeState(data);
+        currentLevel = 0;
     }
-    else if(currentLevel == 3){
-        offset.y = 2550;
+    else {
+        currentLevel = data;
+        offset.x = 0; 
+        offset.y = 0;
+        if(currentLevel == 2){
+            offset.y = 600;
+        }
+        else if(currentLevel == 3){
+            offset.y = 2550;
+        }
+        else if(currentLevel == 4){
+            offset.y = 1550;
+        }
+        console.log('Starting Level: ' + currentLevel);
     }
-    else if(currentLevel == 4){
-        offset.y = 1550;
+});
+
+socket.on('highScores', function(data){
+    for(let i = 0; i < 5; i++){
+        scoreList.item[i].innerHTML = data[i];
     }
-    console.log('Starting Level: ' + currentLevel);
 });
 
 function changeState(state){
@@ -102,6 +115,7 @@ function changeState(state){
     }
     else if(state == 'credits'){
         mainMenu.style.display = 'none';
+        newGame.style.display = 'none';
         credits.style.display = 'block';
     }
 }
@@ -318,6 +332,12 @@ function initialize(){
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
     highScores = document.getElementById('highScores');
+    scoreList.item = [];
+    scoreList.item.push(document.getElementById('firstScore'));
+    scoreList.item.push(document.getElementById('secondScore')); 
+    scoreList.item.push(document.getElementById('thirdScore')); 
+    scoreList.item.push(document.getElementById('fourthScore')); 
+    scoreList.item.push(document.getElementById('fifthScore'));  
     controls = document.getElementById('controls');
     credits = document.getElementById('credits');
     customControls.up = 'w';

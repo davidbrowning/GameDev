@@ -26,10 +26,14 @@ let attacks = [];
 let deleteAttacks = [];
 let startTime;
 let elapsedTime;
+let highScores = [];
+for(let i = 0; i < 5; i++){
+    highScores.push(' ');
+}
 
 let MyLevels = (function(){
     let that = [];
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < 6; i++){
         that.push({
             boxes: [],
             enemies: []
@@ -51,262 +55,269 @@ let MyLevels = (function(){
             dead: false
         }
     }
-    //Level 0
-    that[0].boxes.push(makeBox(-10, 450, 1000, 50));
-    that[0].boxes.push(makeBox(1050, 450, 1000, 50));
-    that[0].boxes.push(makeBox(1550, 420, 500, 40));
-    that[0].boxes.push(makeBox(2140, 450, 1000, 50));
-    that[0].boxes.push(makeBox(3200, 450, 1000, 50));
-    that[0].boxes.push(makeBox(4250, 450, 500, 50));
-    that[0].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1540));
-    that[0].enemies.push(makeEnemy(1550, 410, 10, 10, ENEMY_SPEED, 1550, 2040));
-    that[0].enemies.push(makeEnemy(2140, 440, 10, 10, ENEMY_SPEED, 2140, 2600));
-    that[0].enemies.push(makeEnemy(2640, 440, 10, 10, ENEMY_SPEED, 2640, 3130));
-    that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
-    that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
-    that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
-    that[0].endPoint = makeBox(4680, 430, 20, 25);
-    that[0].w = 4740;
-    that[0].h = 500;
 
-    //Level 1
-    that[1].boxes.push(makeBox(-10, 450, 1000, 50));
-    that[1].boxes.push(makeBox(1050, 450, 3500, 50));
-    that[1].boxes.push(makeBox(1550, 410, 3000, 50));
-    that[1].boxes.push(makeBox(2050, 370, 2500, 50));
-    that[1].boxes.push(makeBox(2550, 330, 500, 50));
-    that[1].boxes.push(makeBox(3550, 330, 1000, 50));
-    that[1].boxes.push(makeBox(4600, 330, 50, 170));
-    that[1].boxes.push(makeBox(4700, 370, 50, 130));
-    that[1].boxes.push(makeBox(4800, 410, 50, 90));
-    that[1].boxes.push(makeBox(4900, 450, 50, 50));
-    that[1].boxes.push(makeBox(5000, 450, 100, 50));
-    that[1].enemies.push(makeEnemy(750, 440, 10, 10, ENEMY_SPEED, 750, 1000));
-    that[1].enemies.push(makeEnemy(725, 440, 10, 10, ENEMY_SPEED, 725, 975));
-    that[1].enemies.push(makeEnemy(700, 440, 10, 10, ENEMY_SPEED, 700, 950));
-    that[1].enemies.push(makeEnemy(675, 440, 10, 10, ENEMY_SPEED, 675, 925));
-    that[1].enemies.push(makeEnemy(650, 440, 10, 10, ENEMY_SPEED, 650, 900));
-    that[1].enemies.push(makeEnemy(625, 440, 10, 10, ENEMY_SPEED, 625, 875));
+    that[5].initialize = function(){
+        for(let i = 0; i < 5; i++){
+            that[i].boxes = [];
+            that[i].enemies = [];
+        }
+        //Level 0
+        that[0].boxes.push(makeBox(-10, 450, 1000, 50));
+        that[0].boxes.push(makeBox(1050, 450, 1000, 50));
+        that[0].boxes.push(makeBox(1550, 420, 500, 40));
+        that[0].boxes.push(makeBox(2140, 450, 1000, 50));
+        that[0].boxes.push(makeBox(3200, 450, 1000, 50));
+        that[0].boxes.push(makeBox(4250, 450, 500, 50));
+        that[0].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1540));
+        that[0].enemies.push(makeEnemy(1550, 410, 10, 10, ENEMY_SPEED, 1550, 2040));
+        that[0].enemies.push(makeEnemy(2140, 440, 10, 10, ENEMY_SPEED, 2140, 2600));
+        that[0].enemies.push(makeEnemy(2640, 440, 10, 10, ENEMY_SPEED, 2640, 3130));
+        that[0].enemies.push(makeEnemy(3200, 440, 10, 10, ENEMY_SPEED, 3200, 3520));
+        that[0].enemies.push(makeEnemy(3533, 440, 10, 10, ENEMY_SPEED, 3533, 3850));
+        that[0].enemies.push(makeEnemy(3867, 440, 10, 10, ENEMY_SPEED, 3867, 4190));
+        that[0].endPoint = makeBox(4680, 430, 20, 25);
+        that[0].w = 4740;
+        that[0].h = 500;
 
-    that[1].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1500));
-    that[1].enemies.push(makeEnemy(1275, 440, 10, 10, ENEMY_SPEED, 1080, 1540));
-    that[1].enemies.push(makeEnemy(1540, 440, 10, 10, ENEMY_SPEED, 1050, 1550));
+        //Level 1
+        that[1].boxes.push(makeBox(-10, 450, 1000, 50));
+        that[1].boxes.push(makeBox(1050, 450, 3500, 50));
+        that[1].boxes.push(makeBox(1550, 410, 3000, 50));
+        that[1].boxes.push(makeBox(2050, 370, 2500, 50));
+        that[1].boxes.push(makeBox(2550, 330, 500, 50));
+        that[1].boxes.push(makeBox(3550, 330, 1000, 50));
+        that[1].boxes.push(makeBox(4600, 330, 50, 170));
+        that[1].boxes.push(makeBox(4700, 370, 50, 130));
+        that[1].boxes.push(makeBox(4800, 410, 50, 90));
+        that[1].boxes.push(makeBox(4900, 450, 50, 50));
+        that[1].boxes.push(makeBox(5000, 450, 100, 50));
+        that[1].enemies.push(makeEnemy(750, 440, 10, 10, ENEMY_SPEED, 750, 1000));
+        that[1].enemies.push(makeEnemy(725, 440, 10, 10, ENEMY_SPEED, 725, 975));
+        that[1].enemies.push(makeEnemy(700, 440, 10, 10, ENEMY_SPEED, 700, 950));
+        that[1].enemies.push(makeEnemy(675, 440, 10, 10, ENEMY_SPEED, 675, 925));
+        that[1].enemies.push(makeEnemy(650, 440, 10, 10, ENEMY_SPEED, 650, 900));
+        that[1].enemies.push(makeEnemy(625, 440, 10, 10, ENEMY_SPEED, 625, 875));
 
-    that[1].enemies.push(makeEnemy(1550, 400, 10, 10, ENEMY_SPEED, 1550, 2000));
-    that[1].enemies.push(makeEnemy(1775, 400, 10, 10, ENEMY_SPEED, 1580, 2040));
-    that[1].enemies.push(makeEnemy(2040, 400, 10, 10, ENEMY_SPEED, 1550, 2050));
+        that[1].enemies.push(makeEnemy(1050, 440, 10, 10, ENEMY_SPEED, 1050, 1500));
+        that[1].enemies.push(makeEnemy(1275, 440, 10, 10, ENEMY_SPEED, 1080, 1540));
+        that[1].enemies.push(makeEnemy(1540, 440, 10, 10, ENEMY_SPEED, 1050, 1550));
 
-    that[1].enemies.push(makeEnemy(2050, 360, 10, 10, ENEMY_SPEED, 2050, 2500));
-    that[1].enemies.push(makeEnemy(2275, 360, 10, 10, ENEMY_SPEED, 2080, 2540));
-    that[1].enemies.push(makeEnemy(2540, 360, 10, 10, ENEMY_SPEED, 2050, 2550));
+        that[1].enemies.push(makeEnemy(1550, 400, 10, 10, ENEMY_SPEED, 1550, 2000));
+        that[1].enemies.push(makeEnemy(1775, 400, 10, 10, ENEMY_SPEED, 1580, 2040));
+        that[1].enemies.push(makeEnemy(2040, 400, 10, 10, ENEMY_SPEED, 1550, 2050));
 
-    that[1].enemies.push(makeEnemy(2550, 320, 10, 10, ENEMY_SPEED, 2550, 3000));
-    that[1].enemies.push(makeEnemy(2775, 320, 10, 10, ENEMY_SPEED, 2580, 3040));
-    that[1].enemies.push(makeEnemy(3040, 320, 10, 10, ENEMY_SPEED, 2550, 3050));
+        that[1].enemies.push(makeEnemy(2050, 360, 10, 10, ENEMY_SPEED, 2050, 2500));
+        that[1].enemies.push(makeEnemy(2275, 360, 10, 10, ENEMY_SPEED, 2080, 2540));
+        that[1].enemies.push(makeEnemy(2540, 360, 10, 10, ENEMY_SPEED, 2050, 2550));
 
-    that[1].enemies.push(makeEnemy(3050, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3100, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3150, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3200, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3250, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
-    that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(2550, 320, 10, 10, ENEMY_SPEED, 2550, 3000));
+        that[1].enemies.push(makeEnemy(2775, 320, 10, 10, ENEMY_SPEED, 2580, 3040));
+        that[1].enemies.push(makeEnemy(3040, 320, 10, 10, ENEMY_SPEED, 2550, 3050));
 
-    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4500));
-    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*.5, 3580, 4540));
-    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4550));
-    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED, 3550, 4500));
-    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED, 3580, 4540));
-    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED, 3550, 4550));
-    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4500));
-    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*1.5, 3580, 4540));
-    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4550));
-    that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*2, 3550, 4500));
-    that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*2, 3580, 4540));
-    that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*2, 3550, 4550));
-    
-    that[1].enemies.push(makeEnemy(4600, 320, 10, 10, ENEMY_SPEED, 4600, 4640));
-    that[1].enemies.push(makeEnemy(4700, 360, 10, 10, ENEMY_SPEED, 4700, 4740));
-    that[1].enemies.push(makeEnemy(4800, 400, 10, 10, ENEMY_SPEED, 4800, 4840));
-    that[1].enemies.push(makeEnemy(4900, 440, 10, 10, ENEMY_SPEED, 4900, 4940));
+        that[1].enemies.push(makeEnemy(3050, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3100, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3150, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3200, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3250, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3300, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3350, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3400, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3450, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
+        that[1].enemies.push(makeEnemy(3500, 360, 10, 10, ENEMY_SPEED * (Math.random() + 1), 3050, 3540));
 
-    that[1].endPoint = makeBox(5040, 430, 20, 25);
-    that[1].w = 5100;
-    that[1].h = 500;
+        that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4500));
+        that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*.5, 3580, 4540));
+        that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*.5, 3550, 4550));
+        that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED, 3550, 4500));
+        that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED, 3580, 4540));
+        that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED, 3550, 4550));
+        that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4500));
+        that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*1.5, 3580, 4540));
+        that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*1.5, 3550, 4550));
+        that[1].enemies.push(makeEnemy(3550, 320, 10, 10, ENEMY_SPEED*2, 3550, 4500));
+        that[1].enemies.push(makeEnemy(3775, 320, 10, 10, ENEMY_SPEED*2, 3580, 4540));
+        that[1].enemies.push(makeEnemy(4040, 320, 10, 10, ENEMY_SPEED*2, 3550, 4550));
+        
+        that[1].enemies.push(makeEnemy(4600, 320, 10, 10, ENEMY_SPEED, 4600, 4640));
+        that[1].enemies.push(makeEnemy(4700, 360, 10, 10, ENEMY_SPEED, 4700, 4740));
+        that[1].enemies.push(makeEnemy(4800, 400, 10, 10, ENEMY_SPEED, 4800, 4840));
+        that[1].enemies.push(makeEnemy(4900, 440, 10, 10, ENEMY_SPEED, 4900, 4940));
 
-    //Level 2
-    that[2].boxes.push(makeBox(-10, 1000, 730, 50));
-    that[2].boxes.push(makeBox(220, 700, 500, 300));
-    that[2].boxes.push(makeBox(150, 700, 200, 50));
-    that[2].boxes.push(makeBox(0, 0, 100, 850));
+        that[1].endPoint = makeBox(5040, 430, 20, 25);
+        that[1].w = 5100;
+        that[1].h = 500;
 
-    that[2].boxes.push(makeBox(820, 400, 500, 650));
-    that[2].boxes.push(makeBox(1420, 1000, 560, 50));
-    that[2].boxes.push(makeBox(1420, 250, 100, 600));
-    that[2].boxes.push(makeBox(1640, 400, 340, 620));
-    that[2].boxes.push(makeBox(1880, 0, 100, 420));
+        //Level 2
+        that[2].boxes.push(makeBox(-10, 1000, 730, 50));
+        that[2].boxes.push(makeBox(220, 700, 500, 300));
+        that[2].boxes.push(makeBox(150, 700, 200, 50));
+        that[2].boxes.push(makeBox(0, 0, 100, 850));
 
-    that[2].boxes.push(makeBox(1580, 700, 80, 50));
-    that[2].boxes.push(makeBox(1580, 400, 80, 50));
-    that[2].boxes.push(makeBox(1500, 550, 80, 50));
-    that[2].boxes.push(makeBox(1500, 250, 80, 50));
-    that[2].boxes.push(makeBox(1820, 0, 80, 50));
-    that[2].boxes.push(makeBox(1700, 175, 50, 50));
+        that[2].boxes.push(makeBox(820, 400, 500, 650));
+        that[2].boxes.push(makeBox(1420, 1000, 560, 50));
+        that[2].boxes.push(makeBox(1420, 250, 100, 600));
+        that[2].boxes.push(makeBox(1640, 400, 340, 620));
+        that[2].boxes.push(makeBox(1880, 0, 100, 420));
 
-    that[2].boxes.push(makeBox(80, 300, 1340, 50));
-    that[2].boxes.push(makeBox(150, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
-    that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
-    that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
-    that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
-    that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
-    that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
-    that[2].boxes.push(makeBox(0, 50, 380, 50));
-    that[2].boxes.push(makeBox(432, 50, 200, 50));
+        that[2].boxes.push(makeBox(1580, 700, 80, 50));
+        that[2].boxes.push(makeBox(1580, 400, 80, 50));
+        that[2].boxes.push(makeBox(1500, 550, 80, 50));
+        that[2].boxes.push(makeBox(1500, 250, 80, 50));
+        that[2].boxes.push(makeBox(1820, 0, 80, 50));
+        that[2].boxes.push(makeBox(1700, 175, 50, 50));
 
-    that[2].boxes.push(makeBox(150, -50, 1830, 50));
+        that[2].boxes.push(makeBox(80, 300, 1340, 50));
+        that[2].boxes.push(makeBox(150, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(291.11, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(432.22, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(573.33, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(714.44, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(855.55, 175, 91.11, 75));
+        that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
+        that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
+        that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
+        that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+        that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
+        that[2].boxes.push(makeBox(0, 50, 380, 50));
+        that[2].boxes.push(makeBox(432, 50, 200, 50));
 
-    that[2].enemies.push(makeEnemy(220, 690, 10, 10, ENEMY_SPEED, 150, 700));
-    that[2].enemies.push(makeEnemy(820, 390, 10, 10, ENEMY_SPEED, 820, 1310));
-    that[2].enemies.push(makeEnemy(1420, 990, 10, 10, ENEMY_SPEED, 1420, 1630));
-    that[2].enemies.push(makeEnemy(1580, 690, 10, 10, ENEMY_SPEED, 1580, 1630));
-    that[2].enemies.push(makeEnemy(1580, 390, 10, 10, ENEMY_SPEED, 1580, 1870));
-    that[2].enemies.push(makeEnemy(1500, 540, 10, 10, ENEMY_SPEED, 1510, 1560));
-    that[2].enemies.push(makeEnemy(1500, 240, 10, 10, ENEMY_SPEED, 1410, 1560));
-    that[2].enemies.push(makeEnemy(1700, 165, 10, 10, ENEMY_SPEED, 1700, 1740));
+        that[2].boxes.push(makeBox(150, -50, 1830, 50));
 
-    that[2].enemies.push(makeEnemy(1278.88, 40, 10, 10, ENEMY_SPEED, 1278.88, 1359.98));
-    that[2].enemies.push(makeEnemy(1137.77, 165, 10, 10, ENEMY_SPEED, 1137.77, 1218.88));
-    that[2].enemies.push(makeEnemy(996.66, 40, 10, 10, ENEMY_SPEED, 996.66, 1077.77));
-    that[2].enemies.push(makeEnemy(855.55, 40, 10, 10, ENEMY_SPEED, 855.55, 936.66));
-    that[2].enemies.push(makeEnemy(714.44, 40, 10, 10, ENEMY_SPEED, 714.44, 795.55));
-    that[2].enemies.push(makeEnemy(432.22, 40, 10, 10, ENEMY_SPEED, 432.22, 644.44));
+        that[2].enemies.push(makeEnemy(220, 690, 10, 10, ENEMY_SPEED, 150, 700));
+        that[2].enemies.push(makeEnemy(820, 390, 10, 10, ENEMY_SPEED, 820, 1310));
+        that[2].enemies.push(makeEnemy(1420, 990, 10, 10, ENEMY_SPEED, 1420, 1630));
+        that[2].enemies.push(makeEnemy(1580, 690, 10, 10, ENEMY_SPEED, 1580, 1630));
+        that[2].enemies.push(makeEnemy(1580, 390, 10, 10, ENEMY_SPEED, 1580, 1870));
+        that[2].enemies.push(makeEnemy(1500, 540, 10, 10, ENEMY_SPEED, 1510, 1560));
+        that[2].enemies.push(makeEnemy(1500, 240, 10, 10, ENEMY_SPEED, 1410, 1560));
+        that[2].enemies.push(makeEnemy(1700, 165, 10, 10, ENEMY_SPEED, 1700, 1740));
 
-    that[2].endPoint = makeBox(20, -20, 20, 25);
-    that[2].w = 1980;
-    that[2].h = 1050;
+        that[2].enemies.push(makeEnemy(1278.88, 40, 10, 10, ENEMY_SPEED, 1278.88, 1359.98));
+        that[2].enemies.push(makeEnemy(1137.77, 165, 10, 10, ENEMY_SPEED, 1137.77, 1218.88));
+        that[2].enemies.push(makeEnemy(996.66, 40, 10, 10, ENEMY_SPEED, 996.66, 1077.77));
+        that[2].enemies.push(makeEnemy(855.55, 40, 10, 10, ENEMY_SPEED, 855.55, 936.66));
+        that[2].enemies.push(makeEnemy(714.44, 40, 10, 10, ENEMY_SPEED, 714.44, 795.55));
+        that[2].enemies.push(makeEnemy(432.22, 40, 10, 10, ENEMY_SPEED, 432.22, 644.44));
 
-    //Level 3
-    that[3].boxes.push(makeBox(0, 2950, 100, 50));
-    that[3].boxes.push(makeBox(325, 2950, 50, 50));
-    that[3].boxes.push(makeBox(475, 2800, 50, 50));
-    that[3].boxes.push(makeBox(625, 2650, 50, 50));
-    that[3].boxes.push(makeBox(775, 2500, 50, 50));
-    that[3].boxes.push(makeBox(900, 2350, 50, 50));
-    that[3].boxes.push(makeBox(950, 2000, 50, 200));
-    that[3].boxes.push(makeBox(675, 2000, 50, 50));
-    that[3].boxes.push(makeBox(400, 2000, 50, 50));
-    that[3].boxes.push(makeBox(125, 2000, 50, 50));
-    that[3].boxes.push(makeBox(0, 1625, 50, 250));
-    that[3].boxes.push(makeBox(0, 1625, 150, 50));
-    that[3].boxes.push(makeBox(250, 1475, 50, 250));
-    that[3].boxes.push(makeBox(150, 1475, 150, 50));
-    that[3].boxes.push(makeBox(0, 1200, 5, 200));
-    that[3].boxes.push(makeBox(200, 1000, 5, 200));
-    that[3].boxes.push(makeBox(0, 800, 5, 200));
-    that[3].boxes.push(makeBox(200, 600, 5, 200));
-    that[3].boxes.push(makeBox(400, 400, 5, 200));
-    that[3].boxes.push(makeBox(600, 200, 5, 200));
-    that[3].boxes.push(makeBox(500, 50, 50, 50));
-    that[3].boxes.push(makeBox(725, 50, 50, 50));
-    
-    that[3].boxes.push(makeBox(475, 2500, 50, 50));
-    that[3].boxes.push(makeBox(625, 2200, 50, 200));
-    that[3].boxes.push(makeBox(475, 2050, 50, 50));
+        that[2].endPoint = makeBox(20, -20, 20, 25);
+        that[2].w = 1980;
+        that[2].h = 1050;
 
-    that[3].boxes.push(makeBox(550, 1850, 50, 50));
-    that[3].boxes.push(makeBox(700, 1700, 100, 50));
-    that[3].boxes.push(makeBox(500, 1550, 100, 50));
-    that[3].boxes.push(makeBox(700, 1400, 100, 50));
-    that[3].boxes.push(makeBox(500, 1250, 100, 50));
-    that[3].boxes.push(makeBox(700, 950, 50, 200));
-    that[3].boxes.push(makeBox(900, 1000, 50, 50));
-    that[3].boxes.push(makeBox(950, 550, 50, 300));
-    that[3].boxes.push(makeBox(900, 250, 100, 310));
-    that[3].boxes.push(makeBox(750, 710, 50, 50));
-    that[3].boxes.push(makeBox(800, 250, 50, 50));
+        //Level 3
+        that[3].boxes.push(makeBox(0, 2950, 100, 50));
+        that[3].boxes.push(makeBox(325, 2950, 50, 50));
+        that[3].boxes.push(makeBox(475, 2800, 50, 50));
+        that[3].boxes.push(makeBox(625, 2650, 50, 50));
+        that[3].boxes.push(makeBox(775, 2500, 50, 50));
+        that[3].boxes.push(makeBox(900, 2350, 50, 50));
+        that[3].boxes.push(makeBox(950, 2000, 50, 200));
+        that[3].boxes.push(makeBox(675, 2000, 50, 50));
+        that[3].boxes.push(makeBox(400, 2000, 50, 50));
+        that[3].boxes.push(makeBox(125, 2000, 50, 50));
+        that[3].boxes.push(makeBox(0, 1625, 50, 250));
+        that[3].boxes.push(makeBox(0, 1625, 150, 50));
+        that[3].boxes.push(makeBox(250, 1475, 50, 250));
+        that[3].boxes.push(makeBox(150, 1475, 150, 50));
+        that[3].boxes.push(makeBox(0, 1200, 5, 200));
+        that[3].boxes.push(makeBox(200, 1000, 5, 200));
+        that[3].boxes.push(makeBox(0, 800, 5, 200));
+        that[3].boxes.push(makeBox(200, 600, 5, 200));
+        that[3].boxes.push(makeBox(400, 400, 5, 200));
+        that[3].boxes.push(makeBox(600, 200, 5, 200));
+        that[3].boxes.push(makeBox(500, 50, 50, 50));
+        that[3].boxes.push(makeBox(725, 50, 50, 50));
+        
+        that[3].boxes.push(makeBox(475, 2500, 50, 50));
+        that[3].boxes.push(makeBox(625, 2200, 50, 200));
+        that[3].boxes.push(makeBox(475, 2050, 50, 50));
 
-    that[3].endPoint = makeBox(960, 30, 20, 20);
-    that[3].w = 1000;
-    that[3].h = 3000;
+        that[3].boxes.push(makeBox(550, 1850, 50, 50));
+        that[3].boxes.push(makeBox(700, 1700, 100, 50));
+        that[3].boxes.push(makeBox(500, 1550, 100, 50));
+        that[3].boxes.push(makeBox(700, 1400, 100, 50));
+        that[3].boxes.push(makeBox(500, 1250, 100, 50));
+        that[3].boxes.push(makeBox(700, 950, 50, 200));
+        that[3].boxes.push(makeBox(900, 1000, 50, 50));
+        that[3].boxes.push(makeBox(950, 550, 50, 300));
+        that[3].boxes.push(makeBox(900, 250, 100, 310));
+        that[3].boxes.push(makeBox(750, 710, 50, 50));
+        that[3].boxes.push(makeBox(800, 250, 50, 50));
 
-    //Level 4
-    that[4].boxes.push(makeBox(0, 1950, 500, 50));
-    that[4].boxes.push(makeBox(450, 1500, 50, 500));
-    that[4].boxes.push(makeBox(0, 1500, 500, 50));
-    that[4].boxes.push(makeBox(700, 1950, 100, 50));
-    that[4].boxes.push(makeBox(1100, 1950, 100, 50));
-    that[4].boxes.push(makeBox(1400, 1750, 50, 200));
-    that[4].boxes.push(makeBox(1400, 1950, 150, 50));
-    that[4].boxes.push(makeBox(1700, 1550, 50, 200));
-    that[4].boxes.push(makeBox(1950, 1350, 50, 200));
-    that[4].boxes.push(makeBox(1650, 1050, 50, 200));
-    that[4].boxes.push(makeBox(1650, 1050, 150, 50));
-    that[4].boxes.push(makeBox(1275, 1100, 425, 50));
-    that[4].boxes.push(makeBox(1225, 1050, 100, 50));
-    that[4].boxes.push(makeBox(1225, 800, 50, 250));
-    that[4].boxes.push(makeBox(1525, 700, 200, 50));
-    that[4].boxes.push(makeBox(1825, 600, 200, 50));
+        that[3].endPoint = makeBox(960, 30, 20, 20);
+        that[3].w = 1000;
+        that[3].h = 3000;
 
-    that[4].boxes.push(makeBox(0, 500, 1525, 50));
-    that[4].boxes.push(makeBox(0, 0, 50, 510));
-    that[4].boxes.push(makeBox(300, 450, 50, 60));
-    that[4].boxes.push(makeBox(600, 450, 50, 60));
-    that[4].boxes.push(makeBox(900, 450, 50, 60));
-    that[4].boxes.push(makeBox(1200, 450, 50, 60));
-    that[4].boxes.push(makeBox(40, 250, 60, 50));
-    that[4].boxes.push(makeBox(40, 50, 60, 50));
-    that[4].boxes.push(makeBox(375, 50, 225, 50));
+        //Level 4
+        that[4].boxes.push(makeBox(0, 1950, 500, 50));
+        that[4].boxes.push(makeBox(450, 1500, 50, 500));
+        that[4].boxes.push(makeBox(0, 1500, 500, 50));
+        that[4].boxes.push(makeBox(700, 1950, 100, 50));
+        that[4].boxes.push(makeBox(1100, 1950, 100, 50));
+        that[4].boxes.push(makeBox(1400, 1750, 50, 200));
+        that[4].boxes.push(makeBox(1400, 1950, 150, 50));
+        that[4].boxes.push(makeBox(1700, 1550, 50, 200));
+        that[4].boxes.push(makeBox(1950, 1350, 50, 200));
+        that[4].boxes.push(makeBox(1650, 1050, 50, 200));
+        that[4].boxes.push(makeBox(1650, 1050, 150, 50));
+        that[4].boxes.push(makeBox(1275, 1100, 425, 50));
+        that[4].boxes.push(makeBox(1225, 1050, 100, 50));
+        that[4].boxes.push(makeBox(1225, 800, 50, 250));
+        that[4].boxes.push(makeBox(1525, 700, 200, 50));
+        that[4].boxes.push(makeBox(1825, 600, 200, 50));
 
-    that[4].boxes.push(makeBox(825, 300, 150, 50));
-    that[4].boxes.push(makeBox(1075, 300, 150, 50));
+        that[4].boxes.push(makeBox(0, 500, 1525, 50));
+        that[4].boxes.push(makeBox(0, 0, 50, 510));
+        that[4].boxes.push(makeBox(300, 450, 50, 60));
+        that[4].boxes.push(makeBox(600, 450, 50, 60));
+        that[4].boxes.push(makeBox(900, 450, 50, 60));
+        that[4].boxes.push(makeBox(1200, 450, 50, 60));
+        that[4].boxes.push(makeBox(40, 250, 60, 50));
+        that[4].boxes.push(makeBox(40, 50, 60, 50));
+        that[4].boxes.push(makeBox(375, 50, 225, 50));
 
-    that[4].boxes.push(makeBox(935, 0, 180, 50));
-    that[4].boxes.push(makeBox(935, 100, 180, 50));
-    that[4].boxes.push(makeBox(925, 0, 50, 150));
-    that[4].boxes.push(makeBox(1075, 0, 50, 150));
+        that[4].boxes.push(makeBox(825, 300, 150, 50));
+        that[4].boxes.push(makeBox(1075, 300, 150, 50));
 
-    that[4].enemies.push(makeEnemy(1325, 1090, 10, 10, ENEMY_SPEED, 1325, 1350));
-    that[4].enemies.push(makeEnemy(1350, 1090, 10, 10, ENEMY_SPEED, 1350, 1375));
-    that[4].enemies.push(makeEnemy(1375, 1090, 10, 10, ENEMY_SPEED, 1375, 1400));
-    that[4].enemies.push(makeEnemy(1400, 1090, 10, 10, ENEMY_SPEED, 1400, 1425));
-    that[4].enemies.push(makeEnemy(1425, 1090, 10, 10, ENEMY_SPEED, 1425, 1450));
-    that[4].enemies.push(makeEnemy(1450, 1090, 10, 10, ENEMY_SPEED, 1450, 1475));
-    that[4].enemies.push(makeEnemy(1475, 1090, 10, 10, ENEMY_SPEED, 1475, 1500));
-    that[4].enemies.push(makeEnemy(1500, 1090, 10, 10, ENEMY_SPEED, 1500, 1525));
-    that[4].enemies.push(makeEnemy(1525, 1090, 10, 10, ENEMY_SPEED, 1525, 1550));
-    that[4].enemies.push(makeEnemy(1550, 1090, 10, 10, ENEMY_SPEED, 1550, 1575));
-    that[4].enemies.push(makeEnemy(1575, 1090, 10, 10, ENEMY_SPEED, 1575, 1600));
-    that[4].enemies.push(makeEnemy(1600, 1090, 10, 10, ENEMY_SPEED, 1600, 1625));
-    that[4].enemies.push(makeEnemy(1625, 1090, 10, 10, ENEMY_SPEED, 1625, 1650));
+        that[4].boxes.push(makeBox(935, 0, 180, 50));
+        that[4].boxes.push(makeBox(935, 100, 180, 50));
+        that[4].boxes.push(makeBox(925, 0, 50, 150));
+        that[4].boxes.push(makeBox(1075, 0, 50, 150));
 
-    that[4].enemies.push(makeEnemy(300, 440, 10, 10, ENEMY_SPEED, 300, 340));
-    that[4].enemies.push(makeEnemy(600, 440, 10, 10, ENEMY_SPEED, 600, 640));
-    that[4].enemies.push(makeEnemy(900, 440, 10, 10, ENEMY_SPEED, 900, 940));
-    that[4].enemies.push(makeEnemy(1200, 440, 10, 10, ENEMY_SPEED, 1200, 1240));
+        that[4].enemies.push(makeEnemy(1325, 1090, 10, 10, ENEMY_SPEED, 1325, 1350));
+        that[4].enemies.push(makeEnemy(1350, 1090, 10, 10, ENEMY_SPEED, 1350, 1375));
+        that[4].enemies.push(makeEnemy(1375, 1090, 10, 10, ENEMY_SPEED, 1375, 1400));
+        that[4].enemies.push(makeEnemy(1400, 1090, 10, 10, ENEMY_SPEED, 1400, 1425));
+        that[4].enemies.push(makeEnemy(1425, 1090, 10, 10, ENEMY_SPEED, 1425, 1450));
+        that[4].enemies.push(makeEnemy(1450, 1090, 10, 10, ENEMY_SPEED, 1450, 1475));
+        that[4].enemies.push(makeEnemy(1475, 1090, 10, 10, ENEMY_SPEED, 1475, 1500));
+        that[4].enemies.push(makeEnemy(1500, 1090, 10, 10, ENEMY_SPEED, 1500, 1525));
+        that[4].enemies.push(makeEnemy(1525, 1090, 10, 10, ENEMY_SPEED, 1525, 1550));
+        that[4].enemies.push(makeEnemy(1550, 1090, 10, 10, ENEMY_SPEED, 1550, 1575));
+        that[4].enemies.push(makeEnemy(1575, 1090, 10, 10, ENEMY_SPEED, 1575, 1600));
+        that[4].enemies.push(makeEnemy(1600, 1090, 10, 10, ENEMY_SPEED, 1600, 1625));
+        that[4].enemies.push(makeEnemy(1625, 1090, 10, 10, ENEMY_SPEED, 1625, 1650));
 
-    that[4].enemies.push(makeEnemy(825, 290, 10, 10, ENEMY_SPEED, 825, 865));
-    that[4].enemies.push(makeEnemy(875, 290, 10, 10, ENEMY_SPEED, 875, 915));
-    that[4].enemies.push(makeEnemy(925, 290, 10, 10, ENEMY_SPEED, 925, 965));
-    that[4].enemies.push(makeEnemy(1075, 290, 10, 10, ENEMY_SPEED, 1075, 1115));
-    that[4].enemies.push(makeEnemy(1125, 290, 10, 10, ENEMY_SPEED, 1125, 1165));
-    that[4].enemies.push(makeEnemy(1175, 290, 10, 10, ENEMY_SPEED, 1175, 1215));
+        that[4].enemies.push(makeEnemy(300, 440, 10, 10, ENEMY_SPEED, 300, 340));
+        that[4].enemies.push(makeEnemy(600, 440, 10, 10, ENEMY_SPEED, 600, 640));
+        that[4].enemies.push(makeEnemy(900, 440, 10, 10, ENEMY_SPEED, 900, 940));
+        that[4].enemies.push(makeEnemy(1200, 440, 10, 10, ENEMY_SPEED, 1200, 1240));
 
-    that[4].endPoint = makeBox(1040, 65, 20, 20);
-    that[4].w = 2000;
-    that[4].h = 2000;
+        that[4].enemies.push(makeEnemy(825, 290, 10, 10, ENEMY_SPEED, 825, 865));
+        that[4].enemies.push(makeEnemy(875, 290, 10, 10, ENEMY_SPEED, 875, 915));
+        that[4].enemies.push(makeEnemy(925, 290, 10, 10, ENEMY_SPEED, 925, 965));
+        that[4].enemies.push(makeEnemy(1075, 290, 10, 10, ENEMY_SPEED, 1075, 1115));
+        that[4].enemies.push(makeEnemy(1125, 290, 10, 10, ENEMY_SPEED, 1125, 1165));
+        that[4].enemies.push(makeEnemy(1175, 290, 10, 10, ENEMY_SPEED, 1175, 1215));
+
+        that[4].endPoint = makeBox(1040, 65, 20, 20);
+        that[4].w = 2000;
+        that[4].h = 2000;
+    };
     return that;
 }());
 function colCheck(shapeA, shapeB) {
@@ -346,28 +357,49 @@ function colCheck(shapeA, shapeB) {
 }
 let Player = function(id){
     let self = {
-        x: 50,
-        y: 420,
-        w: 30,
-        h: 30,
-        id: id,
-        number: Math.floor(10 * Math.random()),
-        pressingRight: false,
-        pressingLeft: false,
-        pressingUp: false,
-        pressingDown: false,
-        xSpeed: 10,
-        ySpeed: 0,
-        state: 'ground',
-        deadCount: 0,
-        finished: false,
-        attacking: false,
-        time: 0,
-        doubleJump: false,
-        dashing: false,
-        dashCoolDown: 0
+        // x: 50,
+        // y: 420,
+        // w: 30,
+        // h: 30,
+        // id: id,
+        // number: Math.floor(10 * Math.random()),
+        // pressingRight: false,
+        // pressingLeft: false,
+        // pressingUp: false,
+        // pressingDown: false,
+        // xSpeed: 10,
+        // ySpeed: 0,
+        // state: 'ground',
+        // deadCount: 0,
+        // finished: false,
+        // attacking: false,
+        // time: 0,
+        // doubleJump: false,
+        // dashing: false,
+        // dashCoolDown: 0
     }
-
+    self.initialize = function(){
+        self.x = 50;
+        self.y = 420;
+        self.w = 30;
+        self.h = 30;
+        self.id = id;
+        self.number = Math.floor(10 * Math.random());
+        self.pressingRight = false;
+        self.pressingLeft = false;
+        self.pressingUp = false;
+        self.pressingDown = false;
+        self.xSpeed = 10;
+        self.ySpeed = 0;
+        self.state = 'ground';
+        self.deadCount = 0;
+        self.finished = false;
+        self.attacking = false;
+        self.time = 0;
+        self.doubleJump = false;
+        self.dashing = false;
+        self.dashCoolDown = 0;
+    }
     function dead(){
         self.x = 50;
         self.y = 420;
@@ -391,6 +423,28 @@ let Player = function(id){
             console.log('Final Time: ' + self.time);
             self.finished = true;
             finishedLevelCount++;
+            if(currentLevel == 4){
+                for(let i = 0; i < highScores.length; i++){
+                    if(highScores[i] != ' '){
+                        if(self.time < highScores[i]){
+                            let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
+                            highScores.splice(i, 0, scoreString);
+                            console.log('New High Score: ' + highScores[i]);
+                            break;
+                        }
+                    }
+                    else {
+                        let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
+                        highScores.splice(i, 0, scoreString);
+                        console.log('New High Score: ' + highScores[i]);
+                        break;
+                    }
+                }
+                highScores.length = 5;
+                for(let i in SOCKET_LIST){
+                    SOCKET_LIST[i].emit('highScores', highScores);
+                }
+            }
         }
     }
     self.attack = function(){
@@ -512,9 +566,12 @@ io.sockets.on('connection', function(socket){
     SOCKET_LIST[socket.id] = socket;
 
     let player = Player(socket.id);
+    player.initialize();
     PLAYER_LIST[socket.id] = player;
 
     currentPlayerCount++;
+
+    socket.emit('highScores', highScores);
 
     socket.on('disconnect', function(){
         delete SOCKET_LIST[socket.id];
@@ -580,17 +637,21 @@ io.sockets.on('connection', function(socket){
     socket.on('lobby', function(data){
         if(data == 'enter'){
             lobbyPlayers++;
-            if(lobbyPlayers == 2){
+            if(lobbyPlayers == 4){
                 for(var i in SOCKET_LIST){
                     let socket = SOCKET_LIST[i];
                     let pack = {};
                     socket.emit('startNewGame', pack);
+                    socket.emit('nextLevel', currentLevel);
                 }
+                MyLevels[5].initialize();
                 gameStarted = true;
                 startTime = process.hrtime();
             }
         }
         else if(data == 'single'){
+            MyLevels[5].initialize();
+            socket.emit('nextLevel', currentLevel);
             gameStarted = true;
             startTime = process.hrtime();
         }
@@ -601,10 +662,10 @@ io.sockets.on('connection', function(socket){
 });
 
 function update(elapsedTime){
-    // if(currentPlayerCount == 0){
-    //     console.log('Starting Back at Level 1');
-    //     currentLevel = 0;
-    // }
+    if(currentPlayerCount == 0){
+        console.log('Starting Back at Level 1');
+        currentLevel = 0;
+    }
     if(gameStarted){
         let pack = {
             players: [],
@@ -657,21 +718,27 @@ function update(elapsedTime){
             ySpeed = 12 * Math.sin(theta);
             attacks[i].x += xDir * xSpeed;
             attacks[i].y += yDir * ySpeed;
-            let colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
-            if(colDir != null){
-                console.log('Enemy Dead');
-               // MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
-                MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
-                deleteAttacks.push(i);
-            }
-            else{
-                for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
-                    colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
-                    if(colDir != null){
-                        deleteAttacks.push(i);
-                        break;
+            let colDir;
+            if(attacks[i].enemy < MyLevels[currentLevel].enemies.length){
+                colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
+                if(colDir != null){
+                    console.log('Enemy Dead');
+                // MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
+                    MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
+                    deleteAttacks.push(i);
+                }
+                else{
+                    for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
+                        colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
+                        if(colDir != null){
+                            deleteAttacks.push(i);
+                            break;
+                        }
                     }
                 }
+            }
+            else{
+                deleteAttacks.push(i);
             }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
@@ -698,7 +765,7 @@ function update(elapsedTime){
                 newLevel = true;
                 if(count == 1){
                     currentLevel++;
-                    if(currentLevel == 1){ //do this for levels 3 and 4
+                    if(currentLevel == 1){ 
                         for(let j in PLAYER_LIST){
                             PLAYER_LIST[j].x = 50;
                             PLAYER_LIST[j].y = 420;
@@ -727,13 +794,17 @@ function update(elapsedTime){
                 if(count == pack.players.length){
                     finishedLevelCount = 0;
                 }
-                let level = currentLevel;
+                //let level = currentLevel;
                 if(currentLevel <= 4){
                     socket.emit('nextLevel', currentLevel);
                     startTime = process.hrtime();
                 }
                 else {
                     currentLevel = 0;
+                    for(var i in PLAYER_LIST){
+                        PLAYER_LIST[i].initialize();
+                    }
+                    socket.emit('nextLevel', 'credits');
                 }
             }
         }
