@@ -135,11 +135,43 @@ let MyLevels = (function(){
     that[3].h = 3000;
 
     //Level 4
-    that[4].boxes.push(makeBox(0, 450, 500, 50));
-    that[4].boxes.push(makeBox(450, 0, 50, 500));
+    that[4].boxes.push(makeBox(0, 1950, 500, 50));
+    that[4].boxes.push(makeBox(450, 1500, 50, 500));
+    that[4].boxes.push(makeBox(0, 1500, 500, 50));
+    that[4].boxes.push(makeBox(700, 1950, 100, 50));
+    that[4].boxes.push(makeBox(1100, 1950, 100, 50));
+    that[4].boxes.push(makeBox(1400, 1750, 50, 200));
+    that[4].boxes.push(makeBox(1400, 1950, 150, 50));
+    that[4].boxes.push(makeBox(1700, 1550, 50, 200));
+    that[4].boxes.push(makeBox(1950, 1350, 50, 200));
+    that[4].boxes.push(makeBox(1650, 1050, 50, 200));
+    that[4].boxes.push(makeBox(1650, 1050, 150, 50));
+    that[4].boxes.push(makeBox(1275, 1100, 425, 50));
+    that[4].boxes.push(makeBox(1225, 1050, 100, 50));
+    that[4].boxes.push(makeBox(1225, 800, 50, 250));
+    that[4].boxes.push(makeBox(1525, 700, 200, 50));
+    that[4].boxes.push(makeBox(1825, 600, 200, 50));
 
-    that[4].endPoint = makeBox(520, 430, 20, 20);
-    that[4].w = 1000;
-    that[4].h = 500;
+    that[4].boxes.push(makeBox(0, 500, 1525, 50));
+    that[4].boxes.push(makeBox(0, 0, 50, 510));
+    that[4].boxes.push(makeBox(300, 450, 50, 60));
+    that[4].boxes.push(makeBox(600, 450, 50, 60));
+    that[4].boxes.push(makeBox(900, 450, 50, 60));
+    that[4].boxes.push(makeBox(1200, 450, 50, 60));
+    that[4].boxes.push(makeBox(40, 250, 60, 50));
+    that[4].boxes.push(makeBox(40, 50, 60, 50));
+    that[4].boxes.push(makeBox(375, 50, 225, 50));
+
+    that[4].boxes.push(makeBox(825, 300, 150, 50));
+    that[4].boxes.push(makeBox(1075, 300, 150, 50));
+
+    that[4].boxes.push(makeBox(935, 0, 180, 50));
+    that[4].boxes.push(makeBox(935, 100, 180, 50));
+    that[4].boxes.push(makeBox(925, 0, 50, 150));
+    that[4].boxes.push(makeBox(1075, 0, 50, 150));
+
+    that[4].endPoint = makeBox(1040, 65, 20, 20);
+    that[4].w = 2000;
+    that[4].h = 2000;
     return that;
 }());
