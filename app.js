@@ -718,7 +718,7 @@ function update(elapsedTime){
                     }
                     else if(currentLevel == 4){
                         for(let j in PLAYER_LIST){
-                            PLAYER_LIST[j].x = 0;
+                            PLAYER_LIST[j].x = 50;
                             PLAYER_LIST[j].y = 1920;
                         }
                     }
@@ -728,12 +728,12 @@ function update(elapsedTime){
                     finishedLevelCount = 0;
                 }
                 let level = currentLevel;
-                if(currentLevel < 4){
+                if(currentLevel <= 4){
                     socket.emit('nextLevel', currentLevel);
                     startTime = process.hrtime();
                 }
                 else {
-                    currentLevel = 4;
+                    currentLevel = 0;
                 }
             }
         }
