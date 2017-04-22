@@ -18,7 +18,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 2;
+let currentLevel = 0;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -669,7 +669,7 @@ io.sockets.on('connection', function(socket){
 function update(elapsedTime){
     if(currentPlayerCount == 0){
         console.log('Starting Back at Level 1');
-        currentLevel = 2;
+        currentLevel = 0;
         gameStarted = false;
     }
     if(gameStarted){
