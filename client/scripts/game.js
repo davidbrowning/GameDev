@@ -4,8 +4,10 @@ let mainMenu;
 let newGame;
 let gameLobby;
 let highScores;
+let scoreList = {};
 let controls;
 let credits;
+let noServers;
 let customControls = {};
 let substate;
 let animation;
@@ -30,6 +32,10 @@ let platform_img = new Image();
 platform_img.src = 'client/assets/sheet.png'
 let currentLevel = 0;
 let attacks = [];
+let myTime;
+let myDeathCount;
+let timeDiv;
+let deathDiv;
 
 drawable = function(){
     canDraw = true;
@@ -47,19 +53,31 @@ socket.on('startNewGame', function(data){
 });
 
 socket.on('nextLevel', function(data){
-    currentLevel = data;
-    offset.x = 0; 
-    offset.y = 0;
-    if(currentLevel == 2){
-        offset.y = 600;
+    if(data == 'credits'){
+        changeState(data);
+        currentLevel = 0;
     }
-    else if(currentLevel == 3){
-        offset.y = 2550;
+    else {
+        currentLevel = data;
+        offset.x = 0; 
+        offset.y = 0;
+        if(currentLevel == 2){
+            offset.y = 600;
+        }
+        else if(currentLevel == 3){
+            offset.y = 2550;
+        }
+        else if(currentLevel == 4){
+            offset.y = 1550;
+        }
+        console.log('Starting Level: ' + currentLevel);
     }
-    else if(currentLevel == 4){
-        offset.y = 1550;
+});
+
+socket.on('highScores', function(data){
+    for(let i = 0; i < 5; i++){
+        scoreList.item[i].innerHTML = data[i];
     }
-    console.log('Starting Level: ' + currentLevel);
 });
 
 function changeState(state){
@@ -102,7 +120,15 @@ function changeState(state){
     }
     else if(state == 'credits'){
         mainMenu.style.display = 'none';
+        newGame.style.display = 'none';
         credits.style.display = 'block';
+    }
+    else if(state == 'noServers'){
+        mainMenu.style.display = 'none';
+        newGame.style.display = 'none';
+        highScores.style.display = 'none';
+        credits.style.display = 'none';
+        noServers.style.display = 'block';
     }
 }
 
@@ -140,6 +166,8 @@ function update(elapsedTime){ //Change this so it is according to what player yo
                     offset.y -= 10;
                 }
             }
+            myTime = players[i].time;
+            myDeathCount = players[i].deadCount;
         }
     }
 }
@@ -301,6 +329,8 @@ function render(elapsedTime){
     for(let i = 0; i < attacks.length; i++){
         Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
     }
+    timeDiv.innerHTML = 'Time in Seconds: ' + myTime;
+    deathDiv.innerHTML = 'Death Count: ' + myDeathCount;
 }
 
 function gameLoop(){
@@ -312,14 +342,24 @@ function gameLoop(){
 }
 
 function initialize(){
-    console.log('Initializing...')
+    console.log('Initializing...');
     gameState = 'mainMenu';
     mainMenu = document.getElementById('mainMenu');
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
     highScores = document.getElementById('highScores');
+    scoreList.item = [];
+    scoreList.item.push(document.getElementById('firstScore'));
+    scoreList.item.push(document.getElementById('secondScore')); 
+    scoreList.item.push(document.getElementById('thirdScore')); 
+    scoreList.item.push(document.getElementById('fourthScore')); 
+    scoreList.item.push(document.getElementById('fifthScore'));  
     controls = document.getElementById('controls');
     credits = document.getElementById('credits');
+    noServers = document.getElementById('noServers');
+    socket.on('noServers', function(data){
+        changeState('noServers');
+    });
     customControls.up = 'w';
     customControls.down = 's';
     customControls.left = 'a';
@@ -339,5 +379,7 @@ function initialize(){
     offset.x = 0;
     offset.y = 0;
     currentLevel = 0;
+    timeDiv = document.getElementById('time');
+    deathDiv = document.getElementById('deathCount');
     Graphics.initialize();
 }
