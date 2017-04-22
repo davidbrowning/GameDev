@@ -18,7 +18,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 2;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -669,7 +669,7 @@ io.sockets.on('connection', function(socket){
 function update(elapsedTime){
     if(currentPlayerCount == 0){
         console.log('Starting Back at Level 1');
-        currentLevel = 0;
+        currentLevel = 2;
         gameStarted = false;
     }
     if(gameStarted){
@@ -711,21 +711,21 @@ function update(elapsedTime){
         }
         pack.attacks = [];
         for(let i = 0; i < attacks.length; i++){
-            let xSpeed = (-attacks[i].x + MyLevels[currentLevel].enemies[attacks[i].enemy].x);
-            let ySpeed = (-attacks[i].y + MyLevels[currentLevel].enemies[attacks[i].enemy].y);
-            let xDir = 1;
-            let yDir = 1;
-            if(xSpeed < 0){
-                xDir = -1;
-                yDir = -1;                
-            }
-            let theta = Math.atan(ySpeed / xSpeed);
-            xSpeed = 12 * Math.cos(theta);
-            ySpeed = 12 * Math.sin(theta);
-            attacks[i].x += xDir * xSpeed;
-            attacks[i].y += yDir * ySpeed;
-            let colDir;
             if(attacks[i].enemy < MyLevels[currentLevel].enemies.length){
+                let xSpeed = (-attacks[i].x + MyLevels[currentLevel].enemies[attacks[i].enemy].x);
+                let ySpeed = (-attacks[i].y + MyLevels[currentLevel].enemies[attacks[i].enemy].y);
+                let xDir = 1;
+                let yDir = 1;
+                if(xSpeed < 0){
+                    xDir = -1;
+                    yDir = -1;                
+                }
+                let theta = Math.atan(ySpeed / xSpeed);
+                xSpeed = 12 * Math.cos(theta);
+                ySpeed = 12 * Math.sin(theta);
+                attacks[i].x += xDir * xSpeed;
+                attacks[i].y += yDir * ySpeed;
+                let colDir;
                 colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
                 if(colDir != null){
                     console.log('Enemy Dead');
@@ -742,9 +742,6 @@ function update(elapsedTime){
                         }
                     }
                 }
-            }
-            else{
-                deleteAttacks.push(i);
             }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
         }
