@@ -562,109 +562,115 @@ let Player = function(id){
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
-    socket.id = Math.random();
-    SOCKET_LIST[socket.id] = socket;
+    if(!gameStarted){
+        socket.id = Math.random();
+        SOCKET_LIST[socket.id] = socket;
 
-    let player = Player(socket.id);
-    player.initialize();
-    PLAYER_LIST[socket.id] = player;
+        let player = Player(socket.id);
+        player.initialize();
+        PLAYER_LIST[socket.id] = player;
 
-    currentPlayerCount++;
+        currentPlayerCount++;
 
-    socket.emit('highScores', highScores);
+        socket.emit('highScores', highScores);
 
-    socket.on('disconnect', function(){
-        delete SOCKET_LIST[socket.id];
-        delete PLAYER_LIST[socket.id];
-        currentPlayerCount--;
-    });
+        socket.on('disconnect', function(){
+            delete SOCKET_LIST[socket.id];
+            delete PLAYER_LIST[socket.id];
+            currentPlayerCount--;
+        });
 
-    socket.on('keyPress', function(data){
-        if(data.inputId == 'up'){
-            player.pressingUp = data.state;
-        }
-        else if(data.inputId == 'left'){
-            player.pressingLeft = data.state;
-        }
-        else if(data.inputId == 'down'){
-            player.pressingDown = data.state;
-        }
-        else if(data.inputId == 'right'){
-            player.pressingRight = data.state;
-        }
-        else if(data.inputId == 'jump'){
-            //console.log('Jump on Server');
-            if(player.state != 'jump'){
-                player.ySpeed = -30;
-                player.state = 'jump';
+        socket.on('keyPress', function(data){
+            if(data.inputId == 'up'){
+                player.pressingUp = data.state;
             }
-            else if(!player.doubleJump && currentLevel >= 3){
-                player.doubleJump = true;
-                player.ySpeed = -30;
+            else if(data.inputId == 'left'){
+                player.pressingLeft = data.state;
             }
-        }
-        else if(data.inputId == 'attack'){
-            console.log('Attack');
-            if(currentLevel >= 1 && (!PLAYER_LIST[data.player].attacking)){
-                let attack = PLAYER_LIST[data.player].attack();
-                if(attack != null){
-                    PLAYER_LIST[data.player].attacking = true;
-                    attacks.push({
-                        x: PLAYER_LIST[data.player].x, 
-                        y: PLAYER_LIST[data.player].y,
-                        w: 10,
-                        h: 10, 
-                        enemy: attack,
-                        player: data.player
-                    });
+            else if(data.inputId == 'down'){
+                player.pressingDown = data.state;
+            }
+            else if(data.inputId == 'right'){
+                player.pressingRight = data.state;
+            }
+            else if(data.inputId == 'jump'){
+                //console.log('Jump on Server');
+                if(player.state != 'jump'){
+                    player.ySpeed = -30;
+                    player.state = 'jump';
                 }
-                else {
-                    PLAYER_LIST[data.player].attacking = false;
+                else if(!player.doubleJump && currentLevel >= 3){
+                    player.doubleJump = true;
+                    player.ySpeed = -30;
                 }
-            } 
-        }
-        else if(data.inputId == 'dash'){
-            console.log('Dash');
-            if(currentLevel >= 4 && (!PLAYER_LIST[data.player].dashing)){
-                if(elapsedTime - PLAYER_LIST[data.player].dashCoolDown > 0.5){
-                    PLAYER_LIST[data.player].dashing = true;
-                    PLAYER_LIST[data.player].dashCoolDown = elapsedTime;
-                }
-            } 
-        }
-    });
+            }
+            else if(data.inputId == 'attack'){
+                console.log('Attack');
+                if(currentLevel >= 1 && (!PLAYER_LIST[data.player].attacking)){
+                    let attack = PLAYER_LIST[data.player].attack();
+                    if(attack != null){
+                        PLAYER_LIST[data.player].attacking = true;
+                        attacks.push({
+                            x: PLAYER_LIST[data.player].x, 
+                            y: PLAYER_LIST[data.player].y,
+                            w: 10,
+                            h: 10, 
+                            enemy: attack,
+                            player: data.player
+                        });
+                    }
+                    else {
+                        PLAYER_LIST[data.player].attacking = false;
+                    }
+                } 
+            }
+            else if(data.inputId == 'dash'){
+                console.log('Dash');
+                if(currentLevel >= 4 && (!PLAYER_LIST[data.player].dashing)){
+                    if(elapsedTime - PLAYER_LIST[data.player].dashCoolDown > 0.5){
+                        PLAYER_LIST[data.player].dashing = true;
+                        PLAYER_LIST[data.player].dashCoolDown = elapsedTime;
+                    }
+                } 
+            }
+        });
 
-    socket.on('lobby', function(data){
-        if(data == 'enter'){
-            lobbyPlayers++;
-            if(lobbyPlayers == 4){
-                for(var i in SOCKET_LIST){
-                    let socket = SOCKET_LIST[i];
-                    let pack = {};
-                    socket.emit('startNewGame', pack);
-                    socket.emit('nextLevel', currentLevel);
+        socket.on('lobby', function(data){
+            if(data == 'enter'){
+                lobbyPlayers++;
+                if(lobbyPlayers == 4){
+                    for(var i in SOCKET_LIST){
+                        let socket = SOCKET_LIST[i];
+                        let pack = {};
+                        socket.emit('startNewGame', pack);
+                        socket.emit('nextLevel', currentLevel);
+                    }
+                    MyLevels[5].initialize();
+                    gameStarted = true;
+                    startTime = process.hrtime();
                 }
+            }
+            else if(data == 'single'){
                 MyLevels[5].initialize();
+                socket.emit('nextLevel', currentLevel);
                 gameStarted = true;
                 startTime = process.hrtime();
             }
-        }
-        else if(data == 'single'){
-            MyLevels[5].initialize();
-            socket.emit('nextLevel', currentLevel);
-            gameStarted = true;
-            startTime = process.hrtime();
-        }
-        else if(data == 'exit'){
-            lobbyPlayers--;
-        }
-    });
+            else if(data == 'exit'){
+                lobbyPlayers--;
+            }
+        });
+    }
+    else{
+        socket.emit('noServers', 'No available servers.');
+    }
 });
 
 function update(elapsedTime){
     if(currentPlayerCount == 0){
         console.log('Starting Back at Level 1');
         currentLevel = 0;
+        gameStarted = false;
     }
     if(gameStarted){
         let pack = {
@@ -755,6 +761,13 @@ function update(elapsedTime){
             for(let j = 0; j < pack.players.length; j++){
                 if(pack.players[j].id == i){
                     pack.players[j].myPlayer = true;
+                    if(PLAYER_LIST[i].finished){
+                        pack.players[j].time = PLAYER_LIST[i].time;
+                    }
+                    else{
+                        pack.players[j].time = elapsedTime + PLAYER_LIST[i].time;
+                    }
+                    pack.players[j].deadCount = PLAYER_LIST[i].deadCount;
                 }
                 else {
                     pack.players[j].myPlayer = false;
@@ -805,6 +818,7 @@ function update(elapsedTime){
                         PLAYER_LIST[i].initialize();
                     }
                     socket.emit('nextLevel', 'credits');
+                    gameStarted = false;
                 }
             }
         }
