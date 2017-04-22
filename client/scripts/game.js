@@ -4,10 +4,8 @@ let mainMenu;
 let newGame;
 let gameLobby;
 let highScores;
-let scoreList = {};
 let controls;
 let credits;
-let noServers;
 let customControls = {};
 let substate;
 let animation;
@@ -32,10 +30,6 @@ let platform_img = new Image();
 platform_img.src = 'client/assets/sheet.png'
 let currentLevel = 0;
 let attacks = [];
-let myTime;
-let myDeathCount;
-let timeDiv;
-let deathDiv;
 
 drawable = function(){
     canDraw = true;
@@ -53,31 +47,10 @@ socket.on('startNewGame', function(data){
 });
 
 socket.on('nextLevel', function(data){
-    if(data == 'credits'){
-        changeState(data);
-        currentLevel = 0;
-    }
-    else {
-        currentLevel = data;
-        offset.x = 0; 
-        offset.y = 0;
-        if(currentLevel == 2){
-            offset.y = 600;
-        }
-        else if(currentLevel == 3){
-            offset.y = 2550;
-        }
-        else if(currentLevel == 4){
-            offset.y = 1550;
-        }
-        console.log('Starting Level: ' + currentLevel);
-    }
-});
-
-socket.on('highScores', function(data){
-    for(let i = 0; i < 5; i++){
-        scoreList.item[i].innerHTML = data[i];
-    }
+    currentLevel = data;
+    offset.x = 0; 
+    offset.y = 0;
+    console.log('Starting Level: ' + currentLevel);
 });
 
 function changeState(state){
@@ -120,15 +93,7 @@ function changeState(state){
     }
     else if(state == 'credits'){
         mainMenu.style.display = 'none';
-        newGame.style.display = 'none';
         credits.style.display = 'block';
-    }
-    else if(state == 'noServers'){
-        mainMenu.style.display = 'none';
-        newGame.style.display = 'none';
-        highScores.style.display = 'none';
-        credits.style.display = 'none';
-        noServers.style.display = 'block';
     }
 }
 
@@ -154,7 +119,7 @@ function update(elapsedTime){ //Change this so it is according to what player yo
             if(offset.y > players[i].y){
                 offset.y -= 10;
             }
-            else if(offset.y + screenSize.h < players[i].y + 50){
+            else if(offset.y + screenSize.h < players[i].y){
                 offset.y += 10;
             }
             if(players[i].y + 125 < MyLevels[currentLevel].h &&
@@ -166,8 +131,6 @@ function update(elapsedTime){ //Change this so it is according to what player yo
                     offset.y -= 10;
                 }
             }
-            myTime = players[i].time;
-            myDeathCount = players[i].deadCount;
         }
     }
 }
@@ -184,8 +147,8 @@ function render(elapsedTime){
              size : 100,
         });
         }
-        else if(currentLevel == 1){
-        Graphics.drawTexture({
+        else if(currentlevel == 1){
+        graphics.drawtexture({
              image : bckgrnd,
              center : {x : 0, y: 0},
              clip : {x : 0+backgroundcount, y : 600, width : 500, height : 300},
@@ -193,8 +156,8 @@ function render(elapsedTime){
              size : 100,
         });
         }
-        else if(currentLevel == 2){
-        Graphics.drawTexture({
+        else if(currentlevel == 2){
+        graphics.drawtexture({
              image : bckgrnd,
              center : {x : 0, y: 0},
              clip : {x : 0+backgroundcount, y : 550, width : 500, height : 300},
@@ -202,8 +165,8 @@ function render(elapsedTime){
              size : 100,
         });
         }
-        else if(currentLevel == 3){
-        Graphics.drawTexture({
+        else if(currentlevel == 3){
+        graphics.drawtexture({
              image : bckgrnd,
              center : {x : 0, y: 0},
              clip : {x : 0+backgroundcount, y : 450, width : 500, height : 300},
@@ -211,8 +174,8 @@ function render(elapsedTime){
              size : 100,
         });
         }
-        else if(currentLevel == 4){
-        Graphics.drawTexture({
+        else if(currentlevel == 4){
+        graphics.drawtexture({
              image : bckgrnd,
              center : {x : 0, y: 0},
              clip : {x : 0+backgroundcount, y : 150, width : 500, height : 300},
@@ -220,12 +183,13 @@ function render(elapsedTime){
              size : 100,
         });
         }
-    let end = MyLevels[currentLevel].endPoint;
-    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
+    let end = mylevels[currentlevel].endpoint;
+    graphics.drawrectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].boxes.length; i++){
         let box = MyLevels[currentLevel].boxes[i];
         let x = box.x - offset.x;
         let y = box.y - offset.y;
+<<<<<<< HEAD
         //Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
         if(box.w < 100 && box.h < 100){
             Graphics.drawTexture({
@@ -247,6 +211,27 @@ function render(elapsedTime){
             
         }
         else if(box.h > 50 && box.w < box.h/2){
+=======
+        Graphics.drawRectangle(x, y, box.w, box.h, 'rgba(0, 0, 0, 1)');
+        // if(box.w < 100){
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 15 , height : 10},
+        //          im : {width : 50, height : 50},
+        //          size : 100,
+        //     })
+        // }
+        // else{
+        //     Graphics.drawTexture({
+        //          image: platform_img,
+        //          center: {x : x, y: y},
+        //          clip : {x : 112, y : 32, width : 45 , height : 10},
+        //          im : {width : box.w, height : 50},
+        //          size : 100,
+        //     })
+        // }
+>>>>>>> 42619fdb8834f6b5f34de74e5a74d6fde40c5141
             Graphics.drawTexture({
                  image: platform_img,
                  center: {x : x, y: y},
@@ -273,6 +258,8 @@ function render(elapsedTime){
             })
         }
     }
+    let end = MyLevels[currentLevel].endPoint;
+    Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
     for(let i = 0; i < MyLevels[currentLevel].enemies.length; i++){
         let enemy = MyLevels[currentLevel].enemies[i];
         let x = enemy.x - offset.x;
@@ -301,13 +288,13 @@ function render(elapsedTime){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
         // x, y is hitbox, spritex, spritey is for drawing.
-        let spritex = x - 15;
-        let spritey = y - 25;
+        let spritex = x - 25;
+        let spritey = y - 45;
         if(players[i].myPlayer){
-            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
+            Graphics.drawRectangle(x, y, 10, 10, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){ if(players[i].r === true && players[i].j === false){
                 Graphics.drawTexture({
@@ -326,7 +313,7 @@ function render(elapsedTime){
                 Graphics.drawTexture({
                      image : reverse_img,
                      center : {x : spritex, y: spritey},
-                     clip : {x : 160 + (3%count * 32), y : players[i].character, width : 30, height : 35},
+                     clip : {x : 155 + (3%count * 32), y : players[i].character, width : 30, height : 35},
                      im : {width : 60, height : 65},
                      size : 100,
                      flip : true,
@@ -379,8 +366,6 @@ function render(elapsedTime){
     for(let i = 0; i < attacks.length; i++){
         Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
     }
-    timeDiv.innerHTML = 'Time in Seconds: ' + myTime;
-    deathDiv.innerHTML = 'Death Count: ' + myDeathCount;
 }
 
 function gameLoop(){
@@ -392,24 +377,14 @@ function gameLoop(){
 }
 
 function initialize(){
-    console.log('Initializing...');
+    console.log('Initializing...')
     gameState = 'mainMenu';
     mainMenu = document.getElementById('mainMenu');
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
     highScores = document.getElementById('highScores');
-    scoreList.item = [];
-    scoreList.item.push(document.getElementById('firstScore'));
-    scoreList.item.push(document.getElementById('secondScore')); 
-    scoreList.item.push(document.getElementById('thirdScore')); 
-    scoreList.item.push(document.getElementById('fourthScore')); 
-    scoreList.item.push(document.getElementById('fifthScore'));  
     controls = document.getElementById('controls');
     credits = document.getElementById('credits');
-    noServers = document.getElementById('noServers');
-    socket.on('noServers', function(data){
-        changeState('noServers');
-    });
     customControls.up = 'w';
     customControls.down = 's';
     customControls.left = 'a';
@@ -429,7 +404,5 @@ function initialize(){
     offset.x = 0;
     offset.y = 0;
     currentLevel = 2;
-    timeDiv = document.getElementById('time');
-    deathDiv = document.getElementById('deathCount');
     Graphics.initialize();
 }
