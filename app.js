@@ -669,7 +669,7 @@ io.sockets.on('connection', function(socket){
 function update(elapsedTime){
     if(currentPlayerCount == 0){
         console.log('Starting Back at Level 1');
-        currentLevel = 2;
+        currentLevel = 0;
         gameStarted = false;
     }
     if(gameStarted){
