@@ -5,27 +5,57 @@ html{
 h1{
     color: white;
     padding-left: 350px;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 p{
     color: white;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 h2{
     color: white;
     padding-left: 450px;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 li{
     color: white;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 #time{
     color: white;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 #deathCount {
     color: white;
+	font-family:Comic Sans MS;
+	font-weight:bold;
+	font-style:normal;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
 }
 
 #tempCanvas{
