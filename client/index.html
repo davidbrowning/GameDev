@@ -16,21 +16,26 @@
     </div>
     <div id = "mainMenu">
         <h2>Main Menu</h2>
-        <button id='newGameButton' onclick="changeState('gameLobby');">New Game</button>
-        <button id='highScoresButton' onclick="changeState('highScores');">High Scores</button>
-        <button id='controlsButton' onclick="changeState('controls');">Controls</button>
-        <button id='creditsButton' onclick="changeState('credits');">Credits</button>
+        <canvas id="tempCanvas" width="1000" height="500" ></canvas>
+        </br>
+        <button id='newGameButton' class = 'm_button' onclick="changeState('gameLobby');">New Game</button>
+        <button id='highScoresButton' class = 'm_button' onclick="changeState('highScores');">High Scores</button>
+        <button id='controlsButton' class = 'm_button' onclick="changeState('controls');">Controls</button>
+        <button id='creditsButton' class = 'm_button' onclick="changeState('credits');">Credits</button>
     </div>
     <div id="gameLobby">
         <h2>Game Lobby</h2>
-        <button id='singleGameButton' onclick="changeState('newGame');">Start Single Player Game</button>
-        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+        <canvas id="tempCanvas" width="1000" height="500" ></canvas>
+        </br>
+        <button id='singleGameButton' class = 'm_button' onclick="changeState('newGame');">Start Single Player Game</button>
+        <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id = "newGame">
         <div id="time"></div>
         <div id="deathCount"></div>
         <canvas id="canvas" width="1000" height="500" ></canvas>
-        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+        </br>
+        <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id = "highScores">
         <h2>High Scores</h2>
@@ -41,24 +46,33 @@
             <li id="fourthScore">0</li>
             <li id="fifthScore">0</li>
         </ol>
-        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+        <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id = "controls">
         <h2>Controls</h2>
         <p>Click on the control you want to change, and then click the keyboard button you want to replace it with.</p>
-        <button onclick="changeSubstate('up');">Climb Up</button>
-        <button onclick="changeSubstate('down');">Climb Down</button>
-        <button onclick="changeSubstate('left');">Run Left</button>
-        <button onclick="changeSubstate('right');">Run Right</button>
-        <button onclick="changeSubstate('jump');">Jump</button>
-        <button onclick="changeSubstate('attack');">Attack</button>
-        <button onclick="changeSubstate('dash');">Dash</button>
-        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+        <button class = 'm_button' onclick="changeSubstate('up');">Climb Up</button>
+        <button class = 'm_button' onclick="changeSubstate('down');">Climb Down</button>
+        </br>
+        <button class = 'm_button' onclick="changeSubstate('left');">Run Left</button>
+        <button class = 'm_button' onclick="changeSubstate('right');">Run Right</button>
+        </br>
+        </br>
+        <button class = 'm_button' onclick="changeSubstate('jump');">Jump</button>
+        </br>
+        </br>
+        <button class = 'm_button' onclick="changeSubstate('attack');">Attack</button>
+        </br>
+        </br>
+        <button class = 'm_button' onclick="changeSubstate('dash');">Dash</button>
+        </br>
+        </br>
+        <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id = "credits">
         <h2>Credits</h2>
         <p>Developed by: David Browning and Jeffrey Heilbut</p>
-        <button class='backButton' onclick="changeState('mainMenu');">Back to Main Menu</button>
+        <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id="noServers">No servers are currently available. Please refresh the page and try again later.</div>
 </body>

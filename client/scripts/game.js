@@ -75,8 +75,10 @@ socket.on('nextLevel', function(data){
 });
 
 socket.on('highScores', function(data){
+    if(scoreList.item != null){
     for(let i = 0; i < 5; i++){
         scoreList.item[i].innerHTML = data[i];
+    }
     }
 });
 
@@ -391,6 +393,12 @@ function gameLoop(){
     //window.cancelAnimationFrame(animation);
 }
 
+function initScorelist(){
+    if(scoreList.item == 'undefined'){
+        scoreList.item = [];
+    }
+}
+
 function initialize(){
     console.log('Initializing...');
     gameState = 'mainMenu';
@@ -398,6 +406,7 @@ function initialize(){
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
     highScores = document.getElementById('highScores');
+    initScorelist();
     scoreList.item = [];
     scoreList.item.push(document.getElementById('firstScore'));
     scoreList.item.push(document.getElementById('secondScore')); 
