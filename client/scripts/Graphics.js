@@ -48,6 +48,13 @@ let Graphics = (function(){
             context.strokeRect(x, y, width, height);
         };
 
+        that.drawParticle = function(x, y, width, height, color){
+            context.fillStyle = color;
+            context.fillRect(x, y, width, height);
+            context.strokeStyle = 'rgba(0, 0, 0, 1)';
+            context.strokeRect(x, y, width, height);
+        };
+
         that.drawText = function (text, x, y, font, fillStyle) {
             context.font = font;
             context.fillStyle = fillStyle;

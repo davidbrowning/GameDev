@@ -36,6 +36,13 @@ let myTime;
 let myDeathCount;
 let timeDiv;
 let deathDiv;
+let particles = []
+// Courtesy of a music professor of mine, and
+// freesound.org
+// RICHERlandTV, and Lefty_Studios
+let audio = new Audio('client/assets/jdc.mp3')
+let attack = new Audio('client/assets/attack3.wav')
+let jump = new Audio('client/assets/jump2.wav')
 
 drawable = function(){
     canDraw = true;
@@ -72,6 +79,9 @@ socket.on('nextLevel', function(data){
         }
         console.log('Starting Level: ' + currentLevel);
     }
+    //if(audio.ended()){
+    //    audio.play()
+    //}
 });
 
 socket.on('highScores', function(data){
@@ -375,11 +385,15 @@ function render(elapsedTime){
                 });
                 backgroundcount;
             }
+            if(players[i].j){
+                jump.play()
+            }
             if(backgroundcount < 0){backgroundcount = 1000} else if( backgroundcount > 1200){backgroundcount = 50} // If we care about it, this is what happens if the user takes forever to complete the level. 
         }
     }
     for(let i = 0; i < attacks.length; i++){
         Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
+            attack.play();
     }
     timeDiv.innerHTML = 'Time in Seconds: ' + myTime;
     deathDiv.innerHTML = 'Death Count: ' + myDeathCount;
@@ -401,6 +415,7 @@ function initScorelist(){
 
 function initialize(){
     console.log('Initializing...');
+    audio.play();
     gameState = 'mainMenu';
     mainMenu = document.getElementById('mainMenu');
     newGame = document.getElementById('newGame');
