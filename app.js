@@ -813,12 +813,14 @@ function update(elapsedTime){
                     startTime = process.hrtime();
                 }
                 else {
-                    currentLevel = 0;
-                    for(var i in PLAYER_LIST){
-                        PLAYER_LIST[i].initialize();
+                    if(count == currentPlayerCount){
+                        currentLevel = 0;
+                        gameStarted = false;
+                        for(var j in PLAYER_LIST){
+                            PLAYER_LIST[j].initialize();
+                        }
                     }
                     socket.emit('nextLevel', 'credits');
-                    gameStarted = false;
                 }
             }
         }
