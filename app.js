@@ -18,7 +18,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 1;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -181,7 +181,7 @@ let MyLevels = (function(){
         that[2].boxes.push(makeBox(855.55, 50, 91.11, 75));
         that[2].boxes.push(makeBox(996.66, 50, 91.11, 200));
         that[2].boxes.push(makeBox(1137.77, 175, 91.11, 125));
-        that[2].boxes.push(makeBox(1137.77, 0, 91.11, 125));
+        that[2].boxes.push(makeBox(1137.77, 0, 50, 125));
         that[2].boxes.push(makeBox(1278.88, 50, 91.11, 250));
         that[2].boxes.push(makeBox(0, 50, 380, 50));
         that[2].boxes.push(makeBox(432, 50, 200, 50));
@@ -669,7 +669,7 @@ io.sockets.on('connection', function(socket){
 function update(elapsedTime){
     if(currentPlayerCount == 0){
         console.log('Starting Back at Level 1');
-        currentLevel = 0;
+        currentLevel = 1;
         gameStarted = false;
     }
     if(gameStarted){

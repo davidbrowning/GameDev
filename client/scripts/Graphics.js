@@ -48,12 +48,36 @@ let Graphics = (function(){
             context.strokeRect(x, y, width, height);
         };
 
-        that.drawParticle = function(x, y, width, height, color){
-            context.fillStyle = color;
-            context.fillRect(x, y, width, height);
-            context.strokeStyle = 'rgba(0, 0, 0, 1)';
-            context.strokeRect(x, y, width, height);
+        that.Particle = function(x, y){
+            this.x = this.oldX = x;
+            this.y = this.oldY = y;
+        }
+        
+        that.Particle.prototype.integrate = function() {
+            var velocityX = (this.x - this.oldX) * DAMPING;
+            var velocityY = (this.y - this.oldY) * DAMPING;
+            this.oldX = this.x;
+            this.oldY = this.y;
+            this.x += velocityX/4;
+            this.y += velocityY/4;
         };
+
+        that.Particle.prototype.attract = function(x, y) {
+            var dx = x - this.x;
+            var dy = y - this.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            this.x += dx/distance;
+            this.y += dy/distance;
+        };
+
+        that.Particle.prototype.draw = function() {
+            context.strokeStyle = '#e60000';
+            context.lineWidth = 8;
+            context.beginPath();
+            context.moveTo(this.oldX, this.oldY);
+            context.lineTo(this.x, this.y);
+            context.stroke();
+        }; 
 
         that.drawText = function (text, x, y, font, fillStyle) {
             context.font = font;

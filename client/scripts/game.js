@@ -36,13 +36,14 @@ let myTime;
 let myDeathCount;
 let timeDiv;
 let deathDiv;
-let particles = []
 // Courtesy of a music professor of mine, and
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
 let audio = new Audio('client/assets/jdc.mp3')
 let attack = new Audio('client/assets/attack3.wav')
 let jump = new Audio('client/assets/jump2.wav')
+let particles = []
+let DAMPING = .99;
 
 drawable = function(){
     canDraw = true;
@@ -312,14 +313,20 @@ function render(elapsedTime){
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
+        //for(let j = 0; j < 35; ++j){
+        //    particles[j] = new Graphics.Particle(Math.random() * 50, Math.random() * 100);
+        //    particles[j].attract((players[i].x), (players[i].y));
+        //    particles[j].integrate();
+        //    particles[j].draw();
+        //}
         // x, y is hitbox, spritex, spritey is for drawing.
         let spritex = x - 15;
         let spritey = y - 25;
         if(players[i].myPlayer){
-            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
+            //Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
         }
         else {
-            Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
+            //Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){ if(players[i].r === true && players[i].j === false){
                 Graphics.drawTexture({
@@ -392,7 +399,13 @@ function render(elapsedTime){
         }
     }
     for(let i = 0; i < attacks.length; i++){
-        Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
+        for(let j = 0; j < 50; ++j){
+            particles[j] = new Graphics.Particle(Math.random() *25 + (attacks[i].x - offset.x) - 12.5, Math.random() * 25 + (attacks[i].y - offset.y) - 12.5);
+            particles[j].attract(attacks[i].x - offset.x, attacks[i].y - offset.y);
+            particles[j].integrate();
+            particles[j].draw();
+        }
+        //Graphics.drawRectangle(attacks[i].x - offset.x, attacks[i].y - offset.y, 10, 10, 'rgba(255, 0, 0, 1)');
             attack.play();
     }
     timeDiv.innerHTML = 'Time in Seconds: ' + myTime;
@@ -452,7 +465,7 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 1;
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
     Graphics.initialize();
