@@ -321,6 +321,8 @@ let MyLevels = (function(){
     };
     return that;
 }());
+
+// Source for colCheck function: http://www.somethinghitme.com/2013/04/16/creating-a-canvas-platformer-tutorial-part-tw/
 function colCheck(shapeA, shapeB) {
     // get the vectors to check against
     var vX = (shapeA.x + (shapeA.w / 2)) - (shapeB.x + (shapeB.w / 2)),
@@ -357,28 +359,7 @@ function colCheck(shapeA, shapeB) {
     return colDir;
 }
 let Player = function(id){
-    let self = {
-        // x: 50,
-        // y: 420,
-        // w: 30,
-        // h: 30,
-        // id: id,
-        // number: Math.floor(10 * Math.random()),
-        // pressingRight: false,
-        // pressingLeft: false,
-        // pressingUp: false,
-        // pressingDown: false,
-        // xSpeed: 10,
-        // ySpeed: 0,
-        // state: 'ground',
-        // deadCount: 0,
-        // finished: false,
-        // attacking: false,
-        // time: 0,
-        // doubleJump: false,
-        // dashing: false,
-        // dashCoolDown: 0
-    }
+    let self = {};
     self.initialize = function(){
         self.x = 50;
         self.y = 420;
@@ -639,7 +620,7 @@ io.sockets.on('connection', function(socket){
         socket.on('lobby', function(data){
             if(data == 'enter'){
                 lobbyPlayers++;
-                if(lobbyPlayers == 4){
+                if(lobbyPlayers == 2){
                     for(var i in SOCKET_LIST){
                         let socket = SOCKET_LIST[i];
                         let pack = {};
