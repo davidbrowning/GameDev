@@ -462,10 +462,12 @@ function initialize(){
     customControls.down = 's';
     customControls.left = 'a';
     customControls.right = 'd';
-    customControls.jump = 'f';
-    if(localStorage.hasOwnProperty('customControls')){
-        customControls = JSON.parse(localStorage.getItem('customControls'));
-    }
+    customControls.jump = ' ';
+    customControls.attack = 'j';
+    customControls.dash = 'l';
+    // if(localStorage.hasOwnProperty('customControls')){
+    //     customControls = JSON.parse(localStorage.getItem('customControls'));
+    // }
     socket.on('newPosition', function(data){
         players = data.players;
         MyLevels[currentLevel].enemies = data.enemies;
