@@ -40,6 +40,7 @@ let deathDiv;
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
 let audio = new Audio('client/assets/jdc.mp3')
+//add an event listener to listen for the end. 
 let attack = new Audio('client/assets/attack4.wav')
 let jump = new Audio('client/assets/jump3.wav')
 let particles = []
