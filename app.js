@@ -551,7 +551,7 @@ let Player = function(id){
             self.x = MyLevels[currentLevel].w - self.w;
         }
         self.y += self.ySpeed;
-        if(self.y + self.h > MyLevels[currentLevel].h){
+        if(self.y > MyLevels[currentLevel].h){
             console.log('Player y: ' + self.y);
             console.log('Player x: ' + self.x);
             dead();
