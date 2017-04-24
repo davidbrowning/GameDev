@@ -40,8 +40,8 @@ let deathDiv;
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
 let audio = new Audio('client/assets/jdc.mp3')
-let attack = new Audio('client/assets/attack3.wav')
-let jump = new Audio('client/assets/jump2.wav')
+let attack = new Audio('client/assets/attack4.wav')
+let jump = new Audio('client/assets/jump3.wav')
 let particles = []
 let DAMPING = .99;
 
