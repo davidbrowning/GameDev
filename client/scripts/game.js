@@ -291,13 +291,24 @@ function render(elapsedTime){
         let x = enemy.x - offset.x;
         let y = enemy.y - offset.y;
         Graphics.drawRectangle(x, y, 10, 10, 'rgba(255, 0, 0, 1)');
-        Graphics.drawTexture({
-             image : img,
-             center : {x : x-30, y: y-45},
-             clip : {x : enemycount % 4 * 32, y : 97, width : 30, height : 35},
-             im : {width : 60, height : 65},
-             size : 100,
-        });
+        if(!enemy.dir){
+            Graphics.drawTexture({
+                 image : img,
+                 center : {x : x-30, y: y-45},
+                 clip : {x : enemycount % 4 * 32, y : 97, width : 30, height : 35},
+                 im : {width : 60, height : 65},
+                 size : 100,
+            });
+        }
+        else{
+            Graphics.drawTexture({
+                 image : reverse_img,
+                 center : {x : x-30, y: y-45},
+                 clip : {x : (enemycount % 4 * 32)+608, y : 97, width : 30, height : 35},
+                 im : {width : 60, height : 65},
+                 size : 100,
+            });
+        }
         if(enemycount > 3){
             enemycount = 0;
         }
@@ -465,7 +476,7 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 1;
+    currentLevel = 0;
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
     Graphics.initialize();

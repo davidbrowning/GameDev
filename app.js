@@ -8,7 +8,7 @@ app.get('/', function(req, res){
 });
 app.use('/client', express.static(_dirname + '/client'));
 
-serv.listen(2000);
+serv.listen(80);
 console.log('Server started.');
 
 let SOCKET_LIST = {};
@@ -18,7 +18,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 1;
+let currentLevel = 0;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -52,7 +52,8 @@ let MyLevels = (function(){
             initialx: ix,
             endx: ex,
             character: 95,
-            dead: false
+            dead: false,
+            dir: false //Left is false, right is true
         }
     }
 
@@ -668,8 +669,7 @@ io.sockets.on('connection', function(socket){
 
 function update(elapsedTime){
     if(currentPlayerCount == 0){
-        console.log('Starting Back at Level 1');
-        currentLevel = 1;
+        currentLevel = 0;
         gameStarted = false;
     }
     if(gameStarted){
@@ -683,14 +683,17 @@ function update(elapsedTime){
             if(enemy.x < enemy.initialx){
                 enemy.speed = ENEMY_SPEED;
                 enemy.x = enemy.initialx;
+                enemy.dir = false;
             }
             else if(enemy.x > enemy.endx){
                 enemy.speed = -ENEMY_SPEED;
                 enemy.x = enemy.endx;
+                enemy.dir = true;
             }
             pack.enemies.push({
                 x: enemy.x,
-                y: enemy.y
+                y: enemy.y,
+                dir: enemy.dir
             });
         }
         for(var i in PLAYER_LIST){
