@@ -37,6 +37,9 @@ fs.readFile(_dirname + '/highScores.txt', 'utf8', function(err, data){
         console.log('File not read: ' + err);
     }
     else{
+        for(let i = 0; i < 5; i++){
+            highScores.push({string: ' ', time: ' ', deadCount: ' '});
+        }
         console.log('Reading high scores: ' + data);
         highScores = JSON.parse(data);
     }
@@ -582,6 +585,7 @@ io.sockets.on('connection', function(socket){
 
         currentPlayerCount++;
 
+        console.log('emitting high scores');
         socket.emit('highScores', highScores);
 
         socket.on('disconnect', function(){

@@ -138,6 +138,8 @@ function changeState(state){
     else if(state == 'highScores'){
         mainMenu.style.display = 'none';
         highScores.style.display = 'block';
+        console.log('changing to hs state');
+        console.log(highScores);
     }
     else if(state == 'controls'){
         subState = 'runLeft';
@@ -471,6 +473,7 @@ function initialize(){
                 scoreList.item[i].innerHTML = data[i].string;
             }
         }
+        console.log(data)
     });
     socket.on('noServers', function(data){
         changeState('noServers');
