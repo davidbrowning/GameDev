@@ -86,14 +86,6 @@ socket.on('nextLevel', function(data){
     //}
 });
 
-socket.on('highScores', function(data){
-    if(scoreList.item != null){
-    for(let i = 0; i < 5; i++){
-        scoreList.item[i].innerHTML = data[i];
-    }
-    }
-});
-
 function changeState(state){
     if(gameState == 'gameLobby'){
         let pack = 'exit';
@@ -102,8 +94,16 @@ function changeState(state){
     else if(gameState == 'controls'){
         localStorage['customControls'] = JSON.stringify(customControls);
     }
-    gameState = state;
-    if(state == 'mainMenu'){
+    if(state == 'noServers'){
+        console.log('No Servers.');
+        mainMenu.style.display = 'none';
+        newGame.style.display = 'none';
+        highScores.style.display = 'none';
+        credits.style.display = 'none';
+        noServers.style.display = 'block';
+    }
+    else if(state == 'mainMenu'){
+        console.log('Main Menu');
         mainMenu.style.display = 'block';
         newGame.style.display = 'none';
         gameLobby.style.display = 'none';
@@ -137,20 +137,14 @@ function changeState(state){
         newGame.style.display = 'none';
         credits.style.display = 'block';
     }
-    else if(state == 'noServers'){
-        mainMenu.style.display = 'none';
-        newGame.style.display = 'none';
-        highScores.style.display = 'none';
-        credits.style.display = 'none';
-        noServers.style.display = 'block';
-    }
+    gameState = state;
 }
 
 function changeSubstate(state){
     substate = state;
 }
 
-function update(elapsedTime){ //Change this so it is according to what player you are
+function update(elapsedTime){
     for(let i = 0; i < players.length; i++){
         if(players[i].myPlayer){
             if(players[i].x + 250 < MyLevels[currentLevel].w &&
@@ -429,7 +423,6 @@ function gameLoop(){
     update(elapsedTime);
     render(elapsedTime);
     animation = window.requestAnimationFrame(gameLoop);
-    //window.cancelAnimationFrame(animation);
 }
 
 function initScorelist(){
@@ -441,7 +434,6 @@ function initScorelist(){
 function initialize(){
     console.log('Initializing...');
     audio.play();
-    gameState = 'mainMenu';
     mainMenu = document.getElementById('mainMenu');
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
@@ -456,9 +448,19 @@ function initialize(){
     controls = document.getElementById('controls');
     credits = document.getElementById('credits');
     noServers = document.getElementById('noServers');
+    socket.on('highScores', function(data){
+        if(scoreList.item != null){
+            for(let i = 0; i < 5; i++){
+                scoreList.item[i].innerHTML = data[i];
+            }
+        }
+    });
     socket.on('noServers', function(data){
         changeState('noServers');
     });
+    if(gameState != 'noServers'){
+        gameState = 'mainMenu';
+    }
     customControls.up = 'w';
     customControls.down = 's';
     customControls.left = 'a';
@@ -466,9 +468,9 @@ function initialize(){
     customControls.jump = ' ';
     customControls.attack = 'j';
     customControls.dash = 'l';
-    // if(localStorage.hasOwnProperty('customControls')){
-    //     customControls = JSON.parse(localStorage.getItem('customControls'));
-    // }
+    if(localStorage.hasOwnProperty('customControls')){
+        customControls = JSON.parse(localStorage.getItem('customControls'));
+    }
     socket.on('newPosition', function(data){
         players = data.players;
         MyLevels[currentLevel].enemies = data.enemies;
