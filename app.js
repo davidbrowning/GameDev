@@ -3,13 +3,14 @@ let app = express();
 let serv = require('http').Server(app);
 let _dirname = './'
 let fs = require('fs');
+var port = process.env.PORT || 80;
 
 app.get('/', function(req, res){
     res.sendFile('/client/index.html', {root: _dirname});
 });
 app.use('/client', express.static(_dirname + '/client'));
 
-serv.listen(17995);
+serv.listen(port);
 console.log('Server started.');
 
 let SOCKET_LIST = {};
