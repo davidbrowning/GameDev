@@ -1,0 +1,26 @@
+{
+  "name": "oribasedplatformer",
+  "version": "1.0.0",
+  "description": "This is the final project for the game dev class at USU by Jeff Heilbut and Dave Browning",
+  "main": "app.js",
+  "dependencies": {
+    "debug": "^2.6.3",
+    "formats": "^0.5.5",
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidbrowning/GameDev.git"
+  },
+  "author": "Jeff Heilbut and Dave Browning",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidbrowning/GameDev/issues"
+  },
+  "homepage": "https://github.com/davidbrowning/GameDev#readme"
+}
