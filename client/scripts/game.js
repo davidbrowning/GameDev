@@ -65,6 +65,7 @@ socket.on('nextLevel', function(data){
     if(data == 'credits'){
         changeState(data);
         currentLevel = 0;
+        window.cancelAnimationFrame(animation);
     }
     else {
         currentLevel = data;
@@ -481,7 +482,7 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 2;
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
     Graphics.initialize();

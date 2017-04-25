@@ -19,7 +19,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 2;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -675,7 +675,7 @@ io.sockets.on('connection', function(socket){
 
 function update(elapsedTime){
     if(currentPlayerCount == 0){
-        currentLevel = 0;
+        currentLevel = 2;
         gameStarted = false;
     }
     if(gameStarted){
@@ -738,16 +738,49 @@ function update(elapsedTime){
                 colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
                 if(colDir != null){
                     MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
-                    deleteAttacks.push(i);
+                    let inserted = false;
+                    for(let k = 0; k < deleteAttacks.length; k++){
+                        if(deleteAttacks[k] < i){
+                            deleteAttacks.splice(k, 0, i);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if(!inserted){
+                        deleteAttacks.push(i);
+                    }
                 }
                 else{
                     for(let j = 0; j < MyLevels[currentLevel].boxes.length; j++){
                         colDir = colCheck(attacks[i], MyLevels[currentLevel].boxes[j]);
                         if(colDir != null){
-                            deleteAttacks.push(i);
+                            let inserted = false;
+                            for(let k = 0; k < deleteAttacks.length; k++){
+                                if(deleteAttacks[k] < i){
+                                    deleteAttacks.splice(k, 0, i);
+                                    inserted = true;
+                                    break;
+                                }
+                            }
+                            if(!inserted){
+                                deleteAttacks.push(i);
+                            }
                             break;
                         }
                     }
+                }
+            }
+            else {
+                let inserted = false;
+                for(let k = 0; k < deleteAttacks.length; k++){
+                    if(deleteAttacks[k] < i){
+                        deleteAttacks.splice(k, 0, i);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if(!inserted){
+                    deleteAttacks.push(i);
                 }
             }
             pack.attacks.push({x: attacks[i].x, y: attacks[i].y});
