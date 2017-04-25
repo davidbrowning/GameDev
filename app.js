@@ -9,7 +9,7 @@ app.get('/', function(req, res){
 });
 app.use('/client', express.static(_dirname + '/client'));
 
-serv.listen(80);
+serv.listen(17995);
 console.log('Server started.');
 
 let SOCKET_LIST = {};
