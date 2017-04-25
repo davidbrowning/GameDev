@@ -62,8 +62,10 @@ socket.on('noServers', function(){
 
 socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
-    players = data;
-    changeState('newGame');
+    if(gameState == 'gameLobby'){
+        players = data;
+        changeState('newGame');
+    }
 });
 
 socket.on('nextLevel', function(data){
@@ -111,6 +113,7 @@ function changeState(state){
         newGame.style.display = 'none';
         highScores.style.display = 'none';
         credits.style.display = 'none';
+        gameLobby.style.display = 'none';
         noServers.style.display = 'block';
     }
     else if(state == 'mainMenu'){
