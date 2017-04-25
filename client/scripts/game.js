@@ -36,6 +36,7 @@ let myTime;
 let myDeathCount;
 let timeDiv;
 let deathDiv;
+let finalScoresDiv;
 // Courtesy of a music professor of mine, and
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
@@ -63,9 +64,7 @@ socket.on('startNewGame', function(data){
 
 socket.on('nextLevel', function(data){
     if(data == 'credits'){
-        changeState(data);
-        currentLevel = 0;
-        window.cancelAnimationFrame(animation);
+        
     }
     else {
         currentLevel = data;
@@ -85,6 +84,18 @@ socket.on('nextLevel', function(data){
     //if(audio.ended()){
     //    audio.play()
     //}
+});
+
+socket.on('finalScores', function(scores){
+    let list = document.getElementById('finalScoresList');
+    for(let i = 0; i < scores.length; i++){
+        let html = '<p>' + scores[i] + '</p>';
+        list.innerHTML += html;
+    }
+    
+    changeState('finalScores');
+    currentLevel = 0;
+    window.cancelAnimationFrame(animation);
 });
 
 function changeState(state){
@@ -137,6 +148,11 @@ function changeState(state){
         mainMenu.style.display = 'none';
         newGame.style.display = 'none';
         credits.style.display = 'block';
+        finalScoresDiv.style.display = 'none';
+    }
+    else if(state == 'finalScores'){
+        newGame.style.display = 'none';
+        finalScoresDiv.style.display = 'block';
     }
     gameState = state;
 }
@@ -482,8 +498,9 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 0;
+    currentLevel = 4;
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
+    finalScoresDiv = document.getElementById('finalScores');
     Graphics.initialize();
 }

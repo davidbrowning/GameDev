@@ -20,7 +20,7 @@ let currentPlayerCount = 0;
 let GRAVITY = 5;
 let TERMINAL_VELOCITY = 40;
 let ENEMY_SPEED = 5;
-let currentLevel = 0;
+let currentLevel = 4;
 let count = 0;
 let finishedLevelCount = 0;
 let gameStarted = false;
@@ -32,7 +32,7 @@ let highScores = [];
 for(let i = 0; i < 5; i++){
     highScores.push({string: ' ', time: ' ', deadCount: ' '});
 }
-fs.readFile(_dirname + 'highScores.txt', 'utf8', function(err, data){
+fs.readFile(_dirname + '/highScores.txt', 'utf8', function(err, data){
     if(err){
         console.log('File not read: ' + err);
     }
@@ -676,7 +676,7 @@ io.sockets.on('connection', function(socket){
 
 function update(elapsedTime){
     if(currentPlayerCount == 0){
-        currentLevel = 0;
+        currentLevel = 4;
         gameStarted = false;
     }
     if(gameStarted){
@@ -850,6 +850,12 @@ function update(elapsedTime){
                     startTime = process.hrtime();
                 }
                 else {
+                    let gameScores = [];
+                    for(let j in PLAYER_LIST){
+                        let string = 'Time in Seconds: ' + PLAYER_LIST[j].time + ' Death Count: ' + PLAYER_LIST[j].deadCount;
+                        gameScores.push(string);
+                    }
+                    socket.emit('finalScores', gameScores);
                     if(count == currentPlayerCount){
                         currentLevel = 0;
                         gameStarted = false;
@@ -857,7 +863,6 @@ function update(elapsedTime){
                             PLAYER_LIST[j].initialize();
                         }
                     }
-                    socket.emit('nextLevel', 'credits');
                 }
             }
         }
