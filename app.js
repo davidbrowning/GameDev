@@ -29,7 +29,7 @@ let startTime;
 let elapsedTime;
 let highScores = [];
 for(let i = 0; i < 5; i++){
-    highScores.push(' ');
+    highScores.push({string: ' ', time: ' ', deadCount: ' '});
 }
 fs.readFile(_dirname + 'highScores.txt', 'utf8', function(err, data){
     if(err){
@@ -417,18 +417,28 @@ let Player = function(id){
             finishedLevelCount++;
             if(currentLevel == 4){
                 for(let i = 0; i < highScores.length; i++){
-                    if(highScores[i] != ' '){
-                        if(self.time < highScores[i]){
+                    if(highScores[i].string != ' '){
+                        if(self.time < highScores[i].time){
                             let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
-                            highScores.splice(i, 0, scoreString);
-                            console.log('New High Score: ' + highScores[i]);
+                            let temp = {
+                                string: scoreString,
+                                time: self.time,
+                                deaths: self.deadCount
+                            };
+                            highScores.splice(i, 0, temp);
+                            console.log('New High Score: ' + highScores[i].string);
                             break;
                         }
                     }
                     else {
                         let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
-                        highScores.splice(i, 0, scoreString);
-                        console.log('New High Score: ' + highScores[i]);
+                        let temp = {
+                            string: scoreString,
+                            time: self.time,
+                            deaths: self.deadCount
+                        };
+                        highScores.splice(i, 0, temp);
+                        console.log('New High Score: ' + highScores[i].string);
                         break;
                     }
                 }

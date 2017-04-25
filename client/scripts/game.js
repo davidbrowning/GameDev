@@ -451,7 +451,7 @@ function initialize(){
     socket.on('highScores', function(data){
         if(scoreList.item != null){
             for(let i = 0; i < 5; i++){
-                scoreList.item[i].innerHTML = data[i];
+                scoreList.item[i].innerHTML = data[i].string;
             }
         }
     });

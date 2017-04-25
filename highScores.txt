@@ -1,1 +1,1 @@
-["Time in Seconds: 234   Death Count: 3"," "," "," "," "]
+[{"string":"Time in Seconds: 219   Death Count: 3","time":219,"deaths":3},{"string":"Time in Seconds: 1739   Death Count: 51","time":1739,"deaths":51},{"string":" ","time":" ","deadCount":" "},{"string":" ","time":" ","deadCount":" "},{"string":" ","time":" ","deadCount":" "}]
