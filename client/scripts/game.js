@@ -482,7 +482,7 @@ function initialize(){
     screenSize.h = 500;
     offset.x = 0;
     offset.y = 0;
-    currentLevel = 2;
+    currentLevel = 0;
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
     Graphics.initialize();
