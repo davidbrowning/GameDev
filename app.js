@@ -574,7 +574,10 @@ let Player = function(id){
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
-    if(!gameStarted){
+    let ready = false;
+    socket.on('ready', function(data){
+        ready = true;
+        if(!gameStarted){
         console.log('Joined game.');
         socket.id = Math.random();
         SOCKET_LIST[socket.id] = socket;
@@ -653,8 +656,8 @@ io.sockets.on('connection', function(socket){
                     for(var i in SOCKET_LIST){
                         let socket = SOCKET_LIST[i];
                         let pack = {};
-                        socket.emit('startNewGame', pack);
                         socket.emit('nextLevel', currentLevel);
+                        socket.emit('startNewGame', pack);
                     }
                     MyLevels[5].initialize();
                     gameStarted = true;
@@ -674,8 +677,9 @@ io.sockets.on('connection', function(socket){
     }
     else{
         console.log('No servers available.');
-        socket.emit('noServers', 'No available servers.');
+        socket.emit('noServers');
     }
+    });
 });
 
 function update(elapsedTime){

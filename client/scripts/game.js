@@ -37,6 +37,7 @@ let myDeathCount;
 let timeDiv;
 let deathDiv;
 let finalScoresDiv;
+let gameStarted;
 // Courtesy of a music professor of mine, and
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
@@ -55,6 +56,9 @@ reverse_img.onload = drawable()
 bckgrnd.onload = drawable()
 platform_img.onload = drawable()
 
+socket.on('noServers', function(){
+    changeState('noServers');
+});
 
 socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
@@ -63,24 +67,19 @@ socket.on('startNewGame', function(data){
 });
 
 socket.on('nextLevel', function(data){
-    if(data == 'credits'){
-        
+    currentLevel = data;
+    offset.x = 0; 
+    offset.y = 0;
+    if(currentLevel == 2){
+        offset.y = 600;
     }
-    else {
-        currentLevel = data;
-        offset.x = 0; 
-        offset.y = 0;
-        if(currentLevel == 2){
-            offset.y = 600;
-        }
-        else if(currentLevel == 3){
-            offset.y = 2550;
-        }
-        else if(currentLevel == 4){
-            offset.y = 1550;
-        }
-        console.log('Starting Level: ' + currentLevel);
+    else if(currentLevel == 3){
+        offset.y = 2550;
     }
+    else if(currentLevel == 4){
+        offset.y = 1550;
+    }
+    console.log('Starting Level: ' + currentLevel);
     //if(audio.ended()){
     //    audio.play()
     //}
@@ -92,7 +91,7 @@ socket.on('finalScores', function(scores){
         let html = '<p>' + scores[i] + '</p>';
         list.innerHTML += html;
     }
-    
+    gameStarted = false;
     changeState('finalScores');
     currentLevel = 0;
     window.cancelAnimationFrame(animation);
@@ -127,6 +126,7 @@ function changeState(state){
         socket.emit('lobby', 'single');
         newGame.style.display = 'block';
         gameLobby.style.display = 'none';
+        gameStarted = true;
         gameLoop();
     }
     else if(state == 'gameLobby'){
@@ -475,9 +475,8 @@ function initialize(){
         }
         console.log(data)
     });
-    socket.on('noServers', function(data){
-        changeState('noServers');
-    });
+    socket.emit('ready', ' ');
+    console.log('Ready');
     if(gameState != 'noServers'){
         gameState = 'mainMenu';
     }
@@ -505,5 +504,6 @@ function initialize(){
     timeDiv = document.getElementById('time');
     deathDiv = document.getElementById('deathCount');
     finalScoresDiv = document.getElementById('finalScores');
+    let gameStarted = false;
     Graphics.initialize();
 }
