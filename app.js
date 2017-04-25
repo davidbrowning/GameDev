@@ -2,6 +2,7 @@ let express = require('express');
 let app = express();
 let serv = require('http').Server(app);
 let _dirname = './'
+let fs = require('fs');
 
 app.get('/', function(req, res){
     res.sendFile('/client/index.html', {root: _dirname});
@@ -30,6 +31,15 @@ let highScores = [];
 for(let i = 0; i < 5; i++){
     highScores.push(' ');
 }
+fs.readFile(_dirname + 'highScores.txt', 'utf8', function(err, data){
+    if(err){
+        console.log('File not read: ' + err);
+    }
+    else{
+        console.log('Reading high scores: ' + data);
+        highScores = JSON.parse(data);
+    }
+});
 
 let MyLevels = (function(){
     let that = [];
@@ -396,13 +406,13 @@ let Player = function(id){
         }
         self.ySpeed = 0;
         self.deadCount++;
-        console.log('Deaths: ' + self.deadCount);
+        console.log('Deaths: ' + self.deadCount + ' Id: ' + self.id);
     }
     function win(){
         if(!self.finished){
             console.log('You win!');
             self.time += elapsedTime;
-            console.log('Final Time: ' + self.time);
+            console.log('Final Time: ' + self.time + ' Id: ' + self.id);
             self.finished = true;
             finishedLevelCount++;
             if(currentLevel == 4){
@@ -426,6 +436,12 @@ let Player = function(id){
                 for(let i in SOCKET_LIST){
                     SOCKET_LIST[i].emit('highScores', highScores);
                 }
+                fs.writeFile(__dirname + '/highScores.txt', JSON.stringify(highScores), function(err) {
+                    if(err){
+                        return console.log(err);
+                    }
+                    console.log('High scores successfully saved.');
+                });
             }
         }
     }
@@ -545,6 +561,7 @@ let Player = function(id){
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
     if(!gameStarted){
+        console.log('Joined game.');
         socket.id = Math.random();
         SOCKET_LIST[socket.id] = socket;
 
@@ -576,7 +593,6 @@ io.sockets.on('connection', function(socket){
                 player.pressingRight = data.state;
             }
             else if(data.inputId == 'jump'){
-                //console.log('Jump on Server');
                 if(player.state != 'jump'){
                     player.ySpeed = -30;
                     player.state = 'jump';
@@ -587,7 +603,6 @@ io.sockets.on('connection', function(socket){
                 }
             }
             else if(data.inputId == 'attack'){
-                console.log('Attack');
                 if(currentLevel >= 1 && (!PLAYER_LIST[data.player].attacking)){
                     let attack = PLAYER_LIST[data.player].attack();
                     if(attack != null){
@@ -607,7 +622,6 @@ io.sockets.on('connection', function(socket){
                 } 
             }
             else if(data.inputId == 'dash'){
-                console.log('Dash');
                 if(currentLevel >= 4 && (!PLAYER_LIST[data.player].dashing)){
                     if(elapsedTime - PLAYER_LIST[data.player].dashCoolDown > 0.5){
                         PLAYER_LIST[data.player].dashing = true;
@@ -644,6 +658,7 @@ io.sockets.on('connection', function(socket){
         });
     }
     else{
+        console.log('No servers available.');
         socket.emit('noServers', 'No available servers.');
     }
 });
@@ -712,8 +727,6 @@ function update(elapsedTime){
                 let colDir;
                 colDir = colCheck(attacks[i], MyLevels[currentLevel].enemies[attacks[i].enemy]);
                 if(colDir != null){
-                    console.log('Enemy Dead');
-                // MyLevels[currentLevel].enemies[attacks[i].enemy].dead = true;
                     MyLevels[currentLevel].enemies.splice(attacks[i].enemy, 1);
                     deleteAttacks.push(i);
                 }
@@ -817,6 +830,5 @@ function update(elapsedTime){
 setInterval(function(){
     elapsedTime = process.hrtime(startTime);
     elapsedTime = Math.floor(elapsedTime[0] + elapsedTime[1] / 1e9);
-    //console.log('Elapsed Time: ' + elapsedTime);
     update(elapsedTime);
 },1000/25);
