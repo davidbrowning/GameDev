@@ -801,7 +801,6 @@ function update(elapsedTime){
                 if(count == pack.players.length){
                     finishedLevelCount = 0;
                 }
-                //let level = currentLevel;
                 if(currentLevel <= 4){
                     socket.emit('nextLevel', currentLevel);
                     startTime = process.hrtime();
