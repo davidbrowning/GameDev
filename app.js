@@ -395,6 +395,7 @@ let Player = function(id){
         self.doubleJump = false;
         self.dashing = false;
         self.dashCoolDown = 0;
+        self.username = '';
     }
     function dead(){
         self.x = 50;
@@ -576,6 +577,11 @@ var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
     let ready = false;
     socket.on('ready', function(data){
+        socket.on('username', function(data){
+            console.log(data)
+            PLAYER_LIST[socket.id].username = data;
+            console.log(PLAYER_LIST[socket.id].username);
+        });
         ready = true;
         if(!gameStarted){
         console.log('Joined game.');
@@ -648,6 +654,7 @@ io.sockets.on('connection', function(socket){
                 } 
             }
         });
+
 
         socket.on('lobby', function(data){
             if(data == 'enter'){

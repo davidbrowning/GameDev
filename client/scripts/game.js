@@ -38,6 +38,7 @@ let timeDiv;
 let deathDiv;
 let finalScoresDiv;
 let gameStarted;
+let playerName;
 // Courtesy of a music professor of mine, and
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
@@ -127,6 +128,9 @@ function changeState(state){
         newGame.style.display = 'block';
         gameLobby.style.display = 'none';
         gameStarted = true;
+        playerName = window.prompt('Enter your user name:');
+        let skt = socket.emit('username', playerName);
+        console.log(skt)
         gameLoop();
     }
     else if(state == 'gameLobby'){
@@ -338,19 +342,16 @@ function render(elapsedTime){
     for(let i = 0; i < players.length; i++){
         let x = players[i].x - offset.x;
         let y = players[i].y - offset.y;
-        //for(let j = 0; j < 35; ++j){
-        //    particles[j] = new Graphics.Particle(Math.random() * 50, Math.random() * 100);
-        //    particles[j].attract((players[i].x), (players[i].y));
-        //    particles[j].integrate();
-        //    particles[j].draw();
-        //}
-        // x, y is hitbox, spritex, spritey is for drawing.
         let spritex = x - 15;
         let spritey = y - 25;
         if(players[i].myPlayer){
+            Graphics.drawRectangle(x-10, y-50,55, 23, '#33cccc');
+            Graphics.drawText(playerName, x-3, y-35,'Comic Sans MS', 'black');
             //Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 0, 255, 1)');
         }
         else {
+            Graphics.drawRectangle(x-10, y-50,55, 23, '#ff3300');
+            Graphics.drawText('Player2', x-3, y-35,'Comic Sans MS', 'black');
             //Graphics.drawRectangle(x, y, 30, 30, 'rgba(0, 255, 0, 1)');
         }
         if(canDraw === true){ if(players[i].r === true && players[i].j === false){
