@@ -423,7 +423,7 @@ let Player = function(id){
                 for(let i = 0; i < highScores.length; i++){
                     if(highScores[i].string != ' '){
                         if(self.time < highScores[i].time){
-                            let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
+                            let scoreString = 'Username: ' + self.username + ' Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
                             let temp = {
                                 string: scoreString,
                                 time: self.time,
@@ -435,7 +435,7 @@ let Player = function(id){
                         }
                     }
                     else {
-                        let scoreString = 'Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
+                        let scoreString = 'Username: ' + self.username + ' Time in Seconds: ' + self.time + '   Death Count: ' + self.deadCount;
                         let temp = {
                             string: scoreString,
                             time: self.time,
@@ -864,7 +864,7 @@ function update(elapsedTime){
                 else {
                     let gameScores = [];
                     for(let j in PLAYER_LIST){
-                        let string = 'Time in Seconds: ' + PLAYER_LIST[j].time + ' Death Count: ' + PLAYER_LIST[j].deadCount;
+                        let string = 'Username: ' + PLAYER_LIST[j].username + ' Time in Seconds: ' + PLAYER_LIST[j].time + ' Death Count: ' + PLAYER_LIST[j].deadCount;
                         gameScores.push(string);
                     }
                     socket.emit('finalScores', gameScores);
