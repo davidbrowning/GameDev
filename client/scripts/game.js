@@ -63,8 +63,10 @@ socket.on('noServers', function(){
 
 socket.on('startNewGame', function(data){
     console.log('Starting Multiplayer Game...');
-    players = data;
-    changeState('newGame');
+    if(gameState == 'gameLobby'){
+        players = data;
+        changeState('newGame');
+    }
 });
 
 socket.on('nextLevel', function(data){
@@ -84,6 +86,13 @@ socket.on('nextLevel', function(data){
     //if(audio.ended()){
     //    audio.play()
     //}
+});
+
+socket.on('ready', function(data){
+    let lobbyStatus = document.getElementById('lobbyStatus');
+    let time = Math.ceil(3 - data);
+    console.log('Time left: ' + time);
+    lobbyStatus.innerHTML = 'Starting game in ' + time + '...';
 });
 
 socket.on('finalScores', function(scores){
@@ -112,6 +121,7 @@ function changeState(state){
         newGame.style.display = 'none';
         highScores.style.display = 'none';
         credits.style.display = 'none';
+        gameLobby.style.display = 'none';
         noServers.style.display = 'block';
     }
     else if(state == 'mainMenu'){
