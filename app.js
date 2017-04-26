@@ -28,6 +28,7 @@ let attacks = [];
 let deleteAttacks = [];
 let startTime;
 let elapsedTime;
+let gameReady = false;
 let highScores = [];
 for(let i = 0; i < 5; i++){
     highScores.push({string: ' ', time: ' ', deadCount: ' '});
@@ -40,7 +41,6 @@ fs.readFile(_dirname + '/highScores.txt', 'utf8', function(err, data){
         for(let i = 0; i < 5; i++){
             highScores.push({string: ' ', time: ' ', deadCount: ' '});
         }
-        console.log('Reading high scores: ' + data);
         highScores = JSON.parse(data);
     }
 });
@@ -410,7 +410,6 @@ let Player = function(id){
         }
         self.ySpeed = 0;
         self.deadCount++;
-        console.log('Deaths: ' + self.deadCount + ' Id: ' + self.id);
     }
     function win(){
         if(!self.finished){
@@ -656,11 +655,9 @@ io.sockets.on('connection', function(socket){
                     for(var i in SOCKET_LIST){
                         let socket = SOCKET_LIST[i];
                         let pack = {};
-                        socket.emit('nextLevel', currentLevel);
-                        socket.emit('startNewGame', pack);
+                        gameReady = true;
                     }
                     MyLevels[5].initialize();
-                    gameStarted = true;
                     startTime = process.hrtime();
                 }
             }
@@ -880,6 +877,21 @@ function update(elapsedTime){
                 PLAYER_LIST[i].finished = false;
             }
         }  
+    }
+    else if(gameReady) {
+        //console.log('Emit ready: ' + elapsedTime);
+        for(let i in SOCKET_LIST){
+            let socket = SOCKET_LIST[i];
+            socket.emit('ready', elapsedTime);
+            if(elapsedTime > 3){
+                console.log('Countdown finished.');
+                let pack = {};
+                socket.emit('nextLevel', currentLevel);
+                socket.emit('startNewGame', pack);
+                gameStarted = true;
+                gameReady = false;
+            }
+        }
     }
 }
 

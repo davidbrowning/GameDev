@@ -87,6 +87,13 @@ socket.on('nextLevel', function(data){
     //}
 });
 
+socket.on('ready', function(data){
+    let lobbyStatus = document.getElementById('lobbyStatus');
+    let time = Math.ceil(3 - data);
+    console.log('Time left: ' + time);
+    lobbyStatus.innerHTML = 'Starting game in ' + time + '...';
+});
+
 socket.on('finalScores', function(scores){
     let list = document.getElementById('finalScoresList');
     for(let i = 0; i < scores.length; i++){
