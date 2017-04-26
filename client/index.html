@@ -2,7 +2,7 @@
 <html lang="us-EN">
 <head>
     <meta charset = "UTF-8">
-    <title>Ori and the Blind Forest</title>
+    <title>A tribute to Ori and the Blind Forest</title>
     <script src='https://cdn.socket.io/socket.io-1.4.5.js'></script>
     <script src='client/scripts/Graphics.js'></script>
     <script src='client/scripts/levels.js'></script>
@@ -13,6 +13,7 @@
 <body onload ="initialize();">
     <div id = "title">
         <h1>Ori and the Blind Forest</h1>
+        <h2> (A Tribute) </h2>
     </div>
     <div id = "mainMenu">
         <h2>Main Menu</h2>
@@ -72,7 +73,13 @@
     </div>
     <div id = "credits">
         <h2>Credits</h2>
-        <p>Developed by: David Browning and Jeffrey Heilbut</p>
+        <ul><li>Developed by: David Browning and Jeffrey Heilbut</li>
+            <li>Background music by: John Carter</li>
+            <li>Sound Effects by: RICHERlandTV and Lefty_Studios (courtesy of freesound.org)</li>
+            <li>Sprite Sheet and world textures by: Buch (courtesy of <a href="https://opengameart.org/content/a-platformer-in-the-forest">opengameart.org</a>)</li>
+            <li>Background art by: greggman also (courtesy of <a href="https://opengameart.org/content/backgrounds-for-2d-platformers">opengameart.org</a>)</li>
+            <li>Ideas for particle system derived from: <a href="http://demos.playfuljs.com/particles/">playfuljs.com</a></li> 
+            <li>Collision detection ideas from: <a href="http://www.somethinghitme.com/2013/04/16/creating-a-canvas-platformer-tutorial-part-tw/">somethinghitme.com</a></li></ul>
         <button id='backButton' class = 'm_button' onclick="changeState('mainMenu');">Back to Main Menu</button>
     </div>
     <div id="noServers">No servers are currently available. Please refresh the page and try again later.</div>
