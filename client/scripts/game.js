@@ -224,6 +224,15 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+            Graphics.drawRectangle(250-offset.x, 350-offset.y,100, 50, '#a35303');
+            Graphics.drawRectangle(295-offset.x, 400-offset.y,10, 50, '#a35303');
+            Graphics.drawText('Welcome! Level 1', 255-offset.x, 360-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Run + Jump!', 255-offset.x, 370-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Run: d', 255-offset.x, 380-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Jump: space', 255-offset.x, 390-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawRectangle(650-offset.x, 350-offset.y,160, 50, '#a35303');
+            Graphics.drawRectangle(725-offset.x, 400-offset.y,10, 50, '#a35303');
+            Graphics.drawText('Watch out for Snakes!', 655-offset.x, 360-offset.y,'Comic Sans MS', 'white');
         }
         else if(currentLevel == 1){
         Graphics.drawTexture({
@@ -233,6 +242,11 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+            Graphics.drawRectangle(250-offset.x, 350-offset.y,100, 50, '#a35303');
+            Graphics.drawRectangle(295-offset.x, 400-offset.y,10, 50, '#a35303');
+            Graphics.drawText('Welcome! Level 2', 255-offset.x, 360-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Attack!', 255-offset.x, 370-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Attack: j', 255-offset.x, 380-offset.y,'Comic Sans MS', 'white');
         }
         else if(currentLevel == 2){
         Graphics.drawTexture({
@@ -242,6 +256,12 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+            Graphics.drawRectangle(250-offset.x, 600-offset.y,100, 50, '#a35303');
+            Graphics.drawRectangle(295-offset.x, 650-offset.y,10, 50, '#a35303');
+            Graphics.drawText('Level 3', 255-offset.x, 610-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Climbing', 255-offset.x, 620-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('up: w', 255-offset.x, 630-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('down: s', 255-offset.x, 640-offset.y,'Comic Sans MS', 'white');
         }
         else if(currentLevel == 3){
         Graphics.drawTexture({
@@ -251,6 +271,11 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+            Graphics.drawRectangle(250-offset.x, 2450+350-offset.y,100, 50, '#a35303');
+            Graphics.drawText('Welcome! Level 4', 255-offset.x, 2450+360-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Double Jump', 255-offset.x, 2450+370-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Jump again', 255-offset.x, 2450+380-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText(' in mid air.', 255-offset.x, 2450+390-offset.y,'Comic Sans MS', 'white');
         }
         else if(currentLevel == 4){
         Graphics.drawTexture({
@@ -260,6 +285,11 @@ function render(elapsedTime){
              im : {width : 1000, height : 500},
              size : 100,
         });
+            Graphics.drawRectangle(250-offset.x, 1500+350-offset.y,100, 50, '#a35303');
+            Graphics.drawRectangle(295-offset.x, 1500+400-offset.y,10, 50, '#a35303');
+            Graphics.drawText('Welcome! Level 5', 255-offset.x, 1500+360-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Dash', 255-offset.x, 1500+370-offset.y,'Comic Sans MS', 'white');
+            Graphics.drawText('Dash: l', 255-offset.x, 1500+380-offset.y,'Comic Sans MS', 'white');
         }
     let end = MyLevels[currentLevel].endPoint;
     Graphics.drawRectangle(end.x - offset.x, end.y - offset.y, end.w, end.h, 'rgba(255, 255, 0, 1)');
