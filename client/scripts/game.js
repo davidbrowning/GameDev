@@ -42,7 +42,6 @@ let playerName;
 // Courtesy of a music professor of mine, and
 // freesound.org
 // RICHERlandTV, and Lefty_Studios
-let audio = new Audio('client/assets/jdc.mp3')
 //add an event listener to listen for the end. 
 let attack = new Audio('client/assets/attack4.wav')
 let jump = new Audio('client/assets/jump3.wav')
@@ -493,7 +492,6 @@ function initScorelist(){
 
 function initialize(){
     console.log('Initializing...');
-    audio.play();
     mainMenu = document.getElementById('mainMenu');
     newGame = document.getElementById('newGame');
     gameLobby = document.getElementById('gameLobby');
