@@ -1,0 +1,69 @@
+# Apache HTTP Server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node
+        image: node:latest
+        command: ["npm"]
+        args: ["start","--prefix", "/app"]
+        volumeMounts:
+        - mountPath: /app
+          name: code 
+        ports:
+        # Container port where Apache listens
+        - containerPort: 80
+      volumes:
+      - name: code
+        hostPath:
+          # directory location on host
+          path: /opt/ori/GameDev/
+
+# Apache HTTP Server Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: node
+  name: node-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      # Expose port 80 on the service
+      targetPort: 80
+  selector:
+  # Link this service to pods with the label app=node
+    app: node
+
+# Apache HTTP Server Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: node-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            # Redirect traffic to service on port 80
+            backend:
+              service:
+                name: node-service
+                port:
+                  number: 80

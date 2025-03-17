@@ -22,3 +22,7 @@
 2. Reconfigurable keyboard controls
 3. Multiplayer (Mostly Finished)
 4. Gameplay (Semi Finished)
+
+## Deployment
+
+1. k8s manifest for k3s cluster in ./k8s

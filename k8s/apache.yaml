@@ -1,0 +1,59 @@
+# Apache HTTP Server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - name: apache
+        image: httpd:latest
+        ports:
+        # Container port where Apache listens
+        - containerPort: 80
+
+# Apache HTTP Server Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: apache
+  name: apache-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      # Expose port 80 on the service
+      targetPort: 80
+  selector:
+  # Link this service to pods with the label app=apache
+    app: apache
+
+# Apache HTTP Server Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apache-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            # Redirect traffic to service on port 80
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 80
